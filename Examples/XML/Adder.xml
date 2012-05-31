@@ -1,0 +1,167 @@
+<Path name="VHDL_Architecture_behv_ADDER">
+<Place name="Input">
+<Place name="Input">
+<Thing name="A">
+    <Place name="size">
+        <Thing>2</Thing>
+    </Place>
+    <Place name="type">
+        <Thing>std_logic_vector</Thing>
+        <Action>set</Action>
+    </Place>
+</Thing>
+<Action>input</Action>
+</Place>
+<Place name="Input">
+<Thing name="B">
+    <Place name="size">
+        <Thing>2</Thing>
+    </Place>
+    <Place name="type">
+        <Thing>std_logic_vector</Thing>
+        <Action>set</Action>
+    </Place>
+</Thing>
+<Action>input</Action>
+</Place>
+</Place>
+<Place name="Declaration">
+<Thing name="result">
+    <Place name="size">
+        <Thing>3</Thing>
+    </Place>
+    <Place name="type">
+        <Thing>std_logic_vector</Thing>
+        <Action>set</Action>
+    </Place>
+</Thing>
+<Action>Declaration</Action>
+</Place>
+<Place name="Input"> 
+    <Place name="Input"> 
+        <Thing>
+            <Place name="0">
+                <Thing>
+                    '0'
+                </Thing>
+
+                <Action>SET</Action>
+            </Place>
+            <Place name="1">
+                <Thing>
+                    A
+                </Thing>
+
+                <Action>SET</Action>
+            </Place>
+            <Place name="size">
+                <Thing>
+                    2
+                </Thing>
+                <Action>SET</Action>
+            </Place>        </Thing>
+
+        <Action> input </Action>
+    </Place>
+    <Place name="Input"> 
+        <Thing>
+            <Place name="0">
+                <Thing>
+                    '0'
+                </Thing>
+
+                <Action>SET</Action>
+            </Place>
+            <Place name="1">
+                <Thing>
+                    B
+                </Thing>
+
+                <Action>SET</Action>
+            </Place>
+            <Place name="size">
+                <Thing>
+                    2
+                </Thing>
+                <Action>SET</Action>
+            </Place>        </Thing>
+
+        <Action> input </Action>
+    </Place>
+</Place>
+
+<Place name="+"> 
+    <Thing>null</Thing>
+    <Action>+</Action>
+</Place>
+<Place name="Output"> 
+    <Thing>
+        result
+    </Thing>
+
+    <Action> output </Action>
+</Place>
+<Place name="Input"> 
+    <Thing>
+        <Place name="1:-1:0">
+            <Thing>result</Thing>
+            <Action>GET</Action>
+        </Place>
+    </Thing>
+
+    <Action> input </Action>
+</Place>
+
+<Place name="Equal"> 
+    <Thing>null</Thing>
+    <Action>Equal</Action>
+</Place>
+<Place name="Output"> 
+    <Thing>
+        sum
+    </Thing>
+
+    <Action> output </Action>
+</Place>
+<Place name="Input"> 
+    <Thing>
+        result(2)
+    </Thing>
+
+    <Action> input </Action>
+</Place>
+
+<Place name="Equal"> 
+    <Thing>null</Thing>
+    <Action>Equal</Action>
+</Place>
+<Place name="Output"> 
+    <Thing>
+        carry
+    </Thing>
+
+    <Action> output </Action>
+</Place>
+<Place name="Output">
+<Place name="Output">
+<Thing name="carry">
+    <Place name="type">
+        <Thing>std_logic</Thing>
+    </Place>
+</Thing>
+<Action>output</Action>
+</Place>
+<Place name="Output">
+<Thing name="sum">
+    <Place name="size">
+        <Thing>2</Thing>
+    </Place>
+    <Place name="type">
+        <Thing>std_logic_vector</Thing>
+        <Action>set</Action>
+    </Place>
+</Thing>
+<Action>output</Action>
+</Place>
+</Place>
+</Path>

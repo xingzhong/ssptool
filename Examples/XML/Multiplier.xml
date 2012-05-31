@@ -1,0 +1,317 @@
+<Path name="VHDL_Architecture_behv_multiplier">
+<Place name="Input">
+<Place name="Input">
+<Thing name="num1">
+    <Place name="size">
+        <Thing>2</Thing>
+    </Place>
+    <Place name="type">
+        <Thing>std_logic_vector</Thing>
+        <Action>set</Action>
+    </Place>
+</Thing>
+<Action>input</Action>
+</Place>
+<Place name="Input">
+<Thing name="num2">
+    <Place name="size">
+        <Thing>2</Thing>
+    </Place>
+    <Place name="type">
+        <Thing>std_logic_vector</Thing>
+        <Action>set</Action>
+    </Place>
+</Thing>
+<Action>input</Action>
+</Place>
+</Place>
+<Cause name="VHDL_Process_num1,num2" >
+<Path name="process_num1,num2" >
+<Place name="Declaration">
+<Thing name="num1_reg">
+    <Place name="size">
+        <Thing>3</Thing>
+    </Place>
+    <Place name="type">
+        <Thing>std_logic_vector</Thing>
+        <Action>set</Action>
+    </Place>
+</Thing>
+<Action>Declaration</Action>
+</Place>
+<Place name="Declaration">
+<Thing name="product_reg">
+    <Place name="size">
+        <Thing>6</Thing>
+    </Place>
+    <Place name="type">
+        <Thing>std_logic_vector</Thing>
+        <Action>set</Action>
+    </Place>
+</Thing>
+<Action>Declaration</Action>
+</Place>
+<Place name="Input"> 
+    <Thing>
+        <Place name="0">
+            <Thing>
+                '0'
+            </Thing>
+
+            <Action>SET</Action>
+        </Place>
+        <Place name="1">
+            <Thing>
+                num1
+            </Thing>
+
+            <Action>SET</Action>
+        </Place>
+        <Place name="size">
+            <Thing>
+                2
+            </Thing>
+            <Action>SET</Action>
+        </Place>    </Thing>
+
+    <Action> input </Action>
+</Place>
+
+<Place name="Equal"> 
+    <Thing>null</Thing>
+    <Action>Equal</Action>
+</Place>
+<Place name="Output"> 
+    <Thing>
+        num1_reg
+    </Thing>
+
+    <Action> output </Action>
+</Place>
+<Place name="Input"> 
+    <Thing>
+        <Place name="0">
+            <Thing>
+                '0000'
+            </Thing>
+
+            <Action>SET</Action>
+        </Place>
+        <Place name="1">
+            <Thing>
+                num2
+            </Thing>
+
+            <Action>SET</Action>
+        </Place>
+        <Place name="size">
+            <Thing>
+                2
+            </Thing>
+            <Action>SET</Action>
+        </Place>    </Thing>
+
+    <Action> input </Action>
+</Place>
+
+<Place name="Equal"> 
+    <Thing>null</Thing>
+    <Action>Equal</Action>
+</Place>
+<Place name="Output"> 
+    <Thing>
+        product_reg
+    </Thing>
+
+    <Action> output </Action>
+</Place>
+<Place name="Input"> 
+    <Thing>
+        1
+    </Thing>
+
+    <Action> input </Action>
+</Place>
+
+<Place name="Equal"> 
+    <Thing>null</Thing>
+    <Action>Equal</Action>
+</Place>
+<Place name="Output"> 
+    <Thing>
+        i
+    </Thing>
+
+    <Action> output </Action>
+</Place>
+<Cause name="i&lt; 3" type="loop">
+<Path name=" f_iS3" >
+<Cause name="product_reg(0)==1" >
+<Path name=" f_product_reg(0)E1" >
+<Place name="Input"> 
+    <Place name="Input"> 
+        <Thing>
+            <Place name="5:-1:3">
+                <Thing>product_reg</Thing>
+                <Action>GET</Action>
+            </Place>
+        </Thing>
+
+        <Action> input </Action>
+    </Place>
+    <Place name="Input"> 
+        <Thing>
+            <Place name="2:-1:0">
+                <Thing>num1_reg</Thing>
+                <Action>GET</Action>
+            </Place>
+        </Thing>
+
+        <Action> input </Action>
+    </Place>
+</Place>
+
+<Place name="+"> 
+    <Thing>null</Thing>
+    <Action>+</Action>
+</Place>
+<Place name="Output"> 
+    <Thing>
+        <Place name="5:-1:3">
+            <Thing>product_reg</Thing>
+            <Action>GET</Action>
+        </Place>
+    </Thing>
+
+    <Action> output </Action>
+</Place>
+</Path>
+</Cause>
+<Place name="Input"> 
+    <Thing>
+        <Place name="0">
+            <Thing>
+                '0'
+            </Thing>
+
+            <Action>SET</Action>
+        </Place>
+        <Place name="1">
+            <Thing>
+                <Place name="5:-1:1">
+                    <Thing>product_reg</Thing>
+                    <Action>GET</Action>
+                </Place>
+            </Thing>
+
+            <Action>SET</Action>
+        </Place>
+        <Place name="size">
+            <Thing>
+                2
+            </Thing>
+            <Action>SET</Action>
+        </Place>    </Thing>
+
+    <Action> input </Action>
+</Place>
+
+<Place name="Equal"> 
+    <Thing>null</Thing>
+    <Action>Equal</Action>
+</Place>
+<Place name="Output"> 
+    <Thing>
+        <Place name="5:-1:0">
+            <Thing>product_reg</Thing>
+            <Action>GET</Action>
+        </Place>
+    </Thing>
+
+    <Action> output </Action>
+</Place>
+</Path>
+<Path name="i_update" >
+<Place name="Input"> 
+    <Thing>
+        double i
+    </Thing>
+
+    <Action> input </Action>
+</Place>
+<Place name="Input"> 
+    <Place name="Input"> 
+        <Thing>
+            i
+        </Thing>
+
+        <Action> input </Action>
+    </Place>
+    <Place name="Input"> 
+        <Thing>
+            1
+        </Thing>
+
+        <Action> input </Action>
+    </Place>
+</Place>
+
+<Place name="+"> 
+    <Thing>null</Thing>
+    <Action>+</Action>
+</Place>
+<Place name="Output"> 
+    <Thing>
+        i
+    </Thing>
+
+    <Action> output </Action>
+</Place>
+<Place name="Output"> 
+    <Thing>
+        double i
+    </Thing>
+
+    <Action> output </Action>
+</Place>
+</Path>
+</Cause>
+<Place name="Input"> 
+    <Thing>
+        <Place name="3:-1:0">
+            <Thing>product_reg</Thing>
+            <Action>GET</Action>
+        </Place>
+    </Thing>
+
+    <Action> input </Action>
+</Place>
+
+<Place name="Equal"> 
+    <Thing>null</Thing>
+    <Action>Equal</Action>
+</Place>
+<Place name="Output"> 
+    <Thing>
+        product
+    </Thing>
+
+    <Action> output </Action>
+</Place>
+</Path>
+</Cause>
+<Place name="Output">
+<Place name="Output">
+<Thing name="product">
+    <Place name="size">
+        <Thing>4</Thing>
+    </Place>
+    <Place name="type">
+        <Thing>std_logic_vector</Thing>
+        <Action>set</Action>
+    </Place>
+</Thing>
+<Action>output</Action>
+</Place>
+</Place>
+</Path>

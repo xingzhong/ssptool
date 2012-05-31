@@ -1,0 +1,8 @@
+INDEX VERSION 1.126+E:\Semantics\JavaWorkspace\SemanticSignalProcessing\.metadata\.plugins\org.eclipse.jdt.core
+3220069206.index
+275759364.index
+1212342836.index
+620209945.index
+2095431543.index
+1325665663.index
+3038573734.index

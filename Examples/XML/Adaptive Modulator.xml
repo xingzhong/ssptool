@@ -1,0 +1,34 @@
+<Path name = "main">
+    <Cause name = "SNR&gt; T">
+        <Path name = "16QAM">
+            <Place name = "Input">
+                <Thing> Bits </Thing>
+                <Action> input </Action>
+             </Place>
+            <Place name = "16QAM">
+                <Thing> Bits </Thing>
+                <Action> 16QAM </Action>
+             </Place>
+            <Place name = "Output">
+                <Thing> Symbols </Thing>
+                <Action> output </Action>
+             </Place>
+         </Path>
+     </Cause>
+    <Cause name = "else">
+        <Path name = "QPSK">
+            <Place name = "Input">
+                <Thing> Bits </Thing>
+                <Action> input </Action>
+             </Place>
+            <Place name = "QPSK">
+                <Thing> Bits </Thing>
+                <Action> QPSK </Action>
+             </Place>
+            <Place name = "Output">
+                <Thing> Symbols </Thing>
+                <Action> output </Action>
+             </Place>
+         </Path>
+     </Cause>
+ </Path>

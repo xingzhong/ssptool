@@ -1,0 +1,72 @@
+<Path name="main" >
+<Place name="Declaration">
+<Thing name="*p">
+<Place name="address">
+<Thing>p</Thing>
+<Action>SET</Action>
+</Place>
+<Place name="type">
+<Thing>int</Thing>
+<Action>SET</Action>
+</Place>
+</Thing>
+</Place>
+<Place name="Declaration">
+<Thing name="*q">
+<Place name="address">
+<Thing>q</Thing>
+<Action>SET</Action>
+</Place>
+<Place name="type">
+<Thing>int</Thing>
+<Action>SET</Action>
+</Place>
+</Thing>
+</Place>
+<Place name="Input"> 
+<Thing>
+        <Place name="address">
+            <Thing>q</Thing>
+            <Action>GET</Action>
+        </Place>
+    </Thing>
+    <Action> input </Action>
+</Place>
+
+<Place name="Equal"> 
+    <Thing>null</Thing>
+    <Action>Equal</Action>
+</Place>
+<Place name="Output"> 
+<Thing>
+        <Place name="address">
+            <Thing>p</Thing>
+            <Action>GET</Action>
+        </Place>
+    </Thing>
+    <Action> output </Action>
+</Place>
+<Place name="Input"> 
+<Thing name="*q">
+        <Place name="address">
+            <Thing>q</Thing>
+            <Action>SET</Action>
+        </Place>
+    </Thing>
+    <Action> input </Action>
+</Place>
+
+<Place name="Equal"> 
+    <Thing>null</Thing>
+    <Action>Equal</Action>
+</Place>
+<Place name="Output"> 
+<Thing name="*p">
+        <Place name="address">
+            <Thing>p</Thing>
+            <Action>SET</Action>
+        </Place>
+    </Thing>
+    <Action> output </Action>
+</Place>
+</Path>
