@@ -1,3 +1,8 @@
+
+<!-- This version is coming from the Jia's usb disk
+ - Xingzhong Jun.1
+-->
+
 <HTML><HEAD></HEAD><BODY>
 
 <p align="left"><span lang="en-us"><b><font color="#000099" face="Arial"
@@ -9,15 +14,29 @@
 <SCRIPT>
 
 var CLBM_XML_Code = '';
-var CLBM_Source_Code = '';
-var XML_CodetoCLBM = '';
+var CLBM_Source_Code = '';	// the input source code
+var XML_CodetoCLBM = '';	// the CLBM XML representation 
 var CLBM_XML_Hardware_Code = '';
 var wordLengthGlobal = 16;
 var fractionLengthGlobal = 8;
 var isFixedPointGlobal=1;
 
 
+/*
+* adding the following functions to improve the java to javascript interface
+* Xingzhong Jun.1 
+*/
+function j2jUpdateSourceCode(code){
+	CLBM_Source_Code = code;
+	alert(code);
+	//CLBM_Source_Code = "Hello World";
+}
+
+
+/* Xingzhong's Seperate Line */
+
 function getSourceCode(SourceCode)
+//seems a recursive function to accumulate the source code line by line -Xingzhong
 {
 	CLBM_Source_Code = CLBM_Source_Code + SourceCode + '\n';
 }
@@ -25,6 +44,7 @@ function getSourceCode(SourceCode)
 
 function passXMLCode(AbstractionType)
 {
+	
 	if (AbstractionType == 'Matlab')
 	{
 		Matlab_XML_CLBM();
@@ -47,6 +67,8 @@ function passXMLCode(AbstractionType)
 	
 }
 
+
+// from xml to other languages use
 function getXMLCode(XMLCode)
 {
 	//alert(XMLCode);
@@ -10660,6 +10682,7 @@ function Matlab_XML()
 
 	
 	var matlab=Source_input.value+";";
+	
 	matlab=code_format(matlab,'Matlab');
 	//matlab=matlabcode_format(matlab);// Added by Ning 
 	
