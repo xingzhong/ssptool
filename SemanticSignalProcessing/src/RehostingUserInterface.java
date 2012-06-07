@@ -1052,8 +1052,10 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 					  try                      
 					  {								  		  
 						  int filelength = bis.read(infile);
-						  String filestring = new String(infile, 0, filelength).toString();						  		
+						  String filestring = new String(infile, 0, filelength).toString();		
+						  filestring = filestring.replace('\r', ' ');
 						  XMLCodeOutput = filestring;
+						  System.out.println(XMLCodeOutput);
 					  }
 					  catch (IOException iox)
 					  {
@@ -1511,6 +1513,7 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 	}
 	
 	if (evt.getSource() == toMatlab)
+		/* from xml to Matlab by calling javascript routine - Xingzhong*/
 	{
 		TargetCodeIndicator = 1;
 		String Temp = XMLCode.getText();
@@ -1557,7 +1560,7 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 			p.getAppletContext().showDocument
 			(new URL("javascript:getFloatingFixedSelection(\"" + fixedPointSelectionTemp +"\")"));
 			}
-			catch (MalformedURLException me) { }
+		catch (MalformedURLException me) { }
 			
 		int wordLengthTemp = 0;
 		if (wordLength.getText().isEmpty())
@@ -1657,12 +1660,11 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 	    			p.getAppletContext().showDocument
 	    			(new URL("javascript:getXMLCode(\"" + TempOutput +"\")"));
 	    			}
-	    			catch (MalformedURLException me) { }  
-	    		  	    		 
-	    	}   
+	    		catch (MalformedURLException me) { }  
+	    	}
 	    	else
 	    	{
-	    		TempOutput = Temp;	    		 
+	    		TempOutput = Temp;
 	    		try {
 	    			p.getAppletContext().showDocument
 	    			(new URL("javascript:getXMLCode(\"" + TempOutput +"\")"));
