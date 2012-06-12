@@ -2724,7 +2724,8 @@ type: selection (once) or loop
 		for(var i=0; i<variables.length; i=i+1)
 		{					
 			if((get_variableName(variables[i]).indexOf('[')>-1)&&(get_variableName(variables[i]).indexOf(']')>-1))
-			{			
+			{	
+						
 				if(flag == 0)
 				{
 					flag=1;
@@ -2732,7 +2733,7 @@ type: selection (once) or loop
 				}								
 				str+='&nbsp;&nbsp;&nbsp;&nbsp;'+get_type(variables[i])+'* d_'+get_variableName(variables[i]).slice(0,get_variableName(variables[i]).indexOf('['))+';<br \>';
 				str+='&nbsp;&nbsp;&nbsp;&nbsp;size_t size_'+get_variableName(variables[i]).slice(0,get_variableName(variables[i]).indexOf('['))+'=('+loop_index_max+')*sizeof('+get_type(variables[i])+');<br \>';
-				str+='&nbsp;&nbsp;&nbsp;&nbsp;cudaMalloc(& d_'+get_variableName(variables[i]).slice(0,get_variableName(variables[i]).indexOf('['))+',size_'+get_variableName(variables[i]).slice(0,get_variableName(variables[i]).indexOf('['))+');<br \>';
+				str+='&nbsp;&nbsp;&nbsp;&nbsp;cudaMalloc((void**)& d_'+get_variableName(variables[i]).slice(0,get_variableName(variables[i]).indexOf('['))+',size_'+get_variableName(variables[i]).slice(0,get_variableName(variables[i]).indexOf('['))+');<br \>';
 			}
 			if(variables[i].value.toString().indexOf(',')>-1)
 			{
@@ -2743,7 +2744,7 @@ type: selection (once) or loop
 				}				
 				str+='&nbsp;&nbsp;&nbsp;&nbsp;'+get_type(variables[i])+'* d_'+variables[i].value.toString().slice(0,variables[i].value.toString().indexOf(','))+';<br \>';
 				str+='&nbsp;&nbsp;&nbsp;&nbsp;size_t size_'+variables[i].value.toString().slice(0,variables[i].value.toString().indexOf(','))+'=('+loop_index_max+')*sizeof('+get_type(variables[i])+');<br \>';
-				str+='&nbsp;&nbsp;&nbsp;&nbsp;cudaMalloc(& d_'+variables[i].value.toString().slice(0,variables[i].value.toString().indexOf(','))+',size_'+variables[i].value.toString().slice(0,variables[i].value.toString().indexOf(','))+');<br \>';
+				str+='&nbsp;&nbsp;&nbsp;&nbsp;cudaMalloc((void**)& d_'+variables[i].value.toString().slice(0,variables[i].value.toString().indexOf(','))+',size_'+variables[i].value.toString().slice(0,variables[i].value.toString().indexOf(','))+');<br \>';
 			}
 
 				
