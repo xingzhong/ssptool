@@ -705,7 +705,8 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 		   			}   
 	        		else
 	        			Temp = "";   				        	
-		          }*/		          		          		  
+		          }*/		         
+				  System.out.print(SourceMatlabCode);
 				  SourceCode.setText(SourceMatlabCode);		
 				  			  
 				  if (CFileOpen)
@@ -770,6 +771,7 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 					  bufferedWriter = new BufferedWriter(new FileWriter(ffile));
 					  //Start writing to the output stream
 					  bufferedWriter.write(SourceCode.getText());
+					  
 						  										  
 			       } 
 				  catch (FileNotFoundException ex) 
@@ -1053,7 +1055,7 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 					  {								  		  
 						  int filelength = bis.read(infile);
 						  String filestring = new String(infile, 0, filelength).toString();		
-						  filestring = filestring.replace('\r', ' ');
+						  filestring = filestring.replace('\r', ' ');	// \r bug :: Xingzhong
 						  XMLCodeOutput = filestring;
 						  System.out.println(XMLCodeOutput);
 					  }
@@ -1463,7 +1465,8 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 		 }
 		 
 		 String Temp = SourceCode.getText();	
-		 Temp = Temp.replace('\r', ' ');
+		 Temp = Temp.replace('\r', ' ');	//replace the \r to space
+		 
 	     String TempOutput = "";	      
 	     while(Temp.indexOf("\"") > -1)
 	     {
