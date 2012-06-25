@@ -16,7 +16,100 @@ var isFixedPointGlobal = 1;
 * Xingzhong Jun.1 
 */
 
+function reset_env(){
+// reset all the environment variables
+	CLBM_XML_Code = '';
+	CLBM_Source_Code = '';	// the input source code
+	XML_CodetoCLBM = '';	// the CLBM XML representation
+	CLBM_XML_Hardware_Code = '';
+	wordLengthGlobal = 16;
+	fractionLengthGlobal = 8;
+	isFixedPointGlobal = 1;
+	Pattern1 = ['loop cause', 'multiplication', 'addition'];
+	Pattern2 = ['selection cause', 'value assignment'];
+	Pattern3 = ['selection cause', 'function call'];
+	Pattern4 = ['loop cause', 'function call'];
+	Rec_V = [0, 0];
+	///////////////////////////////////////////////////Global variable
+	func = "";
+	//var seq;
+	lab = "";
 
+	General_Keywords = ['if', 'for', 'while', 'function', 'switch', 'else', 'elseif'];
+	//GLobal Constant
+	General_Type_Keywords = ['int', 'double', 'float', 'unsigned int', 'boolet', 'cvec'];
+
+	var_list = new Array();
+	//global
+	var_list[0] = new Array();
+	//name of varibles
+	var_list[1] = new Array();
+	//size of varibales
+	var_list[2] = new Array();
+	//type of varibales
+	point_list = new Array();
+	// fangming define it for seach all pointer;
+	////////////////////////////////////////////////////
+	//////////////////////////////////////////////////// Matlab build-in function list (generally used)
+	// add by Ning Han
+	BuildinFun = new Array();
+	// Matlab Build-in function (output size) and the correpsonding C functions
+	BuildinFun[0] = new Array();
+	// store the name of the matlab build-in functions
+	BuildinFun[1] = new Array();
+	// store the output size of each function  (functions with single output are considered)
+	BuildinFun[2] = new Array();
+	// corresponding C functions
+	BuildinFun[0] = ['rand', 'sqrt'];
+
+
+	//////////////////////////////////////////////////// Library of communication module (basic OFDM for now)
+	//////////////////////////////////////////////////// Library of communication module (basic OFDM for now)
+	// add by Ning Han for waveform level
+	LibFun = new Array();
+	// Library functions of communication module (basic OFDM for now)
+	LibFun[0] = new Array();
+	// store the names of the library functions
+	LibFun[1] = new Array();
+	// store the output/input signal size change indicator (0: size change; 1: no size change)
+	LibFun[2] = new Array();
+	// store the input signal type of each function (this may be needed in a later version)
+	LibFun[3] = new Array();
+	// store the input parameter value of each function (this will be abstract from the source code) (current version support at most two input parameters in giins and girem)
+	LibFun[4] = new Array();
+	// store the output signal size of each function (communication module functions are considered with single output (signal stream))
+	LibFun[5] = new Array();
+	// store the output signal type of each function (communication module functions are considered with single output (signal stream))
+	LibFun[6] = new Array();
+	// store the name of each function in C
+	LibFun[0] = ['qpskmod', 'ifft', 'giins', 'girem', 'fft', 'qpskdemod'];
+	LibFun[1] = [0, 1, 0, 0, 1, 0, ];
+	LibFun[5] = ['Complex', 'Complex', 'Complex', 'Complex', 'Complex', 'int'];
+	LibFun[6] = ['Modulator_QPSK', 'SRIFFT', 'InsertCP', 'RemCP', 'SRFFT', 'DeModulator_QPSK'];
+
+
+	//////////////////////////////////////////////////// Library of communication module (basic OFDM for now)
+
+
+	//////////////////////////////////////////////////// Library of communication module (basic OFDM for now)
+	// add by W_Fangming He 2011-04-12
+	SigBase = new Array();
+	Indsize = new Array();
+
+	IndSize = [1, 1, 0, 1, 1, 0, 1, 1];
+
+	SigBase[0] = ['qpskmod', 'QAMXXX', 'ifft', 'giins', 'girem', 'fft', 'qpskdemod', 'DeQAMXXX'];
+	SigBase[1] = ['Modulator_QPSK', 'Modulator_16QAM', 'SRIFFT', 'InsertCP', 'RemCP', 'SRFFT', 'DeModulator_QPSK', 'DeModulator_16QAM'];
+	CBase = new Array();
+	CBase[0] = ['Modulator_QPSK', 'source', 'Output2'];
+	CBase[1] = ['Modulator_16QAM', 'source', 'Output2'];
+	CBase[2] = ['SRIFFT', 'Output2', 'Output2'];
+	CBase[3] = ['InsertCP', 'Output2', 'Output'];
+	CBase[4] = ['RemCP', 'Output', 'Output2'];
+	CBase[5] = ['SRFFT', 'Output2', 'Output2'];
+	CBase[6] = ['DeModulator_QPSK', 'Output2', 'Dest'];
+	CBase[7] = ['DeModulator_16QAM', 'Output2', 'Dest'];
+}
 
 /* Xingzhong's Seperate Line */
 
@@ -276,6 +369,7 @@ function getImplementationCode(InferenceType)
     isFixedPointGlobal = 1;
     wordLengthGlobal = 16;
     fractionLengthGlobal = 8;
+	//reset_env();
 
 }
 
