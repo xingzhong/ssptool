@@ -633,7 +633,8 @@ language: the target code language
     {
         path_input_variable[0] = '';
         path_output_variable[0] = '';
-        str = creat_func(path_input_variable, path_output_variable, 'main', '', language);
+        //str = creat_func(path_input_variable, path_output_variable, 'main', '', language);
+		// remvoe main function 
 		str = '';
         output = insertString(output, str);
         ind_level = ind_level + 1;
@@ -643,7 +644,7 @@ language: the target code language
     var firstnode = xmlDoc.documentElement
     var pathnum = 0;
 
-
+	
     if (firstnode.nodeName == "Path")
     {
         var path = firstnode;
@@ -709,7 +710,6 @@ language: the target code language
     // add by liu Apr.04.2011 4PM
     for (var i = 0; i < path1.length; i++)
     {
-
         if ((path1[i].parentNode.nodeName == 'Cause') && ((((language_constant == 'CUDA') || (language_constant == 'OpenCL')) && (path1[i].parentNode.attributes.getNamedItem("type") == null)) || ((language_constant != 'CUDA') && (language_constant != 'OpenCL'))))
         {
             continue;
@@ -778,13 +778,13 @@ language: the target code language
             path1_input_variable = get_pathinput(path1[i]);
             path1_output_variable = get_pathoutput(path1[i]);
 
-
             //if (func_name != 'main' && (path1[i].parentNode.nodeName != 'Cause'))
 			if ( (path1[i].parentNode.nodeName != 'Cause'))
             {
 
                 var class_name = func_name.substring(0, 1).toUpperCase() + func_name.substring(1, func_name.length);
-                if (language == 'C++' && classFuncFlag == 0)
+                
+				if (language == 'C++' && classFuncFlag == 0)
                 {
                     private_v = new Array();
                     public_v = new Array();
@@ -794,12 +794,13 @@ language: the target code language
                 }
                 else
                 {
-                    if (classFuncFlag == 0)
+                    if (classFuncFlag == 0){
                     // add by liu Apr16.2011 1AM
                     output = insertString(output, creat_func(path1_input_variable, path1_output_variable, func_name, class_name, language));
-                }
+					
+					}
+				}
             }
-
             ind_level = ind_level + 1;
             //Search all the variables to be declared
             var variables_declaration = new Array();
@@ -1057,7 +1058,6 @@ language: the target code language
             output = insertString(output, str_places);
             else
             output = insertString(output, str_declare + str_places);
-
 
 
             if (path1[i].parentNode.nodeName != 'Cause')
@@ -4301,19 +4301,20 @@ function creat_func(input, output, func_name, class_name, language)
         if (outputn == 1)
         {
             type = get_type(output[0]);
-            if (type == undefined)
-            type = 'void';
+            if (type == undefined){
+				type = 'void';}
         }
         else
         {
             type = get_type(output[0]);
-            if (type == undefined)
-            type = 'void';
+            if (type == undefined){
+				type = 'void';}
 
             str += '<div style=\"color:red\">' + '//Warning: no support for multiple output in C. So we have omitted some output variables.*/' + '</div><br \>'
             //alert('no support for multiple output in C')
         }
         str = str + type + '&nbsp;' + func_name + '(';
+		
     }
 
     //=====================C++===========================//
@@ -4790,10 +4791,11 @@ this.isPointer: The thing is a pointer or not
         if (thingNode.childNodes[0].nodeValue != null)
         //a simple variable or value
         {
-
-            this.value[0] = thingNode.childNodes[0].nodeValue;
+			context = thingNode.childNodes[0].nodeValue.split(" ");
+			this.value[0] = context.pop();
+            //this.value[0] = thingNode.childNodes[0].nodeValue;
             //Value of a number or name of a variable
-            this.type = '';
+            this.type = context.join(" ");
             //type of a variable
             this.size[0] = 1;
             //size of a vector,5,3
@@ -4805,6 +4807,7 @@ this.isPointer: The thing is a pointer or not
             //The variable is an element of a vector or not
             this.isPointer = 0;
             //The variable is not a pointer
+			
 
         }
         else
@@ -5314,7 +5317,7 @@ place: the place node in xml
         }
     }
 
-
+	
     return variables;
 }
 
@@ -6003,7 +6006,7 @@ path: the path node
     path_output_variable[0] = '';
     if (path.attributes.getNamedItem("name").value != 'main' && (path.parentNode.nodeName != 'Cause'))
     {
-        path_output_variable = read_variables(place[place.length - 1]);
+        path_output_variable = read_variables(place[place.length - 1]); //seems locate the last place as output
     }
 
     //Remove the vector representation in the ouptut variables
