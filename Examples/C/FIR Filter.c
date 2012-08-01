@@ -1,4 +1,8 @@
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> m…
 double *FIR_filter(double x[3],double A[3]) {
     int n;
     double y[5];
@@ -13,4 +17,12 @@ double *FIR_filter(double x[3],double A[3]) {
         }
     }
     return(y);
+}
+
+void main() {
+    double signal[3]={1.1,2.3,0.6};
+    double coef[3]={0.3,0.8,0.4};
+    double *output;
+
+    output=FIR_filter(signal,coef);
 }
