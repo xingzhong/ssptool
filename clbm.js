@@ -634,10 +634,10 @@ language: the target code language
         path_input_variable[0] = '';
         path_output_variable[0] = '';
         str = creat_func(path_input_variable, path_output_variable, 'main', '', language);
+		str = '';
         output = insertString(output, str);
         ind_level = ind_level + 1;
     }
-
 
     //Main
     var firstnode = xmlDoc.documentElement
@@ -651,7 +651,7 @@ language: the target code language
 
 
     var path_att = path.attributes.getNamedItem("name");
-
+/*
     if (path.nodeName == "Path" && path_att.value != 'main' && language != 'VHDL')
     // This is to add a main function to call the first function if the first path is not 'main'
     {
@@ -698,7 +698,7 @@ language: the target code language
         output = insertString(output, "<br /><br />");
 
     }
-
+	*/
     /*if (language_constant=='OpenCL')
     	output='//This is the '+language_constant+' code generated from XML \n \n';*/
 
@@ -779,7 +779,8 @@ language: the target code language
             path1_output_variable = get_pathoutput(path1[i]);
 
 
-            if (func_name != 'main' && (path1[i].parentNode.nodeName != 'Cause'))
+            //if (func_name != 'main' && (path1[i].parentNode.nodeName != 'Cause'))
+			if ( (path1[i].parentNode.nodeName != 'Cause'))
             {
 
                 var class_name = func_name.substring(0, 1).toUpperCase() + func_name.substring(1, func_name.length);
