@@ -441,6 +441,16 @@ function Matlab_XML_CLBM()
 
 }
 
+function getIO( comments )
+/* accapte the comments and recognize the input output variable name  */
+{
+    console.log(comments);
+    var inputs = String(comments).match(/\w+(?=\s*--\s*INPUT\s*;)/g);
+    var outputs = String(comments).match(/\s*\w+(?=\s*--\s*OUTPUT\s*;)/g);
+    return {i:inputs, o:outputs};
+}
+
+var IORec  ;   //store the IO results
 function C_XML_CLBM()
 /*The main function for C abstraction and xml generation*/
  {
@@ -448,24 +458,22 @@ function C_XML_CLBM()
     var c_code = CLBM_Source_Code;
     c_code = code_format(c_code, 'C');
     c_code = delblank(c_code);
-
+    IORec = getIO(g_comments);
+    console.log("input:" + IORec.i);
+    console.log("output:" + IORec.o);
     //	var lab0=0;
     //seq=0
     var xml = ""
     lab = 0
 
     funcs_all = search_func(c_code);
-
-
-
+    console.log(funcs_all);
     var c_main = funcs_all[2][0];
     var pathname = funcs_all[0][0];
     pathname = pathname.replace(/\s/g, "");
     xml += "<Path name=\"" + pathname + "\" >" + "\n" + inputfunc(funcs_all[1][0], 0, 'C');
-
+    
     c_main = delblank(c_main);
-
-
     xml += cf(c_main);
     xml += pathoutputfunc_c(funcs_all[1][0], funcs_all[2][0]) + "</Path>\n"
 
@@ -7030,6 +7038,8 @@ function delblank(str)
     return str
 }
 
+var g_comments = new Array();
+
 function code_format(code, language)
 /*Format the source code, delete the comments, add ';' to each line and etc.
  code: the source code text
@@ -7073,6 +7083,9 @@ function code_format(code, language)
             var code_f1 = code_f.slice(0, code_f.indexOf('//')) + ';';
             var code_f2 = code_f.slice(code_f.indexOf('//') + 1);
             code_f2 = code_f2.slice(code_f2.indexOf(';'));
+            var patt = /\/\/[^;]+;/;
+            var res = patt.exec(code_f);
+            g_comments.push(res);
             code_f = code_f1 + code_f2;
         }
 
@@ -8220,6 +8233,14 @@ function input_xml(inputn, ind_level, language)
     return place
 }
 
+function util_in_array(ele, arr){
+    for (var i=0; i<arr.length; i++){
+        if (ele == arr[i])
+            return true;
+    }
+    return false;
+}
+
 function inputfunc(str, ind_level, language)
 /*list the input varaibles and generate xml code for them
  str: the source code line
@@ -8227,8 +8248,26 @@ function inputfunc(str, ind_level, language)
  language: the source code language
  */
  {
-
     var inputn = read_input(str);
+    if (IORec.i){
+        /* patched by Xingzhong for IO  */
+        console.log("user defined input found!");
+        console.log(inputn);
+        console.log(IORec.i);
+        var temp = new Array();
+        for (var ind=0; ind<inputn.length; ind++){
+            // for each variable declaration 
+            var splitTemp = inputn[ind].match(/\w+/g);
+            for (var ind2 = 0 ; ind2 < splitTemp.length; ind2++){
+                if ( util_in_array( splitTemp[ind2] , IORec.i ) ){
+                    //console.log("found:" +  splitTemp[ind2]  );
+                    temp.push ( inputn[ind] );
+                }
+            }   
+        }
+        console.log(temp);
+        inputn = temp;
+    }
     var place = input_xml(inputn, ind_level, language);
     return place;
 }
@@ -10886,11 +10925,28 @@ function pathoutputfunc_c(path_def, path_content)
  path_def: the function declaration statement (the head of the function definition
  path_content: the body of the function definition
  */
- {
+{
     var outputn = read_pathoutput_c(path_def, path_content);
-
+    var inputn = read_input(path_def);
+    if (IORec.o){
+        console.log("user defined output");
+        console.log(IORec.o);
+        var temp = new Array();
+        for (var ind=0; ind<inputn.length; ind++){
+            // for each variable declaration 
+            var splitTemp = inputn[ind].match(/\w+/g);
+            for (var ind2 = 0 ; ind2 < splitTemp.length; ind2++){
+                if ( util_in_array( splitTemp[ind2] , IORec.o ) ){
+                    //console.log("found:" +  splitTemp[ind2]  );
+                    temp.push ( inputn[ind] );
+                }
+            }   
+        }
+        console.log(temp);
+        outputn = temp;
+    }
     var pathoutput_xml = output_xml(outputn, 0, 'C');
-
+    //console.log(pathoutput_xml);
     return pathoutput_xml;
 }
 
@@ -11516,6 +11572,7 @@ function cf(c_main)
         }
     }
     //fun +="</Path>\n </Cause>"+"\n"
+    console.log(fun);
     return fun
 }
 
@@ -11525,7 +11582,6 @@ function C_XML()
     var c_code = Source_input.value + ";";
     c_code = code_format(c_code, 'C');
     c_code = delblank(c_code);
-
     //	var lab0=0;
     //seq=0
     var xml = ""

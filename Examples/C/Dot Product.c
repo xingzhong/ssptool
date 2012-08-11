@@ -1,3 +1,7 @@
+//x -- INPUT
+//x2 -- INPUT
+//x3 -- INPUT
+//y -- OUTPUT
 double dot(double x[5], double y[5]){
 	double z=0;
 	int index;

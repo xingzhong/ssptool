@@ -1,8 +1,3 @@
-
-<<<<<<< HEAD
-=======
-
->>>>>>> m…
 double *FIR_filter(double x[3],double A[3]) {
     int n;
     double y[5];
