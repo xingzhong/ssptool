@@ -7113,12 +7113,12 @@ str: the code line*/
     o_index[0] = -1;
     //var patt1 = /[A-Za-z0-9\]\)]\*/g;
     // to differentiate the * operator with the pointer
-	// FIXME: seems not work Xingzhong
-	var patt1 = /(double|int|char|=)\*/g;
+	// FIXME: seems not work Xingzhong (now fixed)
+	var patt1 = /(float|double|int|char|=)\*/g;
     var patt2 = /[A-Za-z0-9\]\)]\-/g;
     // to differentiate the - operator with the negative sign
     var str2 = str.replace(/\s/g, '');
-	console.log(str2);
+	//console.log(str2);
     //Get a string without space, to avoid match error of patt1 and patt2
     if (str.indexOf('=') == -1)
     {
@@ -8180,16 +8180,14 @@ function input_xml(inputn, ind_level, language)
  language: the source code language
  */
  {
-     console.log("in input_xml");
-     console.log(inputn);
     var place = '';
     for (var i = 0; i < inputn.length; i++)
     {
 
         if (inputn[i] != '')
         {
-            console.log("***START");
-            console.log(inputn[i]);
+            //console.log("***START");
+            //console.log(inputn[i]);
             if (inputn[i].indexOf('(') == 0 && bracket_match(inputn[i], '(') == inputn[i].length)
                 inputn[i] = inputn[i].slice(1, inputn[i].length - 1);
             var new_input = Name_gen(inputn[i]);
@@ -8198,7 +8196,7 @@ function input_xml(inputn, ind_level, language)
                 var line_add = new_input + '<=' + inputn[i] + ';';
             else
                 var line_add = new_input + '=' + inputn[i] + ';';
-            console.log("***MIDDLE");
+            //console.log("***MIDDLE");
             if (line_type(line_add, General_Keywords) != 'assign')
             {
 
@@ -8209,13 +8207,13 @@ function input_xml(inputn, ind_level, language)
                 if (language == 'C')
                     place += cf(line_add);
                 inputn[i] = new_input;
-                console.log(inputn[i]);
+                //console.log(inputn[i]);
             }
             //console.log(line_add);
-            console.log("***END");
+            //console.log("***END");
         }
     }
-    console.log(inputn);
+    //console.log(inputn);
     console.log(place);
 
     if (inputn.length == 0)
@@ -11298,6 +11296,14 @@ function autocomplete(data) {
     return data;
 }
 
+function replaceplus2(str){
+	// replace the double plus to normal expr eg. i++ => i=i+1
+	var patt = /(\w)+\s*\+\+/;
+	console.log(str);
+	str = str.replace(patt, "$1 = $1 + 1");
+	console.log(str);
+	return str;
+}
 /********************************************************************/
 
 function cf(c_main)
@@ -11308,7 +11314,7 @@ function cf(c_main)
 	
     var fun = ""
     var variables_declared = new Array();
-    //console.log(c_main);
+    c_main = replaceplus2(c_main);
     variables_declared[0] = new Array();
     variables_declared[1] = new Array();
     ind_dec = 0;
