@@ -459,8 +459,8 @@ function C_XML_CLBM()
     c_code = code_format(c_code, 'C');
     c_code = delblank(c_code);
     IORec = getIO(g_comments);
-    console.log("input:" + IORec.i);
-    console.log("output:" + IORec.o);
+    //console.log("input:" + IORec.i);
+    //console.log("output:" + IORec.o);
     //	var lab0=0;
     //seq=0
     var xml = ""
@@ -7464,6 +7464,9 @@ function line_type(str, keywords)
 /*Dertermin the type of a code line
 str: the codeline
 keywords: the array of keywords that have to be identified
+
+Xingzhong's note, this function have bug due to the ambiguity of *
+e.g. var double xx = double *xx should return assign not oper 
 */
  {
 
@@ -7487,8 +7490,9 @@ keywords: the array of keywords that have to be identified
                 return type;
             }
             var o_index = OperatorIndex(str);
+            console.log(o_index);
             if (o_index > 0 || o_index[0] > 0)
-            type = 'oper';
+                type = 'oper';
             //Basic operation
             else
             {
@@ -7509,14 +7513,14 @@ keywords: the array of keywords that have to be identified
 
                         }
                         else
-                        type = 'assign';
+                            type = 'assign';
                         //value assignment;	
                     }
                 }
                 else
                 {
                     if (indexOfwhole(str, 'return') == 0)
-                    type = 'return';
+                        type = 'return';
                     else
                     {
                         if (str.indexOf("(") > 0 && str.indexOf(")") > str.indexOf("("))
@@ -7532,7 +7536,7 @@ keywords: the array of keywords that have to be identified
 
                         else if (str.indexOf(' ') > 0)
 
-                        type = 'varDec'
+                        {   type = 'varDec' ; }
                         //variable declaration
                         else
                         {
@@ -7553,8 +7557,10 @@ keywords: the array of keywords that have to be identified
     }
 
     if (type == 'funcCall')
-    type = vector_func_Matlab(str, var_list);
-
+        type = vector_func_Matlab(str, var_list);
+    console.log("test the type of line");
+    console.log(str);
+    console.log(type);
     return type;
 
 }
@@ -8132,9 +8138,12 @@ str: the code line
 
 function Name_gen(input_str)
 // changed by Ning Han
-/*Generate a variable name for some operation statement decomposed from a code line with multiple operations, (e.g., b*c decomposed from f=a+b*c)
- input_str: the operation statement*/
+/*Generate a variable name for some operation statement decomposed 
+    from a code line with multiple operations, (e.g., b*c decomposed from f=a+b*c)
+    input_str: the operation statement
+*/
  {
+    //console.log(input_str);
     var name = input_str.replace(/\+/g, 'ADD');
     name = name.replace(/\-/g, 'SUB');
     name = name.replace(/\*/g, 'MUL');
@@ -8154,6 +8163,7 @@ function Name_gen(input_str)
     name = name.replace(/\!/g, 'CNOT');
     name = 'var_' + name;
     name = delblank(name);
+    //console.log(name);
     return name;
 }
 
@@ -8164,19 +8174,25 @@ function input_xml(inputn, ind_level, language)
  language: the source code language
  */
  {
+     console.log("in input_xml");
+     console.log(inputn);
     var place = '';
     for (var i = 0; i < inputn.length; i++)
     {
 
         if (inputn[i] != '')
         {
+            console.log("***START");
+            console.log(inputn[i]);
             if (inputn[i].indexOf('(') == 0 && bracket_match(inputn[i], '(') == inputn[i].length)
-            inputn[i] = inputn[i].slice(1, inputn[i].length - 1);
+                inputn[i] = inputn[i].slice(1, inputn[i].length - 1);
             var new_input = Name_gen(inputn[i]);
+            
             if (language == 'VHDL')
-            var line_add = new_input + '<=' + inputn[i] + ';';
+                var line_add = new_input + '<=' + inputn[i] + ';';
             else
-            var line_add = new_input + '=' + inputn[i] + ';';
+                var line_add = new_input + '=' + inputn[i] + ';';
+            console.log("***MIDDLE");
             if (line_type(line_add, General_Keywords) != 'assign')
             {
 
@@ -8187,10 +8203,14 @@ function input_xml(inputn, ind_level, language)
                 if (language == 'C')
                     place += cf(line_add);
                 inputn[i] = new_input;
+                console.log(inputn[i]);
             }
+            //console.log(line_add);
+            console.log("***END");
         }
     }
-
+    console.log(inputn);
+    console.log(place);
 
     if (inputn.length == 0)
     {}
@@ -8230,7 +8250,7 @@ function input_xml(inputn, ind_level, language)
         place += indent_xml(ind_level) + "</Place>" + "\n";
     }
 
-    return place
+    return place;
 }
 
 function util_in_array(ele, arr){
@@ -8252,8 +8272,8 @@ function inputfunc(str, ind_level, language)
     if (IORec.i){
         /* patched by Xingzhong for IO  */
         console.log("user defined input found!");
-        console.log(inputn);
-        console.log(IORec.i);
+        //console.log(inputn);
+        //console.log(IORec.i);
         var temp = new Array();
         for (var ind=0; ind<inputn.length; ind++){
             // for each variable declaration 
@@ -8269,6 +8289,7 @@ function inputfunc(str, ind_level, language)
         inputn = temp;
     }
     var place = input_xml(inputn, ind_level, language);
+    console.log(place);
     return place;
 }
 
@@ -11281,7 +11302,7 @@ function cf(c_main)
 	
     var fun = ""
     var variables_declared = new Array();
-
+    //console.log(c_main);
     variables_declared[0] = new Array();
     variables_declared[1] = new Array();
     ind_dec = 0;
@@ -11572,7 +11593,7 @@ function cf(c_main)
         }
     }
     //fun +="</Path>\n </Cause>"+"\n"
-    console.log(fun);
+    //console.log(fun);
     return fun
 }
 

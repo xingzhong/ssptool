@@ -1,8 +1,6 @@
 //xx -- INPUT
-//x2 -- INPUT
-//x3 -- INPUT
+//zz -- INPUT
 //yy -- OUTPUT
-void foo(double xx[5], double yy[5], int i){
-    yy[i] = xx[i] + 10;
-    xx = xx + 1;
+void bar(double *xx, double *yy, double zz){
+    *yy  = *xx + zz;
 }

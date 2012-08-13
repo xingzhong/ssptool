@@ -1,4 +1,10 @@
-filter(int ord, float *a, float *b, int np, float *x, float *y)
+//ord -- INPUT
+//a -- INPUT
+//b -- INPUT
+//np -- INPUT
+//x -- INPUT
+//y -- OUTPUT
+void filter(int ord, float *a, float *b, int np, float *x, float *y)
 {
         int i,j;
 	y[0]=b[0]*x[0];
@@ -19,4 +25,4 @@ for (i=ord+1;i<np+1;i++)
         for (j=0;j<ord;j++)
         y[i]=y[i]-a[j+1]*y[i-j-1];
 }
-} /* end of filter */
+} 
