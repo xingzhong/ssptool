@@ -7111,11 +7111,14 @@ str: the code line*/
  {
     var o_index = new Array()
     o_index[0] = -1;
-    var patt1 = /[A-Za-z0-9\]\)]\*/g;
+    //var patt1 = /[A-Za-z0-9\]\)]\*/g;
     // to differentiate the * operator with the pointer
+	// FIXME: seems not work Xingzhong
+	var patt1 = /(double|int|char|=)\*/g;
     var patt2 = /[A-Za-z0-9\]\)]\-/g;
     // to differentiate the - operator with the negative sign
     var str2 = str.replace(/\s/g, '');
+	console.log(str2);
     //Get a string without space, to avoid match error of patt1 and patt2
     if (str.indexOf('=') == -1)
     {
@@ -7317,7 +7320,9 @@ str: the code line*/
     if (o_index[0] == -1)
     //Priority 4: arithmetic operators *,/
     {
-        if (o_index[0] < str.lastIndexOf('*') && (str2.match(patt1) != null))
+        if (o_index[0] < str.lastIndexOf('*') && (str2.match(patt1) == null)) // change from != to == to detect there's no pointer but multiply
+		// FIXME : the only thing they considered is the empty before *, e.g. * foo ; but 
+		// not works for double * i or *i + *j;
         {
             str_front = str.slice(0, str.lastIndexOf('*'));
             if (str_front.lastIndexOf(')') >= str_front.lastIndexOf('(') && str_front.lastIndexOf(']') >= str_front.lastIndexOf('['))
@@ -7467,6 +7472,8 @@ keywords: the array of keywords that have to be identified
 
 Xingzhong's note, this function have bug due to the ambiguity of *
 e.g. var double xx = double *xx should return assign not oper 
+
+FIXME
 */
  {
 
@@ -7490,7 +7497,6 @@ e.g. var double xx = double *xx should return assign not oper
                 return type;
             }
             var o_index = OperatorIndex(str);
-            console.log(o_index);
             if (o_index > 0 || o_index[0] > 0)
                 type = 'oper';
             //Basic operation
