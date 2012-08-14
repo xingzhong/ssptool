@@ -617,8 +617,8 @@ language: the target code language
     xmlDoc = load_XML(xml_code);
     xmlHardwareDoc = load_XML(hardware_code);
 
-
-
+	
+	
     //Initialize
     //W_Fangming He 2011-04-12.
     memosize = new Array();
@@ -785,13 +785,32 @@ language: the target code language
             // End: added by Liu; */
             path1_input_variable = get_pathinput(path1[i]);
             path1_output_variable = get_pathoutput(path1[i]);
-
+			
+			console.log(path1_input_variable);
+			console.log(path1_output_variable);
+			
+			if (language == 'C' ) //xingzhong added for pointer return
+	        {
+				var outputs = new Array();
+	            for (var idx = 0; idx < path1_output_variable.length; idx++){
+					if (path1_output_variable[idx].isPointer == 0 && path1_output_variable[idx].isElement == 0 ){
+						outputs.push(path1_output_variable[idx]);
+					}
+					else{
+						path1_input_variable.push(path1_output_variable[idx]);
+					}
+				}
+				path1_output_variable = outputs;
+				console.log(path1_input_variable);
+				console.log(path1_output_variable);
+	        }
+			
             //if (func_name != 'main' && (path1[i].parentNode.nodeName != 'Cause'))
 			if ( (path1[i].parentNode.nodeName != 'Cause'))
             {
-
+				
                 var class_name = func_name.substring(0, 1).toUpperCase() + func_name.substring(1, func_name.length);
-                
+            
 				if (language == 'C++' && classFuncFlag == 0)
                 {
                     private_v = new Array();
@@ -808,6 +827,7 @@ language: the target code language
 					
 					}
 				}
+				console.log(output);
             }
             ind_level = ind_level + 1;
             //Search all the variables to be declared
@@ -819,7 +839,7 @@ language: the target code language
             {
 
                 variables_declaration = search_varDec(path1[i]);
-
+				
                 for (var dec_num = 0; dec_num < variables_declaration.length; dec_num++)
                 {
                     if (get_type(variables_declaration[dec_num]) != null)
@@ -1046,32 +1066,35 @@ language: the target code language
                 str_declare = str_declare + '<br />begin<br />';
             }
 
+			
+
             //W_Fangming He added in 2011-04-12
             memvar(path1[i], ind_level, language);
 
             //search all the places
             var str_places = '';
             if ((language_constant == 'CUDA') && (path1[i].parentNode.nodeName == 'Cause'))
-            str_places = search_places_cuda_kernel(path1[i], path1[i].parentNode, ind_level, language);
+            	str_places = search_places_cuda_kernel(path1[i], path1[i].parentNode, ind_level, language);
             else if ((language_constant == 'CUDA') && (path1[i].parentNode.nodeName != 'Cause'))
-            str_places = search_places_cuda(path1[i], ind_level, language, xmlHardwareDoc);
+            	str_places = search_places_cuda(path1[i], ind_level, language, xmlHardwareDoc);
             else if ((language_constant == 'OpenCL') && (path1[i].parentNode.nodeName == 'Cause'))
-            str_places = search_places_opencl_kernel(path1[i], path1[i].parentNode, ind_level, language);
+            	str_places = search_places_opencl_kernel(path1[i], path1[i].parentNode, ind_level, language);
             else if ((language_constant == 'OpenCL') && (path1[i].parentNode.nodeName != 'Cause'))
-            str_places = search_places_opencl(path1[i], ind_level, language, xmlHardwareDoc);
+            	str_places = search_places_opencl(path1[i], ind_level, language, xmlHardwareDoc);
             else
-            str_places = search_places(path1[i], ind_level, language);
+            	str_places = search_places(path1[i], ind_level, language);
 
             if (((language_constant == 'CUDA') || language_constant == 'OpenCL') && (path1[i].parentNode.nodeName == 'Cause'))
-            output = insertString(output, str_places);
+            	output = insertString(output, str_places);
             else
-            output = insertString(output, str_declare + str_places);
+            	output = insertString(output, str_declare + str_places);
 
 
             if (path1[i].parentNode.nodeName != 'Cause')
             {
-                if ((language == 'C' || language == 'C++') && path1_output_variable[0] != '')
-                output = insertString(output, indent(ind_level) + return_out(get_variableName(path1_output_variable[0], language)));
+				
+                if ((language == 'C' || language == 'C++') && path1_output_variable.length > 0 && path1_output_variable[0] != '')
+                	output = insertString(output, indent(ind_level) + return_out(get_variableName(path1_output_variable[0], language)));
                 if (! (i == 0 && language == 'Matlab'))
                 {
                     ind_level -= 1;
@@ -1090,6 +1113,7 @@ language: the target code language
     }
 
     //Display_txt_html(document.getElementById(result_id),output);
+	
     return output;
 }
 
@@ -4267,6 +4291,9 @@ function creat_func(input, output, func_name, class_name, language)
 // language: the target code language
 /****************************************************************/
  {
+	console.log("create func header");
+	console.log(input);
+	console.log(output);
     var inputn = input.length;
     var outputn = output.length;
 
@@ -4312,6 +4339,9 @@ function creat_func(input, output, func_name, class_name, language)
             if (type == undefined){
 				type = 'void';}
         }
+		else if(outputn == 0){
+			type = 'void';
+		}
         else
         {
             type = get_type(output[0]);
@@ -4812,8 +4842,14 @@ this.isPointer: The thing is a pointer or not
             this.isComposed = 0;
             // The variable is composed by several variables or values or not, e.g. [a,b]
             this.isElement = 0;
+			this.isPointer = 0;
             //The variable is an element of a vector or not
-            this.isPointer = 0;
+			if (this.value[0].match(/\*/)){
+				console.log(this.value[0]);
+				this.isPointer = 1;
+				this.dimension = 1;
+			}
+            
             //The variable is not a pointer
 			
 
@@ -5295,6 +5331,8 @@ function read_variables(place)
 place: the place node in xml
 */
  {
+	
+	
     var variables = new Array();
     var p = 0;
     //alert(place.attributes.getNamedItem('name').value)
@@ -5306,9 +5344,9 @@ place: the place node in xml
         var thingNode = place_child;
         //	variables[0]=read_things(thingNode);
         if (language == "C++")
-        variables[0] = new read_thingClasscpp(thingNode, typeFlag);
+        	variables[0] = new read_thingClasscpp(thingNode, typeFlag);
         else
-        variables[0] = new read_thingClass(thingNode);
+        	variables[0] = new read_thingClass(thingNode);
     }
     else
     {
@@ -6098,6 +6136,23 @@ path: the path node*/
     var str_declare = '';
     var path_input_variable = get_pathinput(path);
     var path_output_variable = get_pathoutput(path);
+	console.log(path_input_variable);
+	console.log(path_output_variable);
+	 //xingzhong added for pointer return
+    {
+		var outputs = new Array();
+        for (var idx = 0; idx < path_output_variable.length; idx++){
+			if (path_output_variable[idx].isPointer == 0 && path_output_variable[idx].isElement == 0){
+				outputs.push(path_output_variable[idx]);
+			}
+			else{
+				path_input_variable.push(path_output_variable[idx]);
+			}
+		}
+		path_output_variable = outputs;
+    }
+	console.log(path_input_variable);
+	console.log(path_output_variable);
     for (var l = 0; l < place.length; l++)
     {
         var place_name = place[l].attributes.getNamedItem("name").value;
@@ -11298,7 +11353,8 @@ function autocomplete(data) {
 
 function replaceplus2(str){
 	// replace the double plus to normal expr eg. i++ => i=i+1
-	var patt = /(\w)+\s*\+\+/;
+	// Xingzhong
+	var patt = /(\w+)\s*\+\+/;
 	console.log(str);
 	str = str.replace(patt, "$1 = $1 + 1");
 	console.log(str);
