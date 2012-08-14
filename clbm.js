@@ -11354,9 +11354,11 @@ function autocomplete(data) {
 function replaceplus2(str){
 	// replace the double plus to normal expr eg. i++ => i=i+1
 	// Xingzhong
-	var patt = /(\w+)\s*\+\+/;
+	var patt1 = /(\w+)\s*\+\+/;
+	var patt2 = /(\w+)\s*--/;
 	console.log(str);
-	str = str.replace(patt, "$1 = $1 + 1");
+	str = str.replace(patt1, "$1 = $1 + 1");
+	str = str.replace(patt2, "$1 = $1 - 1");
 	console.log(str);
 	return str;
 }
