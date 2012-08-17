@@ -386,6 +386,8 @@ function Matlab_XML_CLBM()
 
     //var matlab=Source_input.value+";";
     matlab = CLBM_Source_Code;
+    
+    console.log(matlab);
     matlab = code_format(matlab, 'Matlab');
     //matlab=matlabcode_format(matlab);// Added by Ning
 
@@ -8327,7 +8329,7 @@ function inputfunc(str, ind_level, language)
  */
  {
     var inputn = read_input(str);
-    if (IORec.i){
+    if ( language == "C" && IORec.i){
         /* patched by Xingzhong for IO  */
         console.log("user defined input found!");
         //console.log(inputn);

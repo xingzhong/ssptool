@@ -19,16 +19,36 @@
   <script>
 	module( "Utility Test" );
     test( "This is SSP test suite", function() {
-      var value = "ssp";
-      equal( value, "ssp", "We are doing ssp test" );
+      	ok( true, "We are doing ssp test" );
     });
 	test( "Hello Test World", function (){
-		equal("hello", "hello", "test the test suite");
 		ok( true, "test ok");
 	});
-	module( "C Code to CLBM Test");	
+	module( "C Test");	
+	test( "C Test Test", function (){
+		reset_env();
+		language = "C";
+		CLBM_Source_Code = "int fun(){return 1;}";
+		C_XML_CLBM();
+		ok( true, XML_CodetoCLBM);
+		C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
+		ok( true, C_Code);
+		Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
+		ok( true, Matlab_Code);
+	});
 	run_test_c();
-	
+	module( "Matlab Test");
+	test( "Matlab Test Test", function(){
+		reset_env();
+		language = "Matlab";
+		CLBM_Source_Code = "function y = fun(x)\n y = x+1\n end";
+		Matlab_XML_CLBM();
+		ok(true, XML_CodetoCLBM);
+		C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
+		ok( true, C_Code);
+		Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
+		ok( true, Matlab_Code);
+	});
   </script>
 <p align="right">Stevens SSP Xingzhong Aug 2012 </p>
 </body>
