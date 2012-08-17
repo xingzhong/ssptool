@@ -1,5 +1,3 @@
-
-
 double adaptive_mod(double x,double gamma) {
     double y;
     if (gamma> gamma_0) {

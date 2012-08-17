@@ -3,14 +3,15 @@
 import os
 
 
-number = 6
-files = os.listdir("../Examples/C")
+command = os.popen("ls ../Examples/C | grep .c")
+files = command.read().split("\n")
+command.close()
 target = open("testcode.js", 'w')
 target.write("// test database\n")
 target.write("function run_test_c(){\n")
 for file in files :
-    number = number 
-    if number > 0:
+    
+    if file.endswith(".c"):
         f = open("../Examples/C/"+file, 'r')
         test_content = f.read()
         test_content = test_content.replace("\n","\\n")
