@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>SSP Tool Test Suite</title>
+	<link rel="stylesheet" href="qunit.css">
+	<script src="qunit.js"></script>
+	<script src="jquery.js"></script>
+	<link href="googlecode/prettify.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="testcode.js"></script>
+	<script type="text/javascript" language="Javascript" src="../clbm.js">
+	
+	</script>
+</head>
+<body>
+	<p align="right">Stevens SSP Xingzhong Aug 2012 </p>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script>
+	module( "Utility Test" );
+    test( "This is SSP test suite", function() {
+      var value = "ssp";
+      equal( value, "ssp", "We are doing ssp test" );
+    });
+	test( "Hello Test World", function (){
+		equal("hello", "hello", "test the test suite");
+		ok( true, "test ok");
+	});
+	module( "C Code to CLBM Test");	
+	run_test_c();
+	
+  </script>
+
+</body>
+</html>

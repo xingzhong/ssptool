@@ -7607,8 +7607,9 @@ FIXME
                             else
                             {
                                 type = 'undefined';
-                                //alert('wrong code in line_type:'+str);
-                                //return false;
+                                console.log(str);
+                                console.log(type);
+                                throw("found undefined " + str);
                             }
                         }
                     }
@@ -7619,9 +7620,7 @@ FIXME
 
     if (type == 'funcCall')
         type = vector_func_Matlab(str, var_list);
-    console.log("test the type of line");
-    console.log(str);
-    console.log(type);
+    
     return type;
 
 }
