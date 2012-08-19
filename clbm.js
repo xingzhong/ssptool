@@ -5546,6 +5546,8 @@ function get_variableName(thingClass, language)
     language: the target code language 
 */
 {
+    console.log(thingClass);
+    
     if (thingClass.isComposed == 1)
         variable = Vector_code(thingClass, language);
     else if (thingClass.isElement == 1)
@@ -5557,9 +5559,12 @@ function get_variableName(thingClass, language)
 			variable=variable.slice(1);
 		
 	}*/
-    else
+    else if (thingClass.value)
     {
         variable = thingClass.value[0];
+    }
+    else {
+        variable = "None";
     }
     return variable;
 }
@@ -7533,7 +7538,6 @@ e.g. var double xx = double *xx should return assign not oper
 FIXME
 */
  {
-
     var type;
     if (str.length == 0)
     type = 'null';
@@ -7597,15 +7601,16 @@ FIXME
 
                         }
 
-                        else if (str.indexOf(' ') > 0)
-
-                        {   type = 'varDec' ; }
+                        else if (str.indexOf(' ') > 0){   
+                            type = 'varDec' ; 
+                        }
                         //variable declaration
                         else
                         {
-                            if (indexOfwhole(str, 'end') == 0)
-                            //end
-                            type = 'end';
+                            
+                            if (indexOfwhole(str, 'end') == 0){
+                                type = 'end';
+                            }
                             else
                             {
                                 type = 'undefined';
@@ -8328,8 +8333,10 @@ function inputfunc(str, ind_level, language)
  language: the source code language
  */
  {
+     console.log(str);
+     console.log(language);
     var inputn = read_input(str);
-    if ( language == "C" && IORec.i){
+    if ( language == "C" && IORec && IORec.i){
         /* patched by Xingzhong for IO  */
         console.log("user defined input found!");
         //console.log(inputn);
@@ -10327,10 +10334,14 @@ matlabmain: the matlab code
 */
 
  {
-
-    var matlabline = matlabmain.slice(0, matlabmain.indexOf(";"));
-
-
+    console.log(matlabmain);
+    if (matlabmain.indexOf(";") == -1){
+        //added by Xingzhong 
+        var matlabline = matlabmain;
+    }
+    else{
+        var matlabline = matlabmain.slice(0, matlabmain.indexOf(";"));
+    }
     if (matlabline.indexOf('[') > -1)
     //read all the contents in []
     {
@@ -10356,6 +10367,7 @@ matlabmain: the matlab code
         matlabline = matlabline + read_line(matlabmain_temp);
 
     }
+    console.log(matlabline);
     return matlabline;
 }
 
@@ -10452,14 +10464,11 @@ function matlabf(matlabmain, ind_level)
     matlabmain = delblank(matlabmain);
 
 
-
     while (matlabmain.length != 0)
     {
 
         var matlabline = read_line(matlabmain);
-
-
-
+        
         var type_line = line_type(matlabline, General_Keywords);
 
         if (type_line == 'assign' || type_line == 'oper' || type_line == 'funcCall')
@@ -11009,7 +11018,7 @@ function pathoutputfunc_c(path_def, path_content)
 {
     var outputn = read_pathoutput_c(path_def, path_content);
     var inputn = read_input(path_def);
-    if (IORec.o){
+    if (IORec && IORec.o){
         console.log("user defined output");
         console.log(IORec.o);
         var temp = new Array();

@@ -180,4 +180,128 @@ function run_test_c(){
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, Matlab_Code);
             });
-            }
+            };
+function run_test_matlab(){
+
+        test( "Adaptive Modulator" , function(){
+            
+            reset_env();
+            CLBM_Source_Code = "if(Signal_Arrival==1)\n\n    y=adaptive_mod(x,gamma);\n\nend\n\n\n\nfunction y=adaptive_mod(x, gamma)\n\nif (gamma>gamma_0)\n\n     y=mod_16QAM(x);\n\n  else\n\n     y=mod_QPSK(x);\n\nend\n\nend"
+            
+            language = "Matlab";
+            Matlab_XML_CLBM();
+            ok(true, XML_CodetoCLBM);
+            
+            C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
+            ok( true, C_Code);
+            Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
+            ok( true, Matlab_Code);
+            });
+            
+        test( "FIR Filter 1" , function(){
+            
+            reset_env();
+            CLBM_Source_Code = "function y=FIR_filter(x,A)\n\n    N_x=length(x);\n\n    N_A=length(A);\n\n    for(n=1:N_A+N_x-1)\n\n        y(n)=0;\n\n        for(i=1:N_x)\n\n            if(n>i)\n\n                y(n)=y(n)+x(i)*A(n-i);\n\n            end\n\n        end\n\n    end\n\nend"
+            
+            language = "Matlab";
+            Matlab_XML_CLBM();
+            ok(true, XML_CodetoCLBM);
+            
+            C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
+            ok( true, C_Code);
+            Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
+            ok( true, Matlab_Code);
+            });
+            
+        test( "FIR Filter 2" , function(){
+            
+            reset_env();
+            CLBM_Source_Code = "signal=[1.1,2.3,0.6];\n\ncoef=[0.3,0.8,0.4];\n\noutput=FIR_filter(signal,coef);\n\n\n\nfunction y=FIR_filter(x,A)\n\n    N_x=length(x);\n\n    N_A=length(A);\n\n    for(n=1:N_A+N_x-1)\n\n        y(n)=0;\n\n        for(i=1:N_x)\n\n            if(n>i)\n\n                y(n)=y(n)+x(i)*A(n-i);\n\n            end\n\n        end\n\n    end\n\nend"
+            
+            language = "Matlab";
+            Matlab_XML_CLBM();
+            ok(true, XML_CodetoCLBM);
+            
+            C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
+            ok( true, C_Code);
+            Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
+            ok( true, Matlab_Code);
+            });
+            
+        test( "Simple Transmitter" , function(){
+            
+            reset_env();
+            CLBM_Source_Code = "if (Signal_arrival==1)\n Signal_Mod=Transmitter(Signal_Bit);\nend\n\nfunction Signal_Mod=Transmitter(Signal_Bit)\n Signal_Code_Bit=Channel_Coding(Signal_Bit);\n Signal_Mod=Modulation(Signal_Code_Bit);\nend"
+            
+            language = "Matlab";
+            Matlab_XML_CLBM();
+            ok(true, XML_CodetoCLBM);
+            
+            C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
+            ok( true, C_Code);
+            Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
+            ok( true, Matlab_Code);
+            });
+            
+        test( "Vector Addition" , function(){
+            
+            reset_env();
+            CLBM_Source_Code = "N=5;\n\na=[0.1,  -1,  2.0,  7.2,  9.1];\n\nb=[-0.2  4.0,  6.0,  2.8,  10.0];\n\nc=[0.0,  0.0,  0.0,  0.0,  0.0];\nfor(k=1:1:N)\n\n  c(k)=a(k)+b(k);\n\nend"
+            
+            language = "Matlab";
+            Matlab_XML_CLBM();
+            ok(true, XML_CodetoCLBM);
+            
+            C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
+            ok( true, C_Code);
+            Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
+            ok( true, Matlab_Code);
+            });
+            
+        test( "Vector Assignment" , function(){
+            
+            reset_env();
+            CLBM_Source_Code = "N=5;\n\na=[1.2  3  4  5  6];\nb=[0 3 1.2 0 0];\nfor(k=1:1:N)\n\n  b(k)=a(k);\n\nend"
+            
+            language = "Matlab";
+            Matlab_XML_CLBM();
+            ok(true, XML_CodetoCLBM);
+            
+            C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
+            ok( true, C_Code);
+            Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
+            ok( true, Matlab_Code);
+            });
+            };
+function run_test_cpp(){
+
+        test( "AWGN Channel" , function(){
+            
+            reset_env();
+            CLBM_Source_Code = "void main() {\n\n    channel channel1; \n\n  awgChannel awgChannel2; \n\n channelPara= channel1.setPara(channelPara);\n\n signal=awgChannel2.addNoise(channelPara2);\n\n }\n\n class awgChannel:channel{\n\n  double gNoise;\n\n double addNoise(double para);\n\n}\n\n  class channel{\n\n    double Noise;\n\n  double setPara(double para);\n\n}\n\n double channel::setPara(double para){\n\n para=add(para);\n\n return(para);\n\n }\n\n double awgChannel::addNoise(double para){\n\n para=add(para);\n\n return(para);\n\n }"
+            
+            language = "C++";
+            CPP_XML_CLBM();
+            ok(true, XML_CodetoCLBM);
+            
+            C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
+            ok( true, C_Code);
+            Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
+            ok( true, Matlab_Code);
+            });
+            
+        test( "Adaptive Modulator" , function(){
+            
+            reset_env();
+            CLBM_Source_Code = "void main() {\n\n    channel channel1; \n\n         double channelPara;\n\n  double Signal_Mod;\n\n channelPara= channel1.setPara(channelPara);\n\n  if (Signal_arrival==1) {\n\n  Signal_Mod= Transmitter(Signal_Bit);\n\n    }\n\n    if (Signal_arrival==1) {\n\n     Signal_Bit=Receiver(Signal_Mod,channel1.Noise);\n\n    }\n\n }\n\n class channel{\n\n    double Noise;\n\n  double setPara(double para);\n\n}\n\n double channel::setPara(double para){\n\n para=add(para);\n\n return(para);\n\n }"
+            
+            language = "C++";
+            CPP_XML_CLBM();
+            ok(true, XML_CodetoCLBM);
+            
+            C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
+            ok( true, C_Code);
+            Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
+            ok( true, Matlab_Code);
+            });
+            };

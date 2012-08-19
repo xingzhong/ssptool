@@ -6,7 +6,6 @@
 	<link rel="stylesheet" href="qunit.css">
 	<script src="qunit.js"></script>
 	<script src="jquery.js"></script>
-	<link href="googlecode/prettify.css" type="text/css" rel="stylesheet" />
 	<script type="text/javascript" src="testcode.js"></script>
 	<script type="text/javascript" language="Javascript" src="../clbm.js">
 	
@@ -37,6 +36,8 @@
 		ok( true, Matlab_Code);
 	});
 	run_test_c();
+	module( "C++ Test");
+	run_test_cpp();
 	module( "Matlab Test");
 	test( "Matlab Test Test", function(){
 		reset_env();
@@ -49,7 +50,8 @@
 		Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
 		ok( true, Matlab_Code);
 	});
+	run_test_matlab();
   </script>
-<p align="right">Stevens SSP Xingzhong Aug 2012 </p>
+<p align="right" id="qunit-userAgent">Stevens SSP Xingzhong Aug 2012&nbsp</p>
 </body>
 </html>
