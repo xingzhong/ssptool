@@ -421,10 +421,10 @@ QUnit.assert = {
 				result: result,
 				message: msg
 			};
-
+        console.log(msg);
 		msg = escapeInnerText( msg || (result ? "okay" : "failed" ) );
 		msg = "<span class='test-message'>" + msg + "</span>";
-
+        console.log(msg);
 		if ( !result ) {
 			source = sourceFromStacktrace( 2 );
 			if ( source ) {
@@ -1222,6 +1222,7 @@ function sourceFromStacktrace( offset ) {
 }
 
 function escapeInnerText( s ) {
+    return s;
 	if ( !s ) {
 		return "";
 	}

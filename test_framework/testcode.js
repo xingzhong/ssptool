@@ -8,12 +8,12 @@ function run_test_c(){
             
             language = "C";
             C_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "Dot Product" , function(){
@@ -23,12 +23,12 @@ function run_test_c(){
             
             language = "C";
             C_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "FIR Filter" , function(){
@@ -38,12 +38,12 @@ function run_test_c(){
             
             language = "C";
             C_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "IIR Filter" , function(){
@@ -53,12 +53,12 @@ function run_test_c(){
             
             language = "C";
             C_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "Simple Transmitter" , function(){
@@ -68,12 +68,12 @@ function run_test_c(){
             
             language = "C";
             C_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "Swap Value" , function(){
@@ -83,12 +83,12 @@ function run_test_c(){
             
             language = "C";
             C_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "Vector Addition" , function(){
@@ -98,12 +98,12 @@ function run_test_c(){
             
             language = "C";
             C_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "average" , function(){
@@ -113,12 +113,12 @@ function run_test_c(){
             
             language = "C";
             C_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "min" , function(){
@@ -128,12 +128,12 @@ function run_test_c(){
             
             language = "C";
             C_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "parameterIO" , function(){
@@ -143,12 +143,12 @@ function run_test_c(){
             
             language = "C";
             C_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "pointer" , function(){
@@ -158,12 +158,12 @@ function run_test_c(){
             
             language = "C";
             C_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "pointerIO" , function(){
@@ -173,12 +173,12 @@ function run_test_c(){
             
             language = "C";
             C_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             };
 function run_test_matlab(){
@@ -190,12 +190,12 @@ function run_test_matlab(){
             
             language = "Matlab";
             Matlab_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "FIR Filter 1" , function(){
@@ -205,12 +205,12 @@ function run_test_matlab(){
             
             language = "Matlab";
             Matlab_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "FIR Filter 2" , function(){
@@ -220,12 +220,12 @@ function run_test_matlab(){
             
             language = "Matlab";
             Matlab_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "Simple Transmitter" , function(){
@@ -235,12 +235,12 @@ function run_test_matlab(){
             
             language = "Matlab";
             Matlab_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "Vector Addition" , function(){
@@ -250,12 +250,12 @@ function run_test_matlab(){
             
             language = "Matlab";
             Matlab_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "Vector Assignment" , function(){
@@ -265,12 +265,12 @@ function run_test_matlab(){
             
             language = "Matlab";
             Matlab_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             };
 function run_test_cpp(){
@@ -282,12 +282,13 @@ function run_test_cpp(){
             
             language = "C++";
             CPP_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
+            language = "C";
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             
         test( "Adaptive Modulator" , function(){
@@ -297,11 +298,12 @@ function run_test_cpp(){
             
             language = "C++";
             CPP_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
+            language = "C";
             
             C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             };

@@ -28,13 +28,13 @@ for file in files :
         target.write("""
             language = \"C\";
             C_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             """)
         target.write("""
             C_Code = translation_CLBM(XML_CodetoCLBM, \"\", \"C\");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, \"\", \"Matlab\");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             """)
 target.write("};\n")
@@ -63,13 +63,13 @@ for file in files :
         target.write("""
             language = \"Matlab\";
             Matlab_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             """)
         target.write("""
             C_Code = translation_CLBM(XML_CodetoCLBM, \"\", \"C\");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, \"\", \"Matlab\");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             """)
 target.write("};\n")
@@ -97,14 +97,14 @@ for file in files :
         target.write("""
             language = \"C++\";
             CPP_XML_CLBM();
-            ok(true, XML_CodetoCLBM);
+            ok(true, displayXML(XML_CodetoCLBM));
             language = \"C\";
             """)
         target.write("""
             C_Code = translation_CLBM(XML_CodetoCLBM, \"\", \"C\");
-            ok( true, C_Code);
+            ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, \"\", \"Matlab\");
-            ok( true, Matlab_Code);
+            ok( true, displayMatlab(Matlab_Code));
             });
             """)
 target.write("};\n")
