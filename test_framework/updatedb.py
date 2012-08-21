@@ -26,6 +26,7 @@ for file in files :
             CLBM_Source_Code = \"%s\"
             """%test_content)
         target.write("""
+            ok( true, displayXML(CLBM_Source_Code));
             language = \"C\";
             C_XML_CLBM();
             ok(true, displayXML(XML_CodetoCLBM));
@@ -61,6 +62,7 @@ for file in files :
             CLBM_Source_Code = \"%s\"
             """%test_content)
         target.write("""
+            ok( true, displayXML(CLBM_Source_Code));
             language = \"Matlab\";
             Matlab_XML_CLBM();
             ok(true, displayXML(XML_CodetoCLBM));
@@ -95,6 +97,7 @@ for file in files :
             CLBM_Source_Code = \"%s\"
             """%test_content)
         target.write("""
+            ok( true, displayXML(CLBM_Source_Code));
             language = \"C++\";
             CPP_XML_CLBM();
             ok(true, displayXML(XML_CodetoCLBM));

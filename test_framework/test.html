@@ -12,7 +12,7 @@
 	textarea#xml{	
 		border:none;
 		width: 800px;
-		height: 420px;
+		height: 200px;
 		readonly : "readonly";
 	}
 	</style>
@@ -45,7 +45,8 @@
 	test( "C Test Test", function (){
 		reset_env();
 		language = "C";
-		CLBM_Source_Code = "int fun(){return 1;}";
+		CLBM_Source_Code = "int fun(int x){\nreturn x;\n}";
+		ok( true, displayXML(CLBM_Source_Code));
 		C_XML_CLBM();
 		ok( true, displayXML(XML_CodetoCLBM));
 		C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
@@ -61,6 +62,7 @@
 		reset_env();
 		language = "Matlab";
 		CLBM_Source_Code = "function y = fun(x)\n y = x+1\n end";
+		ok( true, displayXML(CLBM_Source_Code));
 		Matlab_XML_CLBM();
 		ok(true, displayXML(XML_CodetoCLBM));
 		C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");

@@ -7538,6 +7538,8 @@ e.g. var double xx = double *xx should return assign not oper
 FIXME
 */
  {
+     console.log("check line type");
+     console.log(str);
     var type;
     if (str.length == 0)
     type = 'null';
@@ -7627,7 +7629,7 @@ FIXME
 
     if (type == 'funcCall')
         type = vector_func_Matlab(str, var_list);
-    
+    console.log(type);
     return type;
 
 }
@@ -11364,8 +11366,8 @@ function autocomplete(data) {
 function replaceplus2(str){
 	// replace the double plus to normal expr eg. i++ => i=i+1
 	// Xingzhong
-	var patt1 = /(\w+)\s*\+\+/;
-	var patt2 = /(\w+)\s*--/;
+	var patt1 = /(\w+)\s*\+\+/g;
+	var patt2 = /(\w+)\s*--/g;
 	console.log(str);
 	str = str.replace(patt1, "$1 = $1 + 1");
 	str = str.replace(patt2, "$1 = $1 - 1");
