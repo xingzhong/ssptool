@@ -192,6 +192,22 @@ function run_test_c(){
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
             });
+            
+        test( "typecast" , function(){
+            
+            reset_env();
+            CLBM_Source_Code = "//xx -- INPUT\n//zz -- INPUT\n//yy -- OUTPUT\nvoid bar(void *xx, double *yy, double zz){\n    double *x = (double *) xx ;\n    *yy  = *x + fun(zz);\n}"
+            
+            ok( true, displayXML(CLBM_Source_Code));
+            language = "C";
+            C_XML_CLBM();
+            ok(true, displayXML(XML_CodetoCLBM));
+            
+            C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
+            ok( true, displayC(C_Code));
+            Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
+            ok( true, displayMatlab(Matlab_Code));
+            });
             };
 function run_test_matlab(){
 

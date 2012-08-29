@@ -829,7 +829,7 @@ language: the target code language
 					
 					}
 				}
-				console.log(output);
+				
             }
             ind_level = ind_level + 1;
             //Search all the variables to be declared
@@ -5809,12 +5809,12 @@ language: the target code language
             var variables_declaration = new Array();
             var dec_num = 0;
             var str_declare = '';
-
+            console.log(output);
             if (language == 'C')
             {
 
                 variables_declaration = search_varDec(path1[i]);
-
+                console.log(variables_declaration);
                 for (var dec_num = 0; dec_num < variables_declaration.length; dec_num++)
                 {
                     if (get_type(variables_declaration[dec_num]) != null)
@@ -6163,6 +6163,7 @@ path: the path node*/
     for (var l = 0; l < place.length; l++)
     {
         var place_name = place[l].attributes.getNamedItem("name").value;
+        console.log(place_name);
         var variables = new Array();
         if (place_name == "Declaration")
         {
@@ -6177,13 +6178,20 @@ path: the path node*/
         {
             //variables=read_variables(place[l]);
             var variable_temp = read_variables(place[l]);
+            console.log(variable_temp);
             //modified by yulong zou
             for (var i = 0; i < variable_temp.length; i = i + 1)
             {
                 var value_temp = variable_temp[i].value.toString();
+                // Xingzhong added to fix type casting and missing variable decl
+                variables.push(variable_temp[i]);
                 if ((!IsNumeric(value_temp)) && (value_temp.indexOf(',') == -1) && (value_temp.indexOf('[') == -1) && (value_temp.indexOf(']') == -1))
-                variables = variables.concat(variable_temp[i]);
+                {
+                    console.log(variable_temp);
+                    //variables = variables.concat(variable_temp[i]);
+                }
             }
+            
         }
 
         if (place[l].nodeName == "Cause")
@@ -6194,7 +6202,7 @@ path: the path node*/
                 variables = variables.concat(search_varDec(path_cause[pathindex_cause]));
             }
         }
-
+        console.log(variables);
         for (var p = 0; p < variables.length; p++)
         {
             var flag_exist = 0;
@@ -6224,7 +6232,7 @@ path: the path node*/
                 }
 
             }
-
+            
             if (flag_exist == 0)
             {
                 //alert('dec_num:'+dec_num)
@@ -7176,7 +7184,7 @@ str: the code line*/
     //var patt1 = /[A-Za-z0-9\]\)]\*/g;
     // to differentiate the * operator with the pointer
 	// FIXME: seems not work Xingzhong (now fixed)
-	var patt1 = /(float|double|int|char|=)\*/g;
+	var patt1 = /(void|float|double|int|char|=)\*/g;
     var patt2 = /[A-Za-z0-9\]\)]\-/g;
     // to differentiate the - operator with the negative sign
     var str2 = str.replace(/\s/g, '');
@@ -7573,11 +7581,13 @@ FIXME
                     else
                     {
 
-
-                        if (str.indexOf("(") > str.indexOf("=") + 1 && str.indexOf(")") > str.indexOf("="))
+                        var funtemp = /(?:\W)\s+(\w)+\([^\(\)]*\)/g;
+                        if (str.indexOf("(") > str.indexOf("=") + 1 && str.indexOf(")") > str.indexOf("=") && funtemp.test(str))
+                        // This is a bug for type casting e.g. (double *) x or (int) y
+                        //if 
                         // a = b(1,2) is not a function call.
                         {
-
+                            
                             type = 'funcCall';
 
                         }
