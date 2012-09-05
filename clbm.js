@@ -713,7 +713,7 @@ language: the target code language
         }
 
 
-        if (language == 'C' || language == 'C++')
+        if (language == 'C' || language == 'C++'||language=='CUDA')//modified by Lei Zhou
         {
             ind_level -= 1;
             output = insertString(output, indent(ind_level) + f_end(language, ''));
@@ -5853,7 +5853,7 @@ language: the target code language
  {
     if (language == 'Matlab')
     var str = '[';
-    if (language == 'C' || language == 'C++')
+    if (language == 'C' || language == 'C++'||language == 'CUDA')//modified by Lei Zhou
     var str = '{';
     if (language == 'VHDL')
     var str = '(';
@@ -5898,7 +5898,7 @@ language: the target code language
             {
                 if (language == 'Matlab')
                 str += ';';
-                if (language == 'C' || language == 'C++')
+                if (language == 'C' || language == 'C++'||language=='CUDA') //modified by Lei Zhou
                 str += ',';
             }
         }
@@ -5909,7 +5909,7 @@ language: the target code language
         //alert('Multiple-dimension vectors are not supported');
         if (language == 'Matlab')
         str += '<div style=\"color:red\">' + '/*Warning: Multiple-dimension vectors are not supported*/' + '</div><br \>';
-        if (language == 'C' || language == 'C++')
+        if (language == 'C' || language == 'C++'||language=='CUDA')//modified by Lei Zhou
         str += '<div style=\"color:red\">' + '/*Warning: Multiple-dimension vectors are not supported*/' + '</div><br \>';
         str += variable.value;
 
@@ -5941,7 +5941,7 @@ language: the target code language
     {
         if (language == 'Matlab')
         str = str + '(';
-        if (language == 'C' || language == 'C++')
+        if (language == 'C' || language == 'C++'||language=='CUDA')//modified by Lei Zhou
         str = str + '[';
         for (var i = 1; i < variable.value.length; i++)
         {
@@ -5969,14 +5969,14 @@ language: the target code language
             {
                 if (language == 'Matlab')
                 str += ',';
-                if (language == 'C' || language == 'C++')
+                if (language == 'C' || language == 'C++'|| language == 'CUDA')//modified by Lei Zhou
                 str + ']['
             }
 
         }
         if (language == 'Matlab')
         str = str + ')';
-        if (language == 'C' || language == 'C++')
+        if (language == 'C' || language == 'C++'||language == 'CUDA') //modified by Lei Zhou
         str = str + ']';
     }
 
@@ -6072,6 +6072,30 @@ func_name: the name of the action in the functional place*/
     if (func_name == '+' || func_name == '-' || func_name == '*' || func_name == '/' || func_name == 'and' || func_name == 'or' || func_name == '==' || func_name == '>' || func_name == '<' || func_name == '> =' || func_name == '< =' || func_name == '~=' || func_name == 'LAND' || func_name == '||' || func_name == '~' || func_name == '!' || func_name == '!=')
     label = 1;
     return label;
+}
+
+function IsFFTCreatPlan(func_name)
+// this is created by Lei Zhou to verify whether fftw plan is created
+{
+  var index=indexOfKeywords(func_name,FFTW_Plan_Keywords);
+  
+  if (index[0]>-1){
+      return 1;
+  }
+  else {
+      return 0;
+  }
+}
+
+function IsFFTExe(func_name)
+// this is created by Lei Zhou to verify whether fftw plan is created
+{
+  var index=indexOfKeywords(func_name,FFTW_EXE_Keywords);
+  
+    if (index[0]>-1)
+        return 1;
+    else 
+        return 0;
 }
 
 /*****************************W_Fangming He 2011-04-10**********************************/
@@ -7024,7 +7048,7 @@ language: the target code generation
 
     //alert('isarray:'+isArrayOp)
 
-    if (isArrayOp == 1 && isComposedOp == 1 && (language == 'C' || language == 'C++'))
+    if (isArrayOp == 1 && isComposedOp == 1 && (language == 'C' || language == 'C++'||language=='CUDA'))//modified by Lei Zhou
     {
 
         for (var index = 0; index < size_Array[0]; index++)
@@ -7100,7 +7124,7 @@ language: the target code generation
 
 
     }
-    else if (isArrayOp == 1 && isComposedOp == 0 && (language == 'C' || language == 'C++'))
+    else if (isArrayOp == 1 && isComposedOp == 0 && (language == 'C' || language == 'C++'||language =='CUDA')) //modifed by Lei Zhou
     {
         var output = get_variableName(output_variable[0], language);
         //var input1=get_variableName(input_variable[0],language);
@@ -8366,7 +8390,9 @@ function placeAssign(str, ind_level, language)
 
 
     if (language == 'Matlab')
-    Set_Output_size_type(input, output);
+        Set_Output_size_type(input, output);
+    if (language =='C')
+        Set_Output_size_type_C(input,output);
     place += input_xml(input, ind_level, language) + '\n';
 
     place += indent_xml(ind_level) + '<Place name=\"' + action + "\"> " + '\n';
@@ -8658,7 +8684,24 @@ str: the code line
     else
     {
         if (str.indexOf("(") > 0 && str.indexOf(")"))
+        {
         input = str.slice(str.indexOf("(") + 1, str.indexOf(")"));
+       
+        //add by Lei Zhou//////
+            var input_candidate=indexOfKeywords(input,TypeConversion_Keywords);
+            
+           if(input_candidate[0]>-1)
+           {
+             var function_after=str.slice(str.indexOf(")")+1);
+          
+             
+             input=function_after.slice(function_after.indexOf("(") + 1, function_after.indexOf(')'));
+             
+            
+             
+           }
+        ///////////////////////
+        }
         else
         {
             if (str.indexOf('=') > 0)
@@ -8700,6 +8743,117 @@ str: the code line
     //    if(i==0)
     //    	inputn[0]='';
     return inputn;
+
+}
+
+///////////////////////////////////The check whether a type conversion////////////////////Lei Zhou Added////////
+function read_function_type(str)
+/* List all the input variables in a source code line
+str: the code line
+*/
+ {
+   
+    var input = '';
+ 
+    var function_type='';
+    if (OperatorIndex(str) > 0)
+    {
+    input = str.slice(str.indexOf('=') + 1, OperatorIndex(str)) + ',' + str.slice(OperatorIndex(str) + 1);
+    return 0;
+    }
+    else
+    {
+   
+        if (str.indexOf("(") > 0 && str.indexOf(")"))
+        {
+        input = str.slice(str.indexOf("(") + 1, str.indexOf(")"));
+        //add by Lei Zhou//////
+            var input_candidate=indexOfKeywords(input,TypeConversion_Keywords);
+           if(input_candidate[0]>-1)
+           {
+            function_type=input_candidate[1];
+           }
+           
+        ///////////////////////
+        }
+        
+    }
+    return function_type;
+    
+}
+
+///////////////////////////////////Input/output variables////////////////Lei Zhou Added //////
+function read_function_name(str)
+/* List all the input variables in a source code line
+str: the code line
+*/
+ {
+   
+    var input = '';
+    var function_name='';
+     var function_after='';
+    
+    if (OperatorIndex(str) > 0)
+    input = str.slice(str.indexOf('=') + 1, OperatorIndex(str)) + ',' + str.slice(OperatorIndex(str) + 1);
+    else
+    {
+   
+        if (str.indexOf("(") > 0 && str.indexOf(")"))
+        {
+        input = str.slice(str.indexOf("(") + 1, str.indexOf(")"));
+        //add by Lei Zhou//////
+            var input_candidate=indexOfKeywords(input,TypeConversion_Keywords);
+           if(input_candidate[0]>-1)
+        {
+             function_after=str.slice(str.indexOf(")")+1);
+             input=function_after.slice(function_after.indexOf("(") + 1, function_after.indexOf(')'));
+             function_name='('+input_candidate[1]+')';
+             function_name=function_name+function_after.slice(0,function_after.indexOf("("));
+             
+           }
+        ///////////////////////
+        }
+        else
+        {
+            if (str.indexOf('=') > 0)
+            input = str.slice(str.indexOf('=') + 1);
+        }
+    }
+    var inputn = new Array();
+    var i = 0
+    while (input != "")
+    {
+        if (input.indexOf(",") == -1)
+        {
+            inputn[i] = deleteblank(input);
+            //input.replace(/\s/g,"");
+            // comment by liu Apr13.2011. 1PM
+            //if ( input.indexOf(" ") != -1)     // used for remove the type of input parameters;
+            //{
+            //   inputn[i]= input.slice(input.indexOf(" ")+1, input.length)
+            //}
+            // end comment by liu Apr13.2011. 1PM
+            input = "";
+        }
+        else
+        {
+            inputn[i] = input.slice(0, input.indexOf(","));
+            inputn[i] = deleteblank(inputn[i]);
+            //inputn[i].replace(/\s/g,"");
+            //if ( input.indexOf(" ") != -1)   // used for remove the type of input parameters;    // coment by Jiadi Yu Apr11.2011 6PM
+            //{                                                                       // coment by Jiadi Yu Apr11.2011 6PM
+            //    inputn[i]= input.slice(input.indexOf(" ")+1, input.indexOf(","))         // coment by Jiadi Yu Apr11.2011 6PM
+            //}                                                                          // coment by Jiadi Yu Apr11.2011 6PM
+            input = input.slice(input.indexOf(",") + 1, input.length);
+            //input=deleteblank(input);
+            // coment by Jiadi Yu Apr11.2011 6PM
+            //          alert('inputn[i]'+inputn[i]);//fangming test 2011-04-11
+        }
+        i = i + 1;
+    }
+    //    if(i==0)
+    //    	inputn[0]='';
+    return function_name;
 
 }
 
