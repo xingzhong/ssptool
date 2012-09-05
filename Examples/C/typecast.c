@@ -3,5 +3,5 @@
 //yy -- OUTPUT
 void bar(void *xx, double *yy, double zz){
     double *x = (double *) xx ;
-    *yy  = *x + fun(zz);
+    *yy  = *x + cos(zz);
 }
