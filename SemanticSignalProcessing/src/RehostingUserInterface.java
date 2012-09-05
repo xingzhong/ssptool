@@ -182,7 +182,7 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
     SourceCodeTypeDisplay.add(Matlab);
     SourceCodeTypeDisplay.add(C);
     SourceCodeTypeDisplay.add(CPlus);
-    //SourceCodeTypeDisplay.add(VHDL);
+    SourceCodeTypeDisplay.add(VHDL);
 	SourceOpenSaveDisplay.add(SourceCodeTypeDisplay);	
 	vbarSource = new JScrollBar(JScrollBar.VERTICAL, 0, 0, 0, 1000);
 	JPanel SourceCodePanel = new JPanel();
@@ -312,7 +312,7 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 	toTargetPanel.add(toMatlabBox);
 	toTargetPanel.add(toCBox);
 	toTargetPanel.add(toCPlusBox);
-	//toTargetPanel.add(toVHDLBox);
+	toTargetPanel.add(toVHDLBox);
 	toTargetPanel.add(toCUDABox);
 	toTargetPanel.add(toOpenCLBox);
 	//toTargetPanel.add(toTargetPanelBlank2);
@@ -439,7 +439,7 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 	toMatlab.addActionListener(this);
 	toC.addActionListener(this);
 	toCPlus.addActionListener(this);
-	//toVHDL.addActionListener(this);	
+	toVHDL.addActionListener(this);	
 	toCUDA.addActionListener(this);
 	toOpenCL.addActionListener(this);
 	saveTarget.addActionListener(this);
@@ -1460,13 +1460,13 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 			 SourceCodeIndicator = 3;
 			 SourceCPlusCode = SourceCode.getText();
 		 }
-		 /*
+		 
 		 if (LanguageGroup.getSelectedCheckbox() == VHDL)
 		 {
 			 SourceCodeIndicator = 4;
 			 SourceVHDLCode = SourceCode.getText();
 		 }
-		 */
+		 
 		 
 		 String Temp = SourceCode.getText();	
 		 Temp = Temp.replace('\r', ' ');	//replace the \r to space

@@ -310,9 +310,9 @@ public class SSP_Main extends Applet implements ActionListener
     Mi = new MenuItem("OpenCL");
     Mi.addActionListener(this);
     Parallelization.add(Mi);
-    //Mi = new MenuItem("VHDL");
-    //Mi.addActionListener(this);
-    //Parallelization.add(Mi);
+    Mi = new MenuItem("VHDL");
+    Mi.addActionListener(this);
+    Parallelization.add(Mi);
     
     PopupMenu examples = new PopupMenu();
     Mi = new MenuItem("Constellation Modulator");
