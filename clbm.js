@@ -5918,7 +5918,7 @@ language: the target code language
 
     if (language == 'Matlab')
     str += ']';
-    if (language == 'C' || language == 'C++')
+    if (language == 'C' || language == 'C++'||language =='CUDA')//modified by Lei zhou
     str += '}';
     if (language == 'VHDL')
     str += ')';
@@ -9452,6 +9452,7 @@ language: the source code language
     if (language == 'C' || language == 'C++')
     {
         size = '1';
+        var type='undefined';
         if (str.indexOf('{') == 0)
         {
             var end_bracket = bracket_match(str, '{');
@@ -9498,8 +9499,16 @@ language: the source code language
                         element_row = element_row.slice(col_div + 1);
                         element_row = deleteblank(element_row);
                     }
-                    if (element != '')
-                    col_index += 1;
+                    if (element != ''){
+                        col_index += 1;
+                        var element_type = type_inf(element);
+                        if (type == 'undefined')
+                            type = element_type;
+                        else if (type == 'int' && element_type == 'double')
+                            type = element_type;
+                        else if (type == 'char' && element_type == 'string')
+                            type = element_type;
+                    }
                 }
                 if (col_index > 0)
                 row_index += 1;
@@ -9511,22 +9520,43 @@ language: the source code language
             size = row_index + ',' + col_index;
             //alert('row_index='+row_index)//fangming test.
         }
-        else
-        {
-            //alert('test var_list');//fangming test
-            for (var iii = 0; iii < var_list[0].length; iii++)
-            {
-                if (str == var_list[0][iii])
-                {
+        else{  
+        //            //alert('test var_list');//fangming test
+        //            for (var iii = 0; iii < var_list[0].length; iii++)
+        //            {
+        //                if (str == var_list[0][iii])
+        //                {
+        //                    if (var_list[1][iii] != undefined)
+        //                    size = var_list[1][iii];
+        //                    
+        //                    break;
+        //                }
+        //            }
+
+            var tag = 0;
+            for (var iii = 0; iii < var_list[0].length; iii++){
+
+                if (str == var_list[0][iii]){  
+                    tag = 1;
                     if (var_list[1][iii] != undefined)
-                    size = var_list[1][iii];
+                        size = var_list[1][iii];
+                    if (var_list[2][iii] != undefined)                        
+                        type = var_list[2][iii];
                     break;
                 }
             }
+            if (tag == 0){
+                type = type_inf(str);
+            }
         }
+        // add by Lei Zhou
+        var size_type = new Array();
+        size_type[0] = size;
+        size_type[1] = type;
+        return size_type; 
+
     }
     /********************************************************************/
-    return size;
 }
 
 
@@ -9593,7 +9623,72 @@ output: the array of output variables
 
 }
 
+function Set_Output_size_type_C(input, output) //Add by Lei Zhou
+/*Set the type size of output variables according to the input value
+input: the array of input variables/values
+output: the array of output variables
+*/
+ {
+    var size_output = '1';
+    var type_output = 'undefined';
+    
+    for (var i = 0; i < input.length; i++)
+    {
+    
+        size_type = variable_size_type(input[i], 'C');
+        
+        
+        var size = size_type[0];
+        var type = size_type[1];
+  
+        if (size != '1')
+        {
+            if (size_output < size)
+            size_output = size;
 
+        }
+        if (type != 'undefined')
+        {
+            if (type_output == 'undefined')
+            type_output = type;
+            else if (type_output == 'int' && type == 'double')
+            type_output = type;
+            else if (type_output == 'char' && type == 'string')
+            type_output = type;
+        }
+    }
+
+    if (output[0].indexOf('(') > 0)
+    {
+        output_name = output[0].slice(0, output[0].indexOf('('));
+        if (size_output == 1)
+        size_output = output[0].slice(output[0].indexOf('(') + 1, output[0].indexOf(')'));
+
+    }
+    else
+    output_name = output[0];
+
+    var tag = 0;
+    for (var iii = 0; iii < var_list[0].length; iii++)
+    {
+        if (output_name == var_list[0][iii])
+        {
+            var_list[1][iii] = size_output;
+            var_list[2][iii] = type_output;
+            tag = 1;
+            break;
+        }
+    }
+    if (tag == 0);
+    {
+        var_list[0] = var_list[0].concat(output_name);
+        var_list[1] = var_list[1].concat(size_output);
+        var_list[2] = var_list[2].concat(type_output);
+    }
+
+    return false;
+
+}
 
 ///////////////////////////////////////////////////Global variable
 var func;
@@ -9603,6 +9698,27 @@ var lab;
 var General_Keywords = ['if', 'for', 'while', 'function', 'switch', 'else', 'elseif'];
 //GLobal Constant
 var General_Type_Keywords = ['int', 'double', 'float', 'unsigned int', 'boolet', 'cvec'];
+
+//Add by Lei Zhou//////
+var TypeConversion_Keywords=['int*','double*','float*','unsigned int*','int*','fftw_complex*'];
+
+var FFTW_Plan_Keywords=['fftw_plan_dft_r2c_1d','fftw_plan_dft_c2r_1d','fftw_plan_dft_1d'];
+
+
+var FFTW_EXE_Keywords=['fftw_execute'];
+
+var CUFFT_Input_Annoncement=['double','cufftDoubleComplex','cufftDoubleComplex'];
+
+var CUFFT_Output_Annoncement=['cufftDoubleComplex','double','cufftDoubleComplex'];
+
+var CUFFT_Plan_Keywords=['cufftPlan1d','cufftPlan1d','cufftPlan1d'];
+
+var CUFFT_Exec_Keywords=['cufftExecD2Z','cufftExecZ2D','cufftExecZ2Z'];
+
+var CUFFT_T2T_Keywords=['CUFFT_D2Z','CUFFT_Z2D','CUFFT_Z2Z'];
+
+var CUFFT_Direction_Keywords=['CUFFT_FORWARD','CUFFT_INVERSE','undefined'];
+//////////////
 
 var var_list = new Array();
 //global
@@ -10419,6 +10535,13 @@ language: the source code language
         else
         {
             var variable_name = str;
+            
+            var size_type_v=variable_size_type(variable_name,language);
+            //Add by LeiZhou////
+            var size_v=size_type_v[0];
+            var type_v=size_type_v[1];
+            ////////////////////
+            
             //alert('str0='+str);
             //var size_v=variable_size_type(variable_name,language);
             //alert('str0_size='+size_v);
@@ -10448,8 +10571,42 @@ language: the source code language
                 }
             }
 
-            if (tag == 0)
-            thing += '>' + str + '</Thing>';
+            if (tag == 0)//modified by Lei Zhou
+            {
+              if(size_v!='1')
+              {
+                thing += ' name=\"' + variable_name + '\">\n';
+                ind_level += 1;
+
+                thing += indent_xml(ind_level) + '<Place name=\"size\">' + '\n';
+                ind_level += 1;
+                thing += indent_xml(ind_level) + '<Thing>' + size_v + '</Thing>\n';
+                thing += indent_xml(ind_level) + '<Action>SET</Action>\n';
+                ind_level -= 1;
+                thing += indent_xml(ind_level) + '</Place>\n';
+
+
+
+                thing += indent_xml(ind_level) + '<Place name=\"type\">' + '\n';
+                ind_level += 1;
+                thing += indent_xml(ind_level) + '<Thing>' + type_v + '</Thing>\n';
+                thing += indent_xml(ind_level) + '<Action>SET</Action>\n';
+                ind_level -= 1;
+                thing += indent_xml(ind_level) + '</Place>\n';
+
+
+
+                ind_level -= 1;
+                thing += indent_xml(ind_level) + '</Thing>';
+                
+                }
+                
+                else
+                {
+                thing+= '>' + str + '</Thing>\n'
+                }
+            }
+            //////////////////////
 
         }
         return thing;
@@ -11714,7 +11871,21 @@ function placefunc_c(str)
         //place += inputfunc(str,0,'C');
         var act = ""
         var funcname = ""
-        funcname = str.slice(str.indexOf("=") + 1, str.indexOf("("))
+         //add by Lei Zhou//////////////////////////////
+          var type_version="";
+          type_version=read_function_type(str);
+
+          if (type_version!='')
+           {
+           funcname=read_function_name(str);
+           }
+
+           else
+            {
+            ///////////////////////////////////////////////
+            funcname = str.slice(str.indexOf("=") + 1, str.indexOf("("));
+        }
+        
         funcname = funcname.replace(/\s/g, "")
         var actname = Action_recognize(funcname, 'C');
 
