@@ -605,7 +605,7 @@ language: the target code language
     var xmlHardwareDoc;
     xml_code = xmlformat(xml_code);
 
-    if (language == 'C' || language == 'C++')
+    if (language == 'C' || language == 'C++'||language=='CUDA')//modified by Lei Zhou
     {
         xml_code = xml_code.replace(/~/g, "!")
     }
@@ -629,11 +629,17 @@ language: the target code language
     var output = '//This is the ' + language + ' code generated from XML \n \n';
 
     language_constant = language;
-    if ((language_constant == 'CUDA') || (language_constant == 'OpenCL'))
+    //if ((language_constant == 'CUDA') || (language_constant == 'OpenCL'))
+    if (language_constant == 'OpenCL')
     {
         language = 'C';
     }
-
+    //**************added by Lei Zhou 6/24/2012**********
+    // if ((language_constant == 'CUDA'))
+    // {
+    //    output=insertString(output,search_places_cuda_kernel(path1[i], path1[i].parentNode, ind_level, language));
+    // }
+    //*******************************************************
     ind_level = 0;
     var path_input_variable = new Array();
     var path_output_variable = new Array();
@@ -644,6 +650,15 @@ language: the target code language
         //str = creat_func(path_input_variable, path_output_variable, 'main', '', language);
 		// remvoe main function 
 		str = '';
+        output = insertString(output, str);
+        ind_level = ind_level + 1;
+    }
+    
+    //add by Lei Zhou********
+    if (language == 'CUDA') {
+        path_input_variable[0] = '';
+        path_output_variable[0] = '';
+        str = creat_func(path_input_variable, path_output_variable, 'main', '', language);
         output = insertString(output, str);
         ind_level = ind_level + 1;
     }
@@ -672,7 +687,7 @@ language: the target code language
 
 
         //Declaration of variables
-        if (language == 'C' || language == 'C++')
+        if (language == 'C' || language == 'C++'||language=='CUDA')//modified by Lei Zhou
         {
             output = insertString(output, declare_all(path_output_variable, ind_level));
         }
@@ -853,9 +868,11 @@ language: the target code language
 
             if (language_constant == 'CUDA')
             {
+                /*********** comment by Lei Zhou
                 if (path1[i].parentNode.nodeName == 'Cause')
                 variables_declaration = search_varDec_cuda(path1[i]);
                 else
+                *******************************/
                 variables_declaration = search_varDec(path1[i]);
 
                 for (var dec_num = 0; dec_num < variables_declaration.length; dec_num++)
@@ -1074,7 +1091,7 @@ language: the target code language
             //search all the places
             var str_places = '';
             if ((language_constant == 'CUDA') && (path1[i].parentNode.nodeName == 'Cause'))
-            	str_places = search_places_cuda_kernel(path1[i], path1[i].parentNode, ind_level, language);
+            	str_places = search_places_cuda_kernel(path1[i], path1[i].parentNode, ind_level, language) + '<br \>'; //moidified by Lei Zhou 6/25/2012
             else if ((language_constant == 'CUDA') && (path1[i].parentNode.nodeName != 'Cause'))
             	str_places = search_places_cuda(path1[i], ind_level, language, xmlHardwareDoc);
             else if ((language_constant == 'OpenCL') && (path1[i].parentNode.nodeName == 'Cause'))
@@ -1085,7 +1102,8 @@ language: the target code language
             	str_places = search_places(path1[i], ind_level, language);
 
             if (((language_constant == 'CUDA') || language_constant == 'OpenCL') && (path1[i].parentNode.nodeName == 'Cause'))
-            	output = insertString(output, str_places);
+            	output = insertString(str_places, output);  //change by Lei Zhou 6/25/2012
+                output = insertString(header_file_cuda(language_constant), output);//added by Lei Zhou
             else
             	output = insertString(output, str_declare + str_places);
 
@@ -1093,7 +1111,7 @@ language: the target code language
             if (path1[i].parentNode.nodeName != 'Cause')
             {
 				
-                if ((language == 'C' || language == 'C++') && path1_output_variable.length > 0 && path1_output_variable[0] != '')
+                if ((language == 'C' || language == 'C++') && path1_output_variable[0] != '')
                 	output = insertString(output, indent(ind_level) + return_out(get_variableName(path1_output_variable[0], language)));
                 if (! (i == 0 && language == 'Matlab'))
                 {
@@ -1253,12 +1271,12 @@ language: the target code language*/
                     //also changed by Ning Han
                     for (var i = 0; i < SigBase[1].length; i++)
                     {
-                        if (((place_name == SigBase[1][i]) || (place_name == SigBase[0][i])) && (language == 'C') && (IndSize[i] == 1))
+                        if (((place_name == SigBase[1][i]) || (place_name == SigBase[0][i])) && (language == 'C'||language=='CUDA') && (IndSize[i] == 1))//modified by Lei Zhou
                         {
                             place_input_variable = place_input_variable.concat(place_output_variable);
                             place_output_variable = new Array;
                         }
-                        else if (((place_name == SigBase[1][i]) || (place_name == SigBase[0][i])) && (language == 'C') && (IndSize[i] == 0)) {
+                        else if (((place_name == SigBase[1][i]) || (place_name == SigBase[0][i])) && (language == 'C'||language=='CUDA') && (IndSize[i] == 0)) {//modified by Lei Zhou
                             place_output_variable = new Array;
                         }
                         if ((place_name == SigBase[1][i]) && (language == 'Matlab'))
@@ -1267,7 +1285,7 @@ language: the target code language*/
                             flag = 1;
                             //break;
                         }
-                        else if ((place_name == SigBase[0][i]) && (language == 'C'))
+                        else if ((place_name == SigBase[0][i]) && (language == 'C'||language=='CUDA'))//moidified by Lei Zhou
                         {
                             place_func_name = SigBase[1][i];
                             flag = 1;
@@ -1290,7 +1308,7 @@ language: the target code language*/
                 if (place_func_name == 'Equal')
                 {
                     //str_places+=inference_assign(ind_level,place_input_variable,place_output_variable,language);
-                    str_places += Array_operation(ind_level, place_input_variable, place_output_variable, equal_symbol(language), place_func_name, language);
+                    str_places += Array_operation(ind_level, place_input_variable, place_output_variable, equal_symbol(language), place_func_name, language);//Lei Zhou
                     //str_places+=indent(ind_level)+get_variableName(place_output_variable[0],language)+equal_symbol(language)+get_variableName(place_input_variable[0],language)+';<br />';
                     continue;
                 }
@@ -1359,7 +1377,25 @@ language: the target code language*/
 
                 }
 
-
+                //Add by Lei Zhou////
+                
+                if(IsFFTCreatPlan(place_func_name))
+                {
+                 // get_variableName(input[i], language);
+                // alert(place_input_variable.size);
+                 str_places += indent(ind_level) + call_func_cuda(place_input_variable, place_output_variable, place_func_name, obj_name, language);
+                 
+                
+                }
+                
+                else if(IsFFTExe(place_func_name))
+                {
+                
+                }
+                
+                else
+                //////////////////////////////////////
+                
                 str_places += indent(ind_level) + call_func(place_input_variable, place_output_variable, place_func_name, obj_name, language);
             }
         }
@@ -1632,7 +1668,13 @@ language: the target code language*/
 
 }
 
-
+/*added by Lei Zhou 6/25/2012*/
+function header_file_cuda(language) {
+    var str_places = '';
+    if (language=='CUDA')
+    str_places = '//This is the header files.<br \>#include<stdio.h><br \>#include<cutil_inline.h><br \><br \>';
+    return str_places;
+}
 
 function search_places_cuda_kernel(path, cause, ind_level, language)
 /*Search all the places in a path and generate corresponding statement according to the type of the places
@@ -1653,7 +1695,8 @@ language: the target code language*/
     var loop_index_name = cause.attributes.getNamedItem("name").value;
     var cuda_kernel_name = path.attributes.getNamedItem("name").value.slice(0, path.attributes.getNamedItem("name").value.indexOf('+'));
     loop_index_name = loop_index_name.slice(0, loop_index_name.indexOf('<') + loop_index_name.indexOf('>') + 1);
-    str_places += '_global_ void ' + cuda_kernel_name + '_loop_kernel(';
+    str_places +='//This is the kernel part.<br \>';//modified by Lei Zhou 6/25/2012
+    str_places += '__global__ void ' + cuda_kernel_name + '_loop_kernel(';//modified by Lei Zhou
     for (var i = 0; i < loop_variable.length; i = i + 1)
     {
         /*if((get_variableName(loop_variable[i],language).indexOf('[')>-1)&&(get_variableName(loop_variable[i],language).indexOf(']')>-1))
@@ -1663,11 +1706,12 @@ language: the target code language*/
         //alert(loop_variable[i].value);
         if ((loop_variable[i].value.toString().indexOf(',') > -1))
         {
-            str_places += loop_variable[i].value.toString().slice(0, loop_variable[i].value.toString().indexOf(',')) + ',';
+            str_places+=get_type(loop_variable[i])+' *'+loop_variable[i].value.toString().slice(0,loop_variable[i].value.toString().indexOf(','))+',';	//modified by Lei Zhou
+            //str_places += loop_variable[i].value.toString().slice(0, loop_variable[i].value.toString().indexOf(',')) + ',';
         }
 
     }
-    str_places += loop_index_max + '){<br \>';
+    str_places += 'int '+loop_index_max + '){<br \>';//modified by Lei Zhou
     str_places += '&nbsp;&nbsp;&nbsp;&nbsp;int i=blockDim.x*blockIdx.x+threadIdx.x;<br \>';
     str_places += '&nbsp;&nbsp;&nbsp;&nbsp;if(i<' + loop_index_max + '){<br \>';
 
@@ -2859,8 +2903,9 @@ type: selection (once) or loop
                 }
                 str += '&nbsp;&nbsp;&nbsp;&nbsp;' + get_type(variables[i]) + '* d_' + get_variableName(variables[i]).slice(0, get_variableName(variables[i]).indexOf('[')) + ';<br \>';
                 str += '&nbsp;&nbsp;&nbsp;&nbsp;size_t size_' + get_variableName(variables[i]).slice(0, get_variableName(variables[i]).indexOf('[')) + '=(' + loop_index_max + ')*sizeof(' + get_type(variables[i]) + ');<br \>';
-                str += '&nbsp;&nbsp;&nbsp;&nbsp;cudaMalloc(& d_' + get_variableName(variables[i]).slice(0, get_variableName(variables[i]).indexOf('[')) + ',size_' + get_variableName(variables[i]).slice(0, get_variableName(variables[i]).indexOf('[')) + ');<br \>';
-            }
+                str += '&nbsp;&nbsp;&nbsp;&nbsp;cudaMalloc((void**)& d_' + get_variableName(variables[i]).slice(0, get_variableName(variables[i]).indexOf('[')) + ',size_' + get_variableName(variables[i]).slice(0, get_variableName(variables[i]).indexOf('[')) + ');<br \>';
+            }//modified by Lei Zhou
+           
             if (variables[i].value.toString().indexOf(',') > -1)
             {
                 if (flag == 0)
@@ -2870,8 +2915,8 @@ type: selection (once) or loop
                 }
                 str += '&nbsp;&nbsp;&nbsp;&nbsp;' + get_type(variables[i]) + '* d_' + variables[i].value.toString().slice(0, variables[i].value.toString().indexOf(',')) + ';<br \>';
                 str += '&nbsp;&nbsp;&nbsp;&nbsp;size_t size_' + variables[i].value.toString().slice(0, variables[i].value.toString().indexOf(',')) + '=(' + loop_index_max + ')*sizeof(' + get_type(variables[i]) + ');<br \>';
-                str += '&nbsp;&nbsp;&nbsp;&nbsp;cudaMalloc(& d_' + variables[i].value.toString().slice(0, variables[i].value.toString().indexOf(',')) + ',size_' + variables[i].value.toString().slice(0, variables[i].value.toString().indexOf(',')) + ');<br \>';
-            }
+                str += '&nbsp;&nbsp;&nbsp;&nbsp;cudaMalloc((void**)& d_' + variables[i].value.toString().slice(0, variables[i].value.toString().indexOf(',')) + ',size_' + variables[i].value.toString().slice(0, variables[i].value.toString().indexOf(',')) + ');<br \>';
+                }
 
 
         }
@@ -2929,7 +2974,8 @@ type: selection (once) or loop
                     if (! (IsNumeric(loop_index_max)))
                     {
                         str += '&nbsp;&nbsp;&nbsp;&nbsp;dim3 threadsPerBlock(' + thingPropertyItems[i].childNodes[0].nodeValue + ');<br \>';
-                        str += '&nbsp;&nbsp;&nbsp;&nbsp;dim3 numBlocks((' + loop_index_max + ')/threadsPerBlock.x);<br \>';
+                        str += '&nbsp;&nbsp;&nbsp;&nbsp;dim3 numBlocks((' + loop_index_max + ')/threadsPerBlock.x+1);<br \>';//modified by Lei Zhou
+                        
                     }
                     break;
                 }
@@ -3654,6 +3700,237 @@ language: the target code generation
 
 }
 
+function Array_operation_lei(ind_level, input_variable, output_variable, eq, operator, language)
+/*Generate the basic operator or value assignment statement for array or scalar variables in code generation
+ind_level: indent level (to format the code display)
+input_variable: the array of the input variables for the operation or value assignment
+output_varialbe: the array of the output variables for the operation or value assignment
+eq: the equal symbol
+operator: the operator to be generated
+language: the target code generation
+*/
+
+ {
+    var str = '';
+    var isArrayOp = 0;
+    var isComposedOp = 0;
+
+   
+    //alert('size:'+input_variable[0].size[0])
+    for (var inputn = 0; inputn < input_variable.length; inputn++)
+    {
+        if (input_variable[inputn].size[0] != 1 || input_variable[inputn].dimension > 1)
+        {
+            isArrayOp = 1;
+            var size_Array = new Array();
+            size_Array = size_Array.concat(input_variable[inputn].size);
+            dimension_Array = input_variable[inputn].dimension;
+            if (input_variable[inputn].isComposed == 1)
+            {
+                isComposedOp = 1;
+                break;
+            }
+        }
+    }
+
+    //alert('isarray:'+isArrayOp)
+   
+
+    if (isArrayOp == 1 && isComposedOp == 1 )
+    {
+
+        for (var index = 0; index < size_Array[0]; index++)
+        {
+            //alert('index:'+index)
+            var input_variable_new = new Array();
+            //input_variable_new=input_variable_new.concat(input_variable);
+            for (var inputn = 0; inputn < input_variable.length; inputn++)
+            {
+
+                if (input_variable[inputn].size[0] != 1 || input_variable[inputn].dimension > 1)
+                {
+
+
+                    if (input_variable[inputn].size[0] != size_Array[0])
+                    {
+
+                        //alert('The sizes of multiple input does not match.'+input_variable[inputn].size[0]+'vs.'+size_Array[0])	
+                        }
+                    else
+                    {
+                        if (input_variable[inputn].isComposed == 1)
+                        {
+                            input_variable_new[inputn] = input_variable[inputn].subthings[index];
+                        }
+                        else
+                        {
+                            input_variable_new[inputn] = new read_thingClass(null);
+
+                            input_variable_new[inputn].value[0] = input_variable[inputn].value[0] + '[' + index + ']';
+                            input_variable_new[inputn].dimension = input_variable[inputn].dimension - 1;
+                            if (input_variable_new[inputn].dimension > 0)
+                            {
+                                for (var size_ind = 0; size_ind < input_variable_new[inputn].dimension; size_ind++)
+                                {
+                                    input_variable_new[inputn].size[size_ind] = input_variable[inputn].size[size_ind + 1];
+                                }
+                            }
+                            else
+                            {
+                                input_variable_new[inputn].size[0] = 1;
+                            }
+
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    input_variable_new[inputn] = input_variable[inputn];
+                }
+
+            }
+
+            var output_variable_new = new Array();
+            //output_variable_new=output_variable_new.concat(output_variable);
+            output_variable_new[0] = new read_thingClass(null);
+
+            if (size_Array[0] > 1)
+            //TO remove the dimension whose size equals to 1
+            {
+                output_variable_new[0].value[0] = output_variable[0].value[0] + '[' + index + ']';
+            }
+            else
+            {
+                output_variable_new[0].value[0] = output_variable[0].value[0];
+            }
+
+            str += Array_operation(ind_level, input_variable_new, output_variable_new, eq, operator, language);
+
+        }
+
+
+    }
+    else if (isArrayOp == 1 && isComposedOp == 0 )
+    {
+        var output = get_variableName(output_variable[0], language);
+        //var input1=get_variableName(input_variable[0],language);
+        //var input2=get_variableName(input_variable[1],language);
+        var var_index = '';
+
+        for (var dim = 0; dim < size_Array.length; dim++)
+        {
+            var index = output + '_index' + dim;
+            if (size_Array[dim] != 1)
+            {
+                str += indent(ind_level) + 'for(int ' + index + '=0;' + index + '<' + size_Array[dim] + ';' + index + '++)<br />';
+                ind_level += 1;
+                var_index += '[' + index + ']';
+            }
+            else
+            {
+                continue;
+            }
+        }
+
+        var input_value = new Array();
+
+        for (var inputn = 0; inputn < input_variable.length; inputn++)
+        {
+
+            if (input_variable[inputn].size[0] != 1 || input_variable[inputn].dimension > 1)
+            {
+
+                if (input_variable[inputn].dimension != size_Array.length)
+                {
+                    alert('The sizes of multiple input does not match.');
+                    break;
+                }
+                else
+                {
+                    var flag = 0;
+                    for (var dim = 0; dim < size_Array.length; dim++)
+                    {
+                        if (input_variable[inputn].size[dim] != size_Array[dim])
+                        {
+                            alert('The sizes of multiple input does not match.');
+                            flag = 1;
+                            break;
+
+                        }
+
+                    }
+                    if (flag == 0)
+                    {
+                        input_value[inputn] = input_variable[inputn].value[0] + var_index;
+
+                    }
+                }
+
+            }
+            else
+            {
+                input_value[inputn] = input_variable[inputn].value[0];
+            }
+
+        }
+
+        var output_value = output_variable[0].value[0] + var_index;
+
+
+        str += indent(ind_level - 1) + '{<br />';
+        if (operator == 'Equal')
+        {
+            str += indent(ind_level) + output_value + eq + input_value[0];
+        }
+        else
+        {
+            str += indent(ind_level) + output_value + eq + input_value[0] + ' ' + operator + ' ' + input_value[1] + ';<br />';
+        }
+        str += indent(ind_level - 1) + '}<br />';
+
+    }
+    else
+    {
+        if (operator == 'Equal')
+        {
+            //alert(get_type(input_variable[0].value))
+            //to test whether have A-Z or a-z
+            var m = /^\w+$/;
+            
+            if (m.test(input_variable[0].value))  //if input is digit
+            {
+                str += indent(ind_level) + get_variableName(output_variable[0], language) + eq + get_variableName(input_variable[0], language) + ';<br />';
+            }
+            else {
+            
+                str += indent(ind_level) + get_variableName(output_variable[0], language) + eq + get_variableName(input_variable[0], language) + ';<br />';
+
+            
+            }
+          
+
+        }
+        else
+       
+        {
+             
+
+            if (operator == '!' || operator == '~')
+           
+                str += indent(ind_level) + get_variableName(output_variable[0], language) + eq + ' ' + operator + ' ' + get_variableName(input_variable[0], language) + ';<br />';
+                else
+                str += indent(ind_level) + get_variableName(output_variable[0], language) + eq + get_variableName(input_variable[0], language) + ' ' + operator + ' ' + get_variableName(input_variable[1], language) + ';<br />';
+
+            
+
+        }
+    }
+
+    return str;
+
+}
 
 function search_varDec_cuda(path)
 /* Search all the variables to be declared in a path for code generation
