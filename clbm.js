@@ -1101,9 +1101,10 @@ language: the target code language
             else
             	str_places = search_places(path1[i], ind_level, language);
 
-            if (((language_constant == 'CUDA') || language_constant == 'OpenCL') && (path1[i].parentNode.nodeName == 'Cause'))
+            if (((language_constant == 'CUDA') || language_constant == 'OpenCL') && (path1[i].parentNode.nodeName == 'Cause')){
             	output = insertString(str_places, output);  //change by Lei Zhou 6/25/2012
                 output = insertString(header_file_cuda(language_constant), output);//added by Lei Zhou
+            }
             else
             	output = insertString(output, str_declare + str_places);
 
