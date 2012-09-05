@@ -4485,7 +4485,10 @@ The keyword paramater is just for some language need statements like "end keywor
     //==================C/C++===========================//
     else if (language == 'C' | language == 'C++')
     str = '} <br \>';
-
+    //==================CUDA===========================//add by Lei Zhou
+    else if (language == 'CUDA'){
+        str = '    return 1; <br \>} <br \>';
+    }
     //=================VHDL===========================//
     else if (language == 'VHDL')
     {
@@ -4655,7 +4658,23 @@ function creat_func(input, output, func_name, class_name, language)
         else
         str = type + '&nbsp;' + class_name + '&nbsp;::&nbsp;' + func_name + '(';
     }
+    //=====================CUDA===============================//	//Add by Lei Zhou			
+    if (language == 'CUDA') {
+        if (outputn == 1) {
+            type = get_type(output[0]);
+            if (type == undefined)
+                type = 'int';
+        }
+        else {
+            type = get_type(output[0]);
+            if (type == undefined)
+                type = 'int';
 
+            str += '<div style=\"color:red\">' + '//Warning: no support for multiple output in C. So we have omitted some output variables.*/' + '</div><br \>'
+            //alert('no support for multiple output in C')
+        }
+        str = str + type + '&nbsp;' + func_name + '(';
+    }
     //===================VHDL==============================//
     if (language == 'VHDL')
     {
@@ -4698,6 +4717,21 @@ function creat_func(input, output, func_name, class_name, language)
             str = str + variable;
 
         }
+        
+        //=============================CUDA=====================// //add by Lei Zhou
+        if ((language == 'CUDA') && input[i] != '') {
+
+
+            variable = declare(input[i], language);
+            //get_type(input[i])+'&nbsp;'+get_variableName(input[i],language);
+            variable = variable.replace('&nbsp;', ' ');
+            variable = variable.slice(0, variable.indexOf(';'));
+            if (i < inputn - 1)
+                variable = variable + ',';
+            str = str + variable;
+            
+
+        }
 
     }
 
@@ -4709,6 +4743,12 @@ function creat_func(input, output, func_name, class_name, language)
         str = str + '<br />';
     }
     if (language == 'C' || language == 'C++')
+    {
+        str = str + ')';
+        str = str + '&nbsp;{<br />'
+    }
+    
+    if (language == 'CUDA') //add by Lei Zhou
     {
         str = str + ')';
         str = str + '&nbsp;{<br />'
@@ -4837,6 +4877,40 @@ language: the target code language
 
         str = str + ');<br \>';
     }
+    if (language=='CUDA')//added by Lei Zhou
+    {
+    
+        //Check the place name have fftw conversion
+        if(func_name.indexOf('fftw_complex')>-1);
+        func_name=func_name.replace('fftw_complex','cufftDoubleComplex');
+        
+        if (outputn == 0)
+        {
+            str = func_name + '(';
+        }
+        else if (outputn == 1)
+        str = get_variableName(output[0], language) + '=' + func_name + '(';
+        else
+        {
+            //alert('no multiple output in C/C++');
+            str = '<div style=\"color:red\">' + '//Warning: no support for multiple output in C++. So we have omitted some output variables.*/' + '</div><br \>'
+            str += get_variableName(output[0], language) + '=' + func_name + '(';
+        }
+
+        for (i = 0; i < inputn; i++)
+        {
+            var input_v=get_variableName(input[i], language);
+            if (input_v.indexOf('fftw_complex')>-1)
+            {
+            input_v=input_v.replace('fftw_complex','cufftDoubleComplex');
+            }
+            str = str + input_v;
+            if (i < inputn - 1)
+            str = str + ',';
+        }
+
+        str = str + ');<br \>';
+    }
     if (language == 'C++')
     {
         if (outputn == 0)
@@ -4905,6 +4979,98 @@ language: the target code language
 
 }
 
+function call_func_cuda(input, output, func_name, obj_name, language)
+/* Generate the function call statement for cuda; ////////////////add by Lei Zhou//////////
+input: the vector of input variables
+output: the vector of output variables
+func_name: the name of the function
+obj_name: the name of object if the target language is C++, the name of entity if the target language is VHDL; no use for other languages
+language: the target code language
+*/
+
+ {
+    var inputn = input.length;
+    var outputn = output.length;
+    var str;
+    var input_variable;
+    var i = 0;
+    var size;
+    var index_keyword;
+    var func_name_cuda;
+    
+    //announce fftw input and output in CUDA
+           index_keyword=indexOfKeywords(func_name,FFTW_Plan_Keywords);
+           func_name_cuda=CUFFT_Plan_Keywords[index_keyword[0]];
+           
+           input_variable=get_variableName(input[1], language);
+           var type=CUFFT_Input_Annoncement[index_keyword[0]];
+           str='<br \>    //Annouce fft input and output in CUDA.<br \>    ';
+           str+=type+' *d_'+input_variable+';<br \>    ';
+           
+           input_variable=get_variableName(input[2], language);
+           type=CUFFT_Output_Annoncement[index_keyword[0]];
+           str+=type+' *d_'+input_variable+';<br \>    ';
+           
+     //Malloc and Memcpy in CUDA  
+          str+= '<br \>    //Malloc in CUDA.<br \>    ';
+           size=get_variableName(input[0],language);
+           
+           index_keyword=indexOfKeywords(func_name,FFTW_Plan_Keywords);
+           input_variable=get_variableName(input[1], language);
+           var type=CUFFT_Input_Annoncement[index_keyword[0]];
+           str+='int mem_size_input='+size+'*sizeof('+type+');<br \>    '; 
+           str+='cudaMalloc((void**)&d_'+input_variable + ',mem_size_input);<br \>    ';
+           str+='cudaMemcpy(d_'+input_variable+','+input_variable+',mem_size_input,cudaMemecpyHostToDevice);<br \>    ';
+           
+           index_keyword=indexOfKeywords(func_name,FFTW_Plan_Keywords);
+           input_variable=get_variableName(input[2], language);
+           var type=CUFFT_Input_Annoncement[index_keyword[0]];
+           str+='int mem_size_input='+size+'*sizeof('+type+');<br \>    '; 
+           str+='cudaMalloc((void**)&d_'+input_variable + ',mem_size_input);<br \>    ';
+           str+='cudaMemcpy(d_'+input_variable+','+input_variable+',mem_size_input,cudaMemecpyHostToDevice);<br \>    ';
+           
+           str+='<br \>    //CUFFT Plan<br \>    ';
+    
+            if (outputn == 0)
+            {
+                str = func_name + '(';
+            }
+            else if (outputn == 1)
+            str +=  func_name_cuda + '(&'+get_variableName(output[0], language) + ', ' ;
+            else
+            {
+                //alert('no multiple output in C/C++');
+                str = '<div style=\"color:red\">' + '//Warning: no support for multiple output in C++. So we have omitted some output variables.*/' + '</div><br \>'
+                str += get_variableName(output[0], language) + '=' + func_name + '(';
+            }
+            
+            str+=get_variableName(input[0],language)+',';
+            
+            str+=CUFFT_T2T_Keywords[index_keyword[0]]+',';
+            
+            
+            
+            str+=CUFFT_Direction_Keywords[index_keyword[0]]+');<br \>    ';
+            
+            
+            str+='<br \>    //Execute CUFFT Plan; <br \>    ';
+            str+=CUFFT_Exec_Keywords[index_keyword[0]]+'(';
+            str+=get_variableName(output[0], language)+',';
+
+            for (i = 1; i < inputn-1; i++)
+            {
+               input_variable=get_variableName(input[i], language);
+                str = str + 'd_'+input_variable;
+                if (i < inputn - 2)
+                str = str + ',';
+            }
+
+            str = str + ');<br \>';
+
+    return str;
+
+}
+
 function declare(variable, language)
 /* Generate the variable declaration statement
 variable: name of the variable (the type of variable may be included, e.g., int i)
@@ -4934,6 +5100,41 @@ language: the target language
                 }
                 else
                 str = str + '[' + ']';
+            }
+        }
+        str += ';<br \>';
+
+    }
+    
+    if (language == 'CUDA') { //add by Lei Zhou
+        
+        var str;
+        if(type=='fftw_complex')
+        {
+        type='cufftDoubleComplex';
+        
+        }
+        
+        if(type=='fftw_plan')
+        {
+        type='cufftHandle';
+        
+        }
+        
+       
+        str = type + '&nbsp;' + variable_name;
+        //alert(variable.value+"hello");
+  
+        if (variable.dimension > 1 || variable.size[0] != 1) {
+
+            for (var dim = 0; dim < variable.dimension; dim++) {
+                if (IsNumeric(variable.size[dim])) {
+                    if (parseInt(variable.size[dim]) != 1)
+                    //to remove the dimension whose size is 1
+                        str = str + '[' + variable.size[dim] + ']';
+                }
+                else
+                    str = str + '[' + ']';
             }
         }
         str += ';<br \>';
