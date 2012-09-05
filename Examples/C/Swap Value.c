@@ -2,6 +2,10 @@ void main()
 {
   int *p;
   int *q;
-   p=q;
-  *p=*q;
+  int *x;
+   *p=1;
+   *q=2;
+   *x=*p;
+   *p=*q;
+   *q=*x;
   }
