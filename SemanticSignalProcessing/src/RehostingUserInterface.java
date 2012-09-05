@@ -35,7 +35,7 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 	JButton toMatlab = new JButton("To Matlab");
 	JButton toC = new JButton("  To C  ");
 	JButton toCPlus = new JButton(" To C++ ");
-	JButton toVHDL = new JButton(" To VHDL ");	
+	//JButton toVHDL = new JButton(" To VHDL ");	
 	JButton toCUDA = new JButton(" To CUDA ");
 	JButton toOpenCL = new JButton(" To OpenCL");
 	JButton saveTarget = new JButton("Save Target");
@@ -51,7 +51,7 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 	Checkbox Matlab; 
 	Checkbox C; 
 	Checkbox CPlus; 
-	Checkbox VHDL; 
+	//Checkbox VHDL; 
 	
 	int HardwarePlatformIndicator = 1;
 	CheckboxGroup HardwarePlatformGroup; 
@@ -171,7 +171,7 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
     Matlab = new Checkbox("Matlab", LanguageGroup,true); 
     C = new Checkbox("C", LanguageGroup,false); 
     CPlus = new Checkbox("C++", LanguageGroup,false); 
-    VHDL = new Checkbox("VHDL", LanguageGroup,false);    
+    //VHDL = new Checkbox("VHDL", LanguageGroup,false);    
     JPanel SourceCodeTypeDisplay = new JPanel();
     SourceCodeTypeDisplay.setLayout(new GridLayout(1,5));
     Box SourceCodeTypeDisplayBlank = Box.createVerticalBox();
@@ -182,7 +182,7 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
     SourceCodeTypeDisplay.add(Matlab);
     SourceCodeTypeDisplay.add(C);
     SourceCodeTypeDisplay.add(CPlus);
-    SourceCodeTypeDisplay.add(VHDL);
+    //SourceCodeTypeDisplay.add(VHDL);
 	SourceOpenSaveDisplay.add(SourceCodeTypeDisplay);	
 	vbarSource = new JScrollBar(JScrollBar.VERTICAL, 0, 0, 0, 1000);
 	JPanel SourceCodePanel = new JPanel();
@@ -292,10 +292,10 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 	toCPlusBox.add(Box.createGlue());
 	toCPlusBox.add(toCPlus);
 	toCPlusBox.add(Box.createGlue());
-	Box toVHDLBox = Box.createVerticalBox();
-	toVHDLBox.add(Box.createGlue());
-	toVHDLBox.add(toVHDL);
-	toVHDLBox.add(Box.createGlue());
+	//Box toVHDLBox = Box.createVerticalBox();
+	//toVHDLBox.add(Box.createGlue());
+	//toVHDLBox.add(toVHDL);
+	//toVHDLBox.add(Box.createGlue());
 	Box toCUDABox = Box.createVerticalBox();
 	toCUDABox.add(Box.createGlue());
 	toCUDABox.add(toCUDA);
@@ -312,7 +312,7 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 	toTargetPanel.add(toMatlabBox);
 	toTargetPanel.add(toCBox);
 	toTargetPanel.add(toCPlusBox);
-	toTargetPanel.add(toVHDLBox);
+	//toTargetPanel.add(toVHDLBox);
 	toTargetPanel.add(toCUDABox);
 	toTargetPanel.add(toOpenCLBox);
 	//toTargetPanel.add(toTargetPanelBlank2);
@@ -439,7 +439,7 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 	toMatlab.addActionListener(this);
 	toC.addActionListener(this);
 	toCPlus.addActionListener(this);
-	toVHDL.addActionListener(this);	
+	//toVHDL.addActionListener(this);	
 	toCUDA.addActionListener(this);
 	toOpenCL.addActionListener(this);
 	saveTarget.addActionListener(this);
@@ -690,12 +690,12 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 				  {
 					  LanguageGroup.setSelectedCheckbox(CPlus);
 				  }
-				  
+				  /*
 				  if (VHDLFileOpen)
 				  {
 					  LanguageGroup.setSelectedCheckbox(VHDL);
 				  }
-				  
+				  */
 				  /*String Temp = SourceMatlabCode;
 		          int Linelength = 0;
 		          while(! Temp.isEmpty())
@@ -1460,13 +1460,13 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 			 SourceCodeIndicator = 3;
 			 SourceCPlusCode = SourceCode.getText();
 		 }
-		 
+		 /*
 		 if (LanguageGroup.getSelectedCheckbox() == VHDL)
 		 {
 			 SourceCodeIndicator = 4;
 			 SourceVHDLCode = SourceCode.getText();
 		 }
-		 
+		 */
 		 
 		 String Temp = SourceCode.getText();	
 		 Temp = Temp.replace('\r', ' ');	//replace the \r to space
@@ -1590,7 +1590,7 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 			(new URL("javascript:getFixedFractionLength(\"" + fractionLengthTemp +"\")"));
 			}
 			catch (MalformedURLException me) { }
-	    
+			
 	    String Type = "Matlab";
 	    try {
 			p.getAppletContext().showDocument
@@ -1636,6 +1636,40 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 	    		Temp = "";
 	    	}
 	    }        
+	    
+	     int fixedPointSelectionTemp = 0;
+	    if (FloatingFixedPointGroup.getSelectedCheckbox() == Fixed_Point)
+	    	fixedPointSelectionTemp = 1; 
+	    else
+	    	fixedPointSelectionTemp = 0; 
+	    try {
+			p.getAppletContext().showDocument
+			(new URL("javascript:getFloatingFixedSelection(\"" + fixedPointSelectionTemp +"\")"));
+			}
+		catch (MalformedURLException me) { }
+			
+		int wordLengthTemp = 0;
+		if (wordLength.getText().isEmpty())
+			wordLengthTemp = 16;
+		else
+        	wordLengthTemp = Integer.parseInt(wordLength.getText().toString());
+	    try {
+			p.getAppletContext().showDocument
+			(new URL("javascript:getFixedWordLength(\"" + wordLengthTemp +"\")"));
+			}
+			catch (MalformedURLException me) { }
+			
+	    int fractionLengthTemp = 0;
+	    if (fractionLength.getText().isEmpty())
+	    	fractionLengthTemp = 8;
+	    else
+	    	fractionLengthTemp = Integer.parseInt(fractionLength.getText().toString());
+	    try {
+			p.getAppletContext().showDocument
+			(new URL("javascript:getFixedFractionLength(\"" + fractionLengthTemp +"\")"));
+			}
+			catch (MalformedURLException me) { }
+			
 	    String Type = "C";
 	    try {
 			p.getAppletContext().showDocument
@@ -1688,7 +1722,7 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 			catch (MalformedURLException me) { }
 			
 	}
-	
+	/*
 	if (evt.getSource() == toVHDL)
 	{
 		TargetCodeIndicator = 4;
@@ -1733,7 +1767,7 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 			catch (MalformedURLException me) { }
 			
 	}
-	
+	*/
 	
 	if (evt.getSource() == toCUDA)
 	{

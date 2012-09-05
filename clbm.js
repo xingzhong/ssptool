@@ -386,8 +386,6 @@ function Matlab_XML_CLBM()
 
     //var matlab=Source_input.value+";";
     matlab = CLBM_Source_Code;
-    
-    console.log(matlab);
     matlab = code_format(matlab, 'Matlab');
     //matlab=matlabcode_format(matlab);// Added by Ning
 
@@ -829,7 +827,7 @@ language: the target code language
 					
 					}
 				}
-				
+				console.log(output);
             }
             ind_level = ind_level + 1;
             //Search all the variables to be declared
@@ -5546,8 +5544,6 @@ function get_variableName(thingClass, language)
     language: the target code language 
 */
 {
-    console.log(thingClass);
-    
     if (thingClass.isComposed == 1)
         variable = Vector_code(thingClass, language);
     else if (thingClass.isElement == 1)
@@ -5559,12 +5555,9 @@ function get_variableName(thingClass, language)
 			variable=variable.slice(1);
 		
 	}*/
-    else if (thingClass.value)
+    else
     {
         variable = thingClass.value[0];
-    }
-    else {
-        variable = "None";
     }
     return variable;
 }
@@ -5809,12 +5802,12 @@ language: the target code language
             var variables_declaration = new Array();
             var dec_num = 0;
             var str_declare = '';
-            console.log(output);
+
             if (language == 'C')
             {
 
                 variables_declaration = search_varDec(path1[i]);
-                console.log(variables_declaration);
+
                 for (var dec_num = 0; dec_num < variables_declaration.length; dec_num++)
                 {
                     if (get_type(variables_declaration[dec_num]) != null)
@@ -6163,7 +6156,6 @@ path: the path node*/
     for (var l = 0; l < place.length; l++)
     {
         var place_name = place[l].attributes.getNamedItem("name").value;
-        console.log(place_name);
         var variables = new Array();
         if (place_name == "Declaration")
         {
@@ -6178,20 +6170,13 @@ path: the path node*/
         {
             //variables=read_variables(place[l]);
             var variable_temp = read_variables(place[l]);
-            console.log(variable_temp);
             //modified by yulong zou
             for (var i = 0; i < variable_temp.length; i = i + 1)
             {
                 var value_temp = variable_temp[i].value.toString();
-                // Xingzhong added to fix type casting and missing variable decl
-                variables.push(variable_temp[i]);
                 if ((!IsNumeric(value_temp)) && (value_temp.indexOf(',') == -1) && (value_temp.indexOf('[') == -1) && (value_temp.indexOf(']') == -1))
-                {
-                    console.log(variable_temp);
-                    //variables = variables.concat(variable_temp[i]);
-                }
+                variables = variables.concat(variable_temp[i]);
             }
-            
         }
 
         if (place[l].nodeName == "Cause")
@@ -6202,7 +6187,7 @@ path: the path node*/
                 variables = variables.concat(search_varDec(path_cause[pathindex_cause]));
             }
         }
-        console.log(variables);
+
         for (var p = 0; p < variables.length; p++)
         {
             var flag_exist = 0;
@@ -6232,7 +6217,7 @@ path: the path node*/
                 }
 
             }
-            
+
             if (flag_exist == 0)
             {
                 //alert('dec_num:'+dec_num)
@@ -6517,6 +6502,24 @@ language: the target code generation
 
         }
     }
+    if (isFixedPointGlobal&&( (language == 'C') || (language == 'C++')))
+	{
+		for(var inputn=0;inputn<input_variable.length;inputn++)
+		{
+			if(input_variable[inputn].isComposed!=1)
+			{
+				
+			//alert(input_variable[inputn].value[0][inputnn]=toInteger(input_variable[inputn].value[0][inputnn],wordLengthGlobal,fractionLengthGlobal));
+					if(IsNumeric(input_variable[inputn].value[0].toString()))
+					{
+						input_variable[inputn].value[0]=toInteger(input_variable[inputn].value[0],wordLengthGlobal,fractionLengthGlobal);					
+						//alert(input_variable[inputn].value[0]);
+					}
+				//}			
+			}
+
+		}
+	}
     //alert('size:'+input_variable[0].size[0])
     for (var inputn = 0; inputn < input_variable.length; inputn++)
     {
@@ -7184,7 +7187,7 @@ str: the code line*/
     //var patt1 = /[A-Za-z0-9\]\)]\*/g;
     // to differentiate the * operator with the pointer
 	// FIXME: seems not work Xingzhong (now fixed)
-	var patt1 = /(void|float|double|int|char|=)\*/g;
+	var patt1 = /(float|double|int|char|=)\*/g;
     var patt2 = /[A-Za-z0-9\]\)]\-/g;
     // to differentiate the - operator with the negative sign
     var str2 = str.replace(/\s/g, '');
@@ -7546,8 +7549,7 @@ e.g. var double xx = double *xx should return assign not oper
 FIXME
 */
  {
-     console.log("check line type");
-     console.log(str);
+
     var type;
     if (str.length == 0)
     type = 'null';
@@ -7581,13 +7583,11 @@ FIXME
                     else
                     {
 
-                        var funtemp = /(?:\W)\s+(\w)+\([^\(\)]*\)/g;
-                        if (str.indexOf("(") > str.indexOf("=") + 1 && str.indexOf(")") > str.indexOf("=") && funtemp.test(str))
-                        // This is a bug for type casting e.g. (double *) x or (int) y
-                        //if 
+
+                        if (str.indexOf("(") > str.indexOf("=") + 1 && str.indexOf(")") > str.indexOf("="))
                         // a = b(1,2) is not a function call.
                         {
-                            
+
                             type = 'funcCall';
 
                         }
@@ -7613,22 +7613,20 @@ FIXME
 
                         }
 
-                        else if (str.indexOf(' ') > 0){   
-                            type = 'varDec' ; 
-                        }
+                        else if (str.indexOf(' ') > 0)
+
+                        {   type = 'varDec' ; }
                         //variable declaration
                         else
                         {
-                            
-                            if (indexOfwhole(str, 'end') == 0){
-                                type = 'end';
-                            }
+                            if (indexOfwhole(str, 'end') == 0)
+                            //end
+                            type = 'end';
                             else
                             {
                                 type = 'undefined';
-                                console.log(str);
-                                console.log(type);
-                                throw("found undefined " + str);
+                                //alert('wrong code in line_type:'+str);
+                                //return false;
                             }
                         }
                     }
@@ -7639,6 +7637,8 @@ FIXME
 
     if (type == 'funcCall')
         type = vector_func_Matlab(str, var_list);
+    console.log("test the type of line");
+    console.log(str);
     console.log(type);
     return type;
 
@@ -8345,10 +8345,8 @@ function inputfunc(str, ind_level, language)
  language: the source code language
  */
  {
-     console.log(str);
-     console.log(language);
     var inputn = read_input(str);
-    if ( language == "C" && IORec && IORec.i){
+    if (IORec.i){
         /* patched by Xingzhong for IO  */
         console.log("user defined input found!");
         //console.log(inputn);
@@ -10346,14 +10344,10 @@ matlabmain: the matlab code
 */
 
  {
-    console.log(matlabmain);
-    if (matlabmain.indexOf(";") == -1){
-        //added by Xingzhong 
-        var matlabline = matlabmain;
-    }
-    else{
-        var matlabline = matlabmain.slice(0, matlabmain.indexOf(";"));
-    }
+
+    var matlabline = matlabmain.slice(0, matlabmain.indexOf(";"));
+
+
     if (matlabline.indexOf('[') > -1)
     //read all the contents in []
     {
@@ -10379,7 +10373,6 @@ matlabmain: the matlab code
         matlabline = matlabline + read_line(matlabmain_temp);
 
     }
-    console.log(matlabline);
     return matlabline;
 }
 
@@ -10476,11 +10469,14 @@ function matlabf(matlabmain, ind_level)
     matlabmain = delblank(matlabmain);
 
 
+
     while (matlabmain.length != 0)
     {
 
         var matlabline = read_line(matlabmain);
-        
+
+
+
         var type_line = line_type(matlabline, General_Keywords);
 
         if (type_line == 'assign' || type_line == 'oper' || type_line == 'funcCall')
@@ -11030,7 +11026,7 @@ function pathoutputfunc_c(path_def, path_content)
 {
     var outputn = read_pathoutput_c(path_def, path_content);
     var inputn = read_input(path_def);
-    if (IORec && IORec.o){
+    if (IORec.o){
         console.log("user defined output");
         console.log(IORec.o);
         var temp = new Array();
@@ -11376,8 +11372,8 @@ function autocomplete(data) {
 function replaceplus2(str){
 	// replace the double plus to normal expr eg. i++ => i=i+1
 	// Xingzhong
-	var patt1 = /(\w+)\s*\+\+/g;
-	var patt2 = /(\w+)\s*--/g;
+	var patt1 = /(\w+)\s*\+\+/;
+	var patt2 = /(\w+)\s*--/;
 	console.log(str);
 	str = str.replace(patt1, "$1 = $1 + 1");
 	str = str.replace(patt2, "$1 = $1 - 1");
