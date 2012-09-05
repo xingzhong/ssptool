@@ -5555,9 +5555,12 @@ function get_variableName(thingClass, language)
 			variable=variable.slice(1);
 		
 	}*/
-    else
+    else if (thingClass.value)
     {
         variable = thingClass.value[0];
+    }
+    else {
+        variable = "None";
     }
     return variable;
 }
@@ -6174,8 +6177,12 @@ path: the path node*/
             for (var i = 0; i < variable_temp.length; i = i + 1)
             {
                 var value_temp = variable_temp[i].value.toString();
-                if ((!IsNumeric(value_temp)) && (value_temp.indexOf(',') == -1) && (value_temp.indexOf('[') == -1) && (value_temp.indexOf(']') == -1))
-                variables = variables.concat(variable_temp[i]);
+                // Xingzhong added to fix type casting and missing variable decl
+                variables.push(variable_temp[i]);
+                if ((!IsNumeric(value_temp)) && (value_temp.indexOf(',') == -1) && (value_temp.indexOf('[') == -1) && (value_temp.indexOf(']') == -1)){
+                    //variables = variables.concat(variable_temp[i]);
+                }             
+                variables = variables.concat(variable_temp[i]);   
             }
         }
 
@@ -7187,7 +7194,7 @@ str: the code line*/
     //var patt1 = /[A-Za-z0-9\]\)]\*/g;
     // to differentiate the * operator with the pointer
 	// FIXME: seems not work Xingzhong (now fixed)
-	var patt1 = /(float|double|int|char|=)\*/g;
+	var patt1 = /(void|float|double|int|char|=)\*/g;
     var patt2 = /[A-Za-z0-9\]\)]\-/g;
     // to differentiate the - operator with the negative sign
     var str2 = str.replace(/\s/g, '');
@@ -7583,8 +7590,10 @@ FIXME
                     else
                     {
 
-
-                        if (str.indexOf("(") > str.indexOf("=") + 1 && str.indexOf(")") > str.indexOf("="))
+                        var funtemp = /(?:\W)\s+(\w)+\([^\(\)]*\)/g;
+                        if (str.indexOf("(") > str.indexOf("=") + 1 && str.indexOf(")") > str.indexOf("=") && funtemp.test(str))
+                    	// This is a bug for type casting e.g. (double *) x or (int) y
+                        //if (str.indexOf("(") > str.indexOf("=") + 1 && str.indexOf(")") > str.indexOf("="))
                         // a = b(1,2) is not a function call.
                         {
 
@@ -7625,6 +7634,7 @@ FIXME
                             else
                             {
                                 type = 'undefined';
+                                throw("found undefined " + str);
                                 //alert('wrong code in line_type:'+str);
                                 //return false;
                             }
@@ -8346,7 +8356,7 @@ function inputfunc(str, ind_level, language)
  */
  {
     var inputn = read_input(str);
-    if (IORec.i){
+    if ( language == "C" && IORec && IORec.i){
         /* patched by Xingzhong for IO  */
         console.log("user defined input found!");
         //console.log(inputn);
@@ -10345,7 +10355,13 @@ matlabmain: the matlab code
 
  {
 
-    var matlabline = matlabmain.slice(0, matlabmain.indexOf(";"));
+     if (matlabmain.indexOf(";") == -1){
+         //added by Xingzhong 
+         var matlabline = matlabmain;
+     }
+     else{
+         var matlabline = matlabmain.slice(0, matlabmain.indexOf(";"));
+     }
 
 
     if (matlabline.indexOf('[') > -1)
@@ -11026,7 +11042,7 @@ function pathoutputfunc_c(path_def, path_content)
 {
     var outputn = read_pathoutput_c(path_def, path_content);
     var inputn = read_input(path_def);
-    if (IORec.o){
+    if (IORec && IORec.o){
         console.log("user defined output");
         console.log(IORec.o);
         var temp = new Array();
@@ -11372,8 +11388,8 @@ function autocomplete(data) {
 function replaceplus2(str){
 	// replace the double plus to normal expr eg. i++ => i=i+1
 	// Xingzhong
-	var patt1 = /(\w+)\s*\+\+/;
-	var patt2 = /(\w+)\s*--/;
+	var patt1 = /(\w+)\s*\+\+/g;
+	var patt2 = /(\w+)\s*--/g;
 	console.log(str);
 	str = str.replace(patt1, "$1 = $1 + 1");
 	str = str.replace(patt2, "$1 = $1 - 1");
