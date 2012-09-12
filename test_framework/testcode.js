@@ -84,7 +84,7 @@ function run_test_c(){
         test( "Swap Value" , function(){
             
             reset_env();
-            CLBM_Source_Code = "void main()\n\n{\n\n  int *p;\n\n  int *q;\n\n   p=q;\n\n  *p=*q;\n\n  }"
+            CLBM_Source_Code = "void main()\n\n{\n\n  int *p;\n\n  int *q;\n\n  int *x;\n\n   *p=1;\n\n   *q=2;\n\n   *x=*p;\n\n   *p=*q;\n\n   *q=*x;\n\n  }"
             
             ok( true, displayXML(CLBM_Source_Code));
             language = "C";
@@ -117,6 +117,22 @@ function run_test_c(){
             
             reset_env();
             CLBM_Source_Code = "//x -- INPUT\n//n -- INPUT\ndouble average(double *x, int n){\n int idx;\n double sum=0;\n for (idx = 0; idx<n; idx++){\n  sum = sum + x[idx];\n }\n sum = sum/n;\n return sum;\n}"
+            
+            ok( true, displayXML(CLBM_Source_Code));
+            language = "C";
+            C_XML_CLBM();
+            ok(true, displayXML(XML_CodetoCLBM));
+            
+            C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
+            ok( true, displayC(C_Code));
+            Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
+            ok( true, displayMatlab(Matlab_Code));
+            });
+            
+        test( "fft_example_rc" , function(){
+            
+            reset_env();
+            CLBM_Source_Code = "void main()\n\n{\n  double  input[] = {1.0, 1.0, 1.0, 1.0 ,1.0, 1.0, 1.1 ,1.4};\n  fftw_complex   *out;\n  fftw_plan       p;\n  int size;\n  int memory;\n  size=sizeof(fftw_complex);\n  memory=size*5;\n  out = (fftw_complex*) malloc(memory);\n  p = fftw_plan_dft_r2c_1d(8, input, out, FFTW_ESTIMATE);\n  fftw_execute(p);\n\n}\n"
             
             ok( true, displayXML(CLBM_Source_Code));
             language = "C";
@@ -196,7 +212,7 @@ function run_test_c(){
         test( "typecast" , function(){
             
             reset_env();
-            CLBM_Source_Code = "//xx -- INPUT\n//zz -- INPUT\n//yy -- OUTPUT\nvoid bar(void *xx, double *yy, double zz){\n    double *x = (double *) xx ;\n    *yy  = *x + fun(zz);\n}"
+            CLBM_Source_Code = "//xx -- INPUT\n//zz -- INPUT\n//yy -- OUTPUT\nvoid bar(void *xx, double *yy, double zz){\n    double *x = (double *) xx ;\n    *yy  = *x + cos(zz);\n}"
             
             ok( true, displayXML(CLBM_Source_Code));
             language = "C";
