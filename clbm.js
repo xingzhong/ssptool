@@ -109,6 +109,10 @@ function reset_env(){
 	CBase[5] = ['SRFFT', 'Output2', 'Output2'];
 	CBase[6] = ['DeModulator_QPSK', 'Output2', 'Dest'];
 	CBase[7] = ['DeModulator_16QAM', 'Output2', 'Dest'];
+	
+    isFixedPointGlobal = 0;
+    wordLengthGlobal = 16;
+    fractionLengthGlobal = 8;
 }
 
 /* Xingzhong's Seperate Line */
@@ -120,8 +124,7 @@ function getSourceCode(SourceCode)
 }
 
 
-function passXMLCode(AbstractionType)
- {
+function passXMLCode(AbstractionType){
 
     if (AbstractionType == 'Matlab')
     {
@@ -364,12 +367,8 @@ function getImplementationCode(InferenceType)
     }
 
 
-    CLBM_XML_Code = "";
-    CLBM_XML_Hardware_Code = "";
-    isFixedPointGlobal = 1;
-    wordLengthGlobal = 16;
-    fractionLengthGlobal = 8;
-	//reset_env();
+    
+	reset_env();
 
 }
 
@@ -5811,7 +5810,7 @@ place: the place node in xml
 */
  {
 	
-	
+	 console.log(place);
     var variables = new Array();
     var p = 0;
     //alert(place.attributes.getNamedItem('name').value)
@@ -6023,25 +6022,27 @@ function get_variableName(thingClass, language)
     language: the target code language 
 */
 {
-    if (thingClass.isComposed == 1)
-        variable = Vector_code(thingClass, language);
-    else if (thingClass.isElement == 1)
-        variable = Element_code(thingClass, language);
-    /*else if(thingClass.isPointer==1 && language=='Matlab')
-	{
+	if (thingClass) {
+    	if (thingClass.isComposed == 1)
+        	variable = Vector_code(thingClass, language);
+    	else if (thingClass.isElement == 1)
+        	variable = Element_code(thingClass, language);
+    	/*else if(thingClass.isPointer==1 && language=='Matlab')
+		{
 		variable=thingClass.value[0]+'.'+thingClass.value[1];
 		if(variable.indexOf('*')==0 || variable.indexOf('&')==0)
 			variable=variable.slice(1);
 		
 	}*/
-    else if (thingClass.value)
-    {
+    	else if (thingClass.value)
+    	{
         variable = thingClass.value[0];
     }
-    else {
+    	else {
         variable = "None";
     }
-    return variable;
+    	return variable;
+	}
 }
 
 function get_type(thingClass)
