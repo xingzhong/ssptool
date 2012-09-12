@@ -657,7 +657,7 @@ language: the target code language
     if (language == 'CUDA') {
         path_input_variable[0] = '';
         path_output_variable[0] = '';
-        str = creat_func(path_input_variable, path_output_variable, 'main', '', language);
+        // str = creat_func(path_input_variable, path_output_variable, 'main', '', language); //delet by Lei Zhou2
         output = insertString(output, str);
         ind_level = ind_level + 1;
     }
