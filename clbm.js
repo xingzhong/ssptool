@@ -749,6 +749,7 @@ language: the target code language
     // add by liu Apr.04.2011 4PM
     for (var i = 0; i < path1.length; i++)
     {
+        console.log(output);
         if ((path1[i].parentNode.nodeName == 'Cause') && ((((language_constant == 'CUDA') || (language_constant == 'OpenCL')) && (path1[i].parentNode.attributes.getNamedItem("type") == null)) || ((language_constant != 'CUDA') && (language_constant != 'OpenCL'))))
         {
             continue;
@@ -852,7 +853,7 @@ language: the target code language
                 }
                 else
                 {
-                    if (classFuncFlag == 0){
+                    if (classFuncFlag == 0 && func_name != 'main'){
                     // add by liu Apr16.2011 1AM
                     output = insertString(output, creat_func(path1_input_variable, path1_output_variable, func_name, class_name, language));
 					
@@ -1127,15 +1128,17 @@ language: the target code language
 
             if (path1[i].parentNode.nodeName != 'Cause')
             {
-				
-                if ((language == 'C' || language == 'C++') && path1_output_variable[0] != '')
+                if ((language == 'C' || language == 'C++') && path1_output_variable[0] && path1_output_variable[0]!=''){
                 	output = insertString(output, indent(ind_level) + return_out(get_variableName(path1_output_variable[0], language)));
+                	
+            	}
+            	
                 if (! (i == 0 && language == 'Matlab'))
                 {
                     ind_level -= 1;
-
                     output = insertString(output, indent(ind_level) + f_end(language, func_name));
                 }
+                
             }
             output = insertString(output, "<br /><br />")
         }
