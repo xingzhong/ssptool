@@ -36,6 +36,8 @@ for file in files :
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, \"\", \"Matlab\");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, \"\", \"CUDA\");
+            ok( true, displayC(CUDA_Code));
             });
             """)
 target.write("};\n")
@@ -72,6 +74,9 @@ for file in files :
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, \"\", \"Matlab\");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, \"\", \"CUDA\");
+            ok( true, displayC(CUDA_Code));
+            console.log(CUDA_Code)
             });
             """)
 target.write("};\n")

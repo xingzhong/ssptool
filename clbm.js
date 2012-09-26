@@ -165,15 +165,13 @@ function getFloatingFixedSelection(fixedPointSelection)
 }
 
 
-function getXMLHardwareCode(XMLHardwareCode)
- {
+function getXMLHardwareCode(XMLHardwareCode){
     //alert(XMLCode);
     CLBM_XML_Hardware_Code = CLBM_XML_Hardware_Code + XMLHardwareCode + '\n';
 
 }
 
-function getImplementationCode(InferenceType)
- {
+function getImplementationCode(InferenceType){
     CLBM_Temp = '';
     while (CLBM_XML_Code.indexOf(' CLBM_QOUTE ') > -1)
     {
@@ -388,17 +386,22 @@ function Matlab_XML_CLBM()
     matlab = code_format(matlab, 'Matlab');
     //matlab=matlabcode_format(matlab);// Added by Ning
 
-
+    console.log(matlab);
     if (matlab.indexOf("function ") != -1)
+    // define matlabl function in here Xingzhong
     {
-        var matlabmain = matlab.slice(0, matlab.indexOf("function "))
-        func = matlab.slice(matlab.indexOf("function "))
+        var matlabmain = matlab.slice(0, matlab.indexOf("function "));
+        var func = matlab.slice(matlab.indexOf("function "));
+        var reg = /(?:function\s+(?:\w+=)?)(\w+)\(.*\)/;
+        var func_name = matlab.match(reg)[1];
     }
     else
     {
+    // only matlab script
         var matlabmain = matlab;
         func = "";
     }
+
     matlabmain = delblank(matlabmain);
 
     //seq=0
@@ -408,17 +411,18 @@ function Matlab_XML_CLBM()
 
     if (matlabmain.length == 0)
     {
-        matlabmain = matlab.slice(matlab.indexOf('function') + 8, matlab.indexOf(";") + 1);
+        matlabmain = matlab.slice(matlab.indexOf(';')+2, matlab.lastIndexOf("end"));
     }
-
-
-
+    console.log(matlabmain);
     var matlabline = matlabmain.slice(0, matlabmain.indexOf(";"));
     var lab0 = 0
+    
+    
     if (matlabmain.length != 0)
     {
 
-        xml += "<Path name=\"" + "main\" >" + "\n"
+        //xml += "<Path name=\"" + "main\" >" + "\n"
+        xml += "<Path name=\"" + func_name + "\" >" + "\n"
         ind_level += 1;
         lab0 = 1
 

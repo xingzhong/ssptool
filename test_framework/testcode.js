@@ -15,6 +15,8 @@ function run_test_c(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
             });
             
         test( "Dot Product" , function(){
@@ -31,6 +33,8 @@ function run_test_c(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
             });
             
         test( "FIR Filter" , function(){
@@ -47,6 +51,8 @@ function run_test_c(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
             });
             
         test( "IIR Filter" , function(){
@@ -63,6 +69,8 @@ function run_test_c(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
             });
             
         test( "Simple Transmitter" , function(){
@@ -79,6 +87,8 @@ function run_test_c(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
             });
             
         test( "Swap Value" , function(){
@@ -95,6 +105,8 @@ function run_test_c(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
             });
             
         test( "Vector Addition" , function(){
@@ -111,6 +123,8 @@ function run_test_c(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
             });
             
         test( "average" , function(){
@@ -127,6 +141,8 @@ function run_test_c(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
             });
             
         test( "fft_example_rc" , function(){
@@ -143,6 +159,8 @@ function run_test_c(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
             });
             
         test( "min" , function(){
@@ -159,6 +177,8 @@ function run_test_c(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
             });
             
         test( "parameterIO" , function(){
@@ -175,6 +195,8 @@ function run_test_c(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
             });
             
         test( "pointer" , function(){
@@ -191,6 +213,8 @@ function run_test_c(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
             });
             
         test( "pointerIO" , function(){
@@ -207,6 +231,8 @@ function run_test_c(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
             });
             
         test( "typecast" , function(){
@@ -223,6 +249,8 @@ function run_test_c(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
             });
             };
 function run_test_matlab(){
@@ -241,6 +269,9 @@ function run_test_matlab(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
+            console.log(CUDA_Code)
             });
             
         test( "FIR Filter 1" , function(){
@@ -257,6 +288,9 @@ function run_test_matlab(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
+            console.log(CUDA_Code)
             });
             
         test( "FIR Filter 2" , function(){
@@ -273,6 +307,9 @@ function run_test_matlab(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
+            console.log(CUDA_Code)
             });
             
         test( "Simple Transmitter" , function(){
@@ -289,6 +326,9 @@ function run_test_matlab(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
+            console.log(CUDA_Code)
             });
             
         test( "Vector Addition" , function(){
@@ -305,6 +345,9 @@ function run_test_matlab(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
+            console.log(CUDA_Code)
             });
             
         test( "Vector Assignment" , function(){
@@ -321,6 +364,9 @@ function run_test_matlab(){
             ok( true, displayC(C_Code));
             Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
             ok( true, displayMatlab(Matlab_Code));
+            CUDA_Code = translation_CLBM(XML_CodetoCLBM, "", "CUDA");
+            ok( true, displayC(CUDA_Code));
+            console.log(CUDA_Code)
             });
             };
 function run_test_cpp(){
