@@ -8053,7 +8053,7 @@ function indexOfKeywords(str, keywords)
     return Index_Keyword;
 }
 
-function line_type(str, keywords)
+function line_type(str, keywords, language)
 /*Dertermin the type of a code line
 str: the codeline
 keywords: the array of keywords that have to be identified
@@ -8064,14 +8064,15 @@ e.g. var double xx = double *xx should return assign not oper
 FIXME
 */
  {
-
+	console.log(str);
     var type;
     if (str.length == 0)
-    type = 'null';
+    	type = 'null';
     //Blank line
     else
     {
         key = indexOfKeywords(str, keywords);
+		
         if (key[0] > -1)
         {
             type = key[1];
@@ -8093,24 +8094,28 @@ FIXME
                 if (str.indexOf("=") > 0)
                 {
                     if (str.indexOf('<=') > -1)
-                    type = 'assign';
+                    	type = 'assign';
                     //value assignment; ???? need to modify to support more VHDL code
                     else
                     {
-
                         var funtemp = /(?:\W)\s+(\w)+\([^\(\)]*\)/g;
                         if (str.indexOf("(") > str.indexOf("=") + 1 && str.indexOf(")") > str.indexOf("=") && funtemp.test(str))
                     	// This is a bug for type casting e.g. (double *) x or (int) y
                         //if (str.indexOf("(") > str.indexOf("=") + 1 && str.indexOf(")") > str.indexOf("="))
                         // a = b(1,2) is not a function call.
+						/* Note Xingzhong: Matlab and C are different 
+						 	 in Matlab, 
+						   		the type of 'Y = X(1,2)' is depdend on the type of X
+								if X is a function name, then this is function call 
+								if X is a matrix, then (1,2) is the matrix index
+						*/
                         {
-
-                            type = 'funcCall';
+								type = 'funcCall';
 
                         }
-                        else
+                        else{
                             type = 'assign';
-                        //value assignment;	
+						}
                     }
                 }
                 else
@@ -8155,9 +8160,6 @@ FIXME
 
     if (type == 'funcCall')
         type = vector_func_Matlab(str, var_list);
-    console.log("test the type of line");
-    console.log(str);
-    console.log(type);
     return type;
 
 }
@@ -9629,12 +9631,13 @@ output: the array of output variables
 
 }
 
-function Set_Output_size_type_C(input, output) //Add by Lei Zhou
+function Set_Output_size_type_C(input, output) {
+//Add by Lei Zhou
 /*Set the type size of output variables according to the input value
 input: the array of input variables/values
 output: the array of output variables
 */
- {
+
     var size_output = '1';
     var type_output = 'undefined';
     
@@ -9702,6 +9705,7 @@ var func;
 var lab;
 
 var General_Keywords = ['if', 'for', 'while', 'function', 'switch', 'else', 'elseif'];
+var MatlabBuildInName = ['length', 'max', 'min'];
 //GLobal Constant
 var General_Type_Keywords = ['int', 'double', 'float', 'unsigned int', 'boolet', 'cvec'];
 
@@ -11279,16 +11283,14 @@ function matlabf(matlabmain, ind_level)
     var fun = ""
     matlabmain = delblank(matlabmain);
 
-
+	
 
     while (matlabmain.length != 0)
     {
 
         var matlabline = read_line(matlabmain);
 
-
-
-        var type_line = line_type(matlabline, General_Keywords);
+        var type_line = line_type(matlabline, General_Keywords, 'Matlab');
 
         if (type_line == 'assign' || type_line == 'oper' || type_line == 'funcCall')
         // Preprocess each line of the Matlab, If composit operation is included in () or [], add some lines to matlabmain
