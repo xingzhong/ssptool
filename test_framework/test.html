@@ -62,7 +62,7 @@
 	test( "Matlab Test Test", function(){
 		reset_env();
 		language = "Matlab";
-		CLBM_Source_Code = "function y = fun(x)\n y = x+1\n end";
+		CLBM_Source_Code = "function y = fun(x)\n y = x+1";
 		ok( true, displayXML(CLBM_Source_Code));
 		Matlab_XML_CLBM();
 		ok(true, displayXML(XML_CodetoCLBM));

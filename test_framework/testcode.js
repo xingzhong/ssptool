@@ -258,7 +258,7 @@ function run_test_matlab(){
         test( "Adaptive Modulator" , function(){
             
             reset_env();
-            CLBM_Source_Code = "if(Signal_Arrival==1)\n\n    y=adaptive_mod(x,gamma);\n\nend\n\n\n\nfunction y=adaptive_mod(x, gamma)\n\nif (gamma>gamma_0)\n\n     y=mod_16QAM(x);\n\n  else\n\n     y=mod_QPSK(x);\n\nend\n\nend"
+            CLBM_Source_Code = "function y=adaptive_mod(x, gamma)\n\nif (gamma>gamma_0)\n\n     y=mod_16QAM(x);\n\n  else\n\n     y=mod_QPSK(x);\n\nend\n\nend"
             
             ok( true, displayXML(CLBM_Source_Code));
             language = "Matlab";
@@ -296,7 +296,7 @@ function run_test_matlab(){
         test( "FIR Filter 2" , function(){
             
             reset_env();
-            CLBM_Source_Code = "signal=[1.1,2.3,0.6];\n\ncoef=[0.3,0.8,0.4];\n\noutput=FIR_filter(signal,coef);\n\n\n\nfunction y=FIR_filter(x,A)\n\n    N_x=length(x);\n\n    N_A=length(A);\n\n    for(n=1:N_A+N_x-1)\n\n        y(n)=0;\n\n        for(i=1:N_x)\n\n            if(n>i)\n\n                y(n)=y(n)+x(i)*A(n-i);\n\n            end\n\n        end\n\n    end\n\nend"
+            CLBM_Source_Code = "function y=FIR_filter(x,A)\n\n    N_x=length(x);\n\n    N_A=length(A);\n\n    for(n=1:N_A+N_x-1)\n\n        y(n)=0;\n\n        for(i=1:N_x)\n\n            if(n>i)\n\n                y(n)=y(n)+x(i)*A(n-i);\n\n            end\n\n        end\n\n    end\n\nend"
             
             ok( true, displayXML(CLBM_Source_Code));
             language = "Matlab";
@@ -315,7 +315,7 @@ function run_test_matlab(){
         test( "Simple Transmitter" , function(){
             
             reset_env();
-            CLBM_Source_Code = "if (Signal_arrival==1)\n Signal_Mod=Transmitter(Signal_Bit);\nend\n\nfunction Signal_Mod=Transmitter(Signal_Bit)\n Signal_Code_Bit=Channel_Coding(Signal_Bit);\n Signal_Mod=Modulation(Signal_Code_Bit);\nend"
+            CLBM_Source_Code = "function Signal_Mod=Transmitter(Signal_Bit)\n Signal_Code_Bit=Channel_Coding(Signal_Bit);\n Signal_Mod=Modulation(Signal_Code_Bit);\nend"
             
             ok( true, displayXML(CLBM_Source_Code));
             language = "Matlab";

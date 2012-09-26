@@ -387,42 +387,50 @@ function Matlab_XML_CLBM()
     //matlab=matlabcode_format(matlab);// Added by Ning
 
     console.log(matlab);
+	var mtype = "function"; // Xingzhong added to indicte function or script
     if (matlab.indexOf("function ") != -1)
     // define matlabl function in here Xingzhong
     {
         var matlabmain = matlab.slice(0, matlab.indexOf("function "));
         var func = matlab.slice(matlab.indexOf("function "));
-        var reg = /(?:function\s+(?:\w+=)?)(\w+)\(.*\)/;
-        var func_name = matlab.match(reg)[1];
+        var reg = /(?:function\s+)((?:\w+\s*=\s*)?(\w+)\([^;]*\));/;
+		var reg_match = matlab.match(reg);
+        var func_name = reg_match[2];
+		var func_def = reg_match[1];
     }
     else
     {
     // only matlab script
         var matlabmain = matlab;
         func = "";
+		mtype = 'script';
     }
-
+	
     matlabmain = delblank(matlabmain);
 
     //seq=0
     var xml = ""
     //lab=0
     var ind_level = 0;
-
+	
     if (matlabmain.length == 0)
     {
-        matlabmain = matlab.slice(matlab.indexOf(';')+2, matlab.lastIndexOf("end"));
+        matlabmain = matlab.slice(matlab.indexOf(';'));
     }
-    console.log(matlabmain);
-    var matlabline = matlabmain.slice(0, matlabmain.indexOf(";"));
+    
+    var matlabline = matlabmain;
     var lab0 = 0
     
     
     if (matlabmain.length != 0)
     {
-
-        //xml += "<Path name=\"" + "main\" >" + "\n"
-        xml += "<Path name=\"" + func_name + "\" >" + "\n"
+		if (mtype == "script"){
+        	xml += "<Path name=\"" + "main\" >" + "\n";
+		}
+		else {
+			xml += "<Path name=\"" + func_name + "\" >" + "\n";
+			xml += inputfunc(func_def, ind_level, 'Matlab');
+		}
         ind_level += 1;
         lab0 = 1
 
@@ -430,8 +438,13 @@ function Matlab_XML_CLBM()
     xml += matlabf(matlabmain, ind_level);
     if (lab0 == 1)
     {
-
-        xml += "</Path>"
+		if (mtype == "script"){
+        	xml += "</Path>";
+		}
+		else{
+			xml += outputfunc(func_def, ind_level, 'Matlab') + "</Path>";
+		}
+        
     }
     lab0 = 0
 
@@ -8064,7 +8077,6 @@ e.g. var double xx = double *xx should return assign not oper
 FIXME
 */
  {
-	console.log(str);
     var type;
     if (str.length == 0)
     	type = 'null';
@@ -8093,11 +8105,15 @@ FIXME
             {
                 if (str.indexOf("=") > 0)
                 {
-                    if (str.indexOf('<=') > -1)
+					
+                    if (str.indexOf('<=') > -1){
+						
                     	type = 'assign';
+					}
                     //value assignment; ???? need to modify to support more VHDL code
                     else
                     {
+						
                         var funtemp = /(?:\W)\s+(\w)+\([^\(\)]*\)/g;
                         if (str.indexOf("(") > str.indexOf("=") + 1 && str.indexOf(")") > str.indexOf("=") && funtemp.test(str))
                     	// This is a bug for type casting e.g. (double *) x or (int) y
@@ -8110,9 +8126,11 @@ FIXME
 								if X is a matrix, then (1,2) is the matrix index
 						*/
                         {
-								type = 'funcCall';
-
-                        }
+							type = 'funcCall';
+                       }
+						else if(/length|max|min|sort/g.exec(str)){
+							type = 'funcCall';
+						}
                         else{
                             type = 'assign';
 						}
@@ -8937,7 +8955,7 @@ function input_xml(inputn, ind_level, language)
         }
     }
     //console.log(inputn);
-    console.log(place);
+    //console.log(place);
 
     if (inputn.length == 0)
     {}
@@ -9016,7 +9034,6 @@ function inputfunc(str, ind_level, language)
         inputn = temp;
     }
     var place = input_xml(inputn, ind_level, language);
-    console.log(place);
     return place;
 }
 
@@ -11297,7 +11314,6 @@ function matlabf(matlabmain, ind_level)
         {
             matlabmain = matlabmain.slice(matlabline.length);
             matlabline = line_preprocess(matlabline);
-
             matlabmain = matlabline + matlabmain;
             matlabline = read_line(matlabmain);
             type_line = line_type(matlabline, General_Keywords);
@@ -11307,7 +11323,9 @@ function matlabf(matlabmain, ind_level)
         //     matlabline=matlabline.replace(/;/g,"")
         //alert(matlabline)
 
-
+		console.log(matlabline);
+		console.log(type_line);
+		
         switch (type_line)
         {
         case 'null':
@@ -11516,6 +11534,8 @@ function matlabf(matlabmain, ind_level)
             //alert('i am here funccall')
             place = placefunc(matlabline, ind_level)
             fun += place
+			//console.log(place);
+			//console.log(fun);
             matlabmain = matlabmain.slice(matlabline.length)
             matlabmain = delblank(matlabmain);
             //alert('the matlab code is '+matlabmain)
