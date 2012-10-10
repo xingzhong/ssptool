@@ -1,0 +1,324 @@
+<Path name="main" >
+<Place name="Input"> 
+<Thing>
+        <Place name="0">
+            <Thing>
+                <Place name="0">
+                    <Thing>1.1</Thing>
+                    <Action>SET</Action>
+                </Place>
+                <Place name="1">
+                    <Thing>2.3</Thing>
+                    <Action>SET</Action>
+                </Place>
+                <Place name="2">
+                    <Thing>0.6</Thing>
+                    <Action>SET</Action>
+                </Place>
+                <Place name="size">
+                    <Thing>3</Thing>
+                    <Action>SET</Action>
+                </Place>
+            </Thing>
+            <Action>SET</Action>
+        </Place>
+        <Place name="size">
+            <Thing>1</Thing>
+            <Action>SET</Action>
+        </Place>
+    </Thing>
+    <Action> input </Action>
+</Place>
+
+<Place name="Equal"> 
+    <Thing>null</Thing>
+    <Action>Equal</Action>
+</Place>
+<Place name="Output"> 
+<Thing>signal</Thing>
+    <Action> output </Action>
+</Place>
+<Place name="Input"> 
+<Thing>
+        <Place name="0">
+            <Thing>
+                <Place name="0">
+                    <Thing>0.3</Thing>
+                    <Action>SET</Action>
+                </Place>
+                <Place name="1">
+                    <Thing>0.8</Thing>
+                    <Action>SET</Action>
+                </Place>
+                <Place name="2">
+                    <Thing>0.4</Thing>
+                    <Action>SET</Action>
+                </Place>
+                <Place name="size">
+                    <Thing>3</Thing>
+                    <Action>SET</Action>
+                </Place>
+            </Thing>
+            <Action>SET</Action>
+        </Place>
+        <Place name="size">
+            <Thing>1</Thing>
+            <Action>SET</Action>
+        </Place>
+    </Thing>
+    <Action> input </Action>
+</Place>
+
+<Place name="Equal"> 
+    <Thing>null</Thing>
+    <Action>Equal</Action>
+</Place>
+<Place name="Output"> 
+<Thing>coef</Thing>
+    <Action> output </Action>
+</Place>
+<Place name="Declaration">
+<Thing name="output">
+<Place name="size">
+<Thing>5</Thing>
+</Place>
+<Place name="type">
+<Thing>double</Thing>
+<Action>SET</Action>
+</Place>
+</Thing>
+</Place>
+<Place name="Input"> 
+    <Place name="Input"> 
+<Thing>signal</Thing>
+        <Action> input </Action>
+    </Place>
+    <Place name="Input"> 
+<Thing>coef</Thing>
+        <Action> input </Action>
+    </Place>
+</Place>
+
+<Place name="FIR_filter"> 
+<Path name="FIR_filter"> 
+<Place name="Input"> 
+    <Place name="Input"> 
+<Thing>
+<Place name="4">
+                <Thing>double x</Thing>
+                <Action>GET</Action>
+</Place>
+</Thing>
+        <Action> input </Action>
+    </Place>
+    <Place name="Input"> 
+<Thing>
+<Place name="4">
+                <Thing>double A</Thing>
+                <Action>GET</Action>
+</Place>
+</Thing>
+        <Action> input </Action>
+    </Place>
+</Place>
+
+<Place name="Declaration">
+<Thing name="n">
+<Place name="type">
+<Thing>int</Thing>
+<Action>SET</Action>
+</Place>
+</Thing>
+</Place>
+<Place name="Declaration">
+<Thing name="y">
+<Place name="size">
+<Thing>5</Thing>
+</Place>
+<Place name="type">
+<Thing>double</Thing>
+<Action>SET</Action>
+</Place>
+</Thing>
+</Place>
+<Place name="Declaration">
+<Thing name="i">
+<Place name="type">
+<Thing>int</Thing>
+<Action>SET</Action>
+</Place>
+</Thing>
+</Place>
+<Place name="Input"> 
+<Thing>0</Thing>
+    <Action> input </Action>
+</Place>
+
+<Place name="Equal"> 
+    <Thing>null</Thing>
+    <Action>Equal</Action>
+</Place>
+<Place name="Output"> 
+<Thing>n</Thing>
+    <Action> output </Action>
+</Place>
+<Cause name="n&lt; 5" type="loop">
+<Path name=" f_nS5" >
+<Place name="Input"> 
+<Thing>0</Thing>
+    <Action> input </Action>
+</Place>
+
+<Place name="Equal"> 
+    <Thing>null</Thing>
+    <Action>Equal</Action>
+</Place>
+<Place name="Output"> 
+<Thing>
+<Place name="n+1">
+            <Thing>y</Thing>
+            <Action>GET</Action>
+</Place>
+</Thing>
+    <Action> output </Action>
+</Place>
+<Place name="Input"> 
+<Thing>0</Thing>
+    <Action> input </Action>
+</Place>
+
+<Place name="Equal"> 
+    <Thing>null</Thing>
+    <Action>Equal</Action>
+</Place>
+<Place name="Output"> 
+<Thing>i</Thing>
+    <Action> output </Action>
+</Place>
+<Cause name="i&lt; 3" type="loop">
+<Path name=" f_iS3" >
+<Cause name="n&gt; i" type="once">
+<Path name=" f_nLi" >
+<Place name="Input"> 
+    <Place name="Input"> 
+<Thing>
+<Place name="i+1">
+                <Thing>x</Thing>
+                <Action>GET</Action>
+</Place>
+</Thing>
+        <Action> input </Action>
+    </Place>
+    <Place name="Input"> 
+<Thing>
+<Place name="n-i+1">
+                <Thing>A</Thing>
+                <Action>GET</Action>
+</Place>
+</Thing>
+        <Action> input </Action>
+    </Place>
+</Place>
+
+<Place name="*"> 
+    <Thing>null</Thing>
+    <Action>*</Action>
+</Place>
+<Place name="Output"> 
+<Thing>
+<Place name="i+1">
+            <Thing>var_x</Thing>
+            <Action>GET</Action>
+</Place>
+</Thing>
+    <Action> output </Action>
+</Place>
+<Place name="Input"> 
+    <Place name="Input"> 
+<Thing>
+<Place name="n+1">
+                <Thing>y</Thing>
+                <Action>GET</Action>
+</Place>
+</Thing>
+        <Action> input </Action>
+    </Place>
+    <Place name="Input"> 
+<Thing>
+<Place name="i+1">
+                <Thing>var_x</Thing>
+                <Action>GET</Action>
+</Place>
+</Thing>
+        <Action> input </Action>
+    </Place>
+</Place>
+
+<Place name="+"> 
+    <Thing>null</Thing>
+    <Action>+</Action>
+</Place>
+<Place name="Output"> 
+<Thing>
+<Place name="n+1">
+            <Thing>y</Thing>
+            <Action>GET</Action>
+</Place>
+</Thing>
+    <Action> output </Action>
+</Place>
+</Path>
+ </Cause>
+<Place name="Input"> 
+    <Place name="Input"> 
+<Thing>i</Thing>
+        <Action> input </Action>
+    </Place>
+    <Place name="Input"> 
+<Thing>1</Thing>
+        <Action> input </Action>
+    </Place>
+</Place>
+
+<Place name="+"> 
+    <Thing>null</Thing>
+    <Action>+</Action>
+</Place>
+<Place name="Output"> 
+<Thing>i</Thing>
+    <Action> output </Action>
+</Place>
+</Path>
+</Cause>
+<Place name="Input"> 
+    <Place name="Input"> 
+<Thing>n</Thing>
+        <Action> input </Action>
+    </Place>
+    <Place name="Input"> 
+<Thing>1</Thing>
+        <Action> input </Action>
+    </Place>
+</Place>
+
+<Place name="+"> 
+    <Thing>null</Thing>
+    <Action>+</Action>
+</Place>
+<Place name="Output"> 
+<Thing>n</Thing>
+    <Action> output </Action>
+</Place>
+</Path>
+</Cause>
+<Place name="Return">
+<Thing>y</Thing>
+<Action>return</Action>
+</Place>
+</Path>
+</Place>
+<Place name="Output"> 
+<Thing>output</Thing>
+    <Action> output </Action>
+</Place>
+</Path>

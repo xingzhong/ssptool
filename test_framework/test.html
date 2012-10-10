@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>SSP Tool Test Suite</title>
+	<link rel="stylesheet" href="qunit.css">
+	<script src="qunit.js"></script>
+	<script src="jquery.js"></script>
+	<script type="text/javascript" src="testcode.js"></script>
+	<script type="text/javascript" language="Javascript" src="../clbm.js"></script>	
+	<style type="text/css">
+	textarea#xml{	
+		border:none;
+		width: 800px;
+		height: 200px;
+		readonly : "readonly";
+	}
+	</style>
+
+</head>
+<body>
+	
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script>
+	function displayXML(xmldoc){
+		return "<br><textarea id='xml'>"+xmldoc+"</textarea>";
+	}
+	function displayC(cdoc){
+		return "<br><code>"+cdoc.replace("\n", "<br>")+"</code>";
+	}
+	function displayMatlab(mdoc){
+		return "<br><code>"+mdoc.replace("\n", "<br>")+"</code>";
+	}
+	
+	module( "Utility Test" );
+    test( "This is SSP test suite", function() {
+      	ok( true, "We are doing ssp test" );
+		ok( true, displayXML("<place>\n<path>456</path>\n</place>") );
+		ok( true, displayC("int main(){\n int x;\n return 1;\n}") );
+    });
+	test( "Hello Test World", function (){
+		ok( true, "test ok");
+	});
+	module( "C Test");	
+	test( "C Test Test", function (){
+		reset_env();
+		language = "C";
+		CLBM_Source_Code = "int fun(int x){\nreturn x;\n}";
+		ok( true, displayXML(CLBM_Source_Code));
+		C_XML_CLBM();
+		ok( true, displayXML(XML_CodetoCLBM));
+		C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
+		ok( true, displayC(C_Code));
+		Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
+		ok( true, displayMatlab(Matlab_Code));
+	});
+	run_test_c();
+	module( "C++ Test");
+	run_test_cpp();
+	module( "Matlab Test");
+	test( "Matlab Test Test", function(){
+		reset_env();
+		language = "Matlab";
+		CLBM_Source_Code = "function y = fun(x)\n y = x+1";
+		ok( true, displayXML(CLBM_Source_Code));
+		Matlab_XML_CLBM();
+		ok(true, displayXML(XML_CodetoCLBM));
+		C_Code = translation_CLBM(XML_CodetoCLBM, "", "C");
+		ok( true, displayC(C_Code));
+		Matlab_Code = translation_CLBM(XML_CodetoCLBM, "", "Matlab");
+		ok( true, displayMatlab(Matlab_Code));
+	});
+	run_test_matlab();
+	
+  </script>
+<p align="right" id="qunit-userAgent">Stevens SSP Xingzhong Aug 2012&nbsp</p>
+</body>
+</html>

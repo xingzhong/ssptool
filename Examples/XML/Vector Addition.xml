@@ -1,0 +1,315 @@
+<Path name="main" >
+    <Place name="Input"> 
+        <Thing name="5">
+            <Place name="type">
+                <Thing>int</Thing>
+                <Action>SET</Action>
+            </Place>
+        </Thing>
+        <Action> input </Action>
+    </Place>
+
+    <Place name="Equal"> 
+        <Thing>null</Thing>
+        <Action>Equal</Action>
+    </Place>
+    <Place name="Output"> 
+        <Thing name="N">
+            <Place name="type">
+                <Thing>int</Thing>
+                <Action>SET</Action>
+            </Place>
+        </Thing>
+        <Action> output </Action>
+    </Place>
+    <Place name="Input"> 
+        <Thing>
+            <Place name="0">
+                <Thing>
+                    <Place name="0">
+                        <Thing>
+                            0.1
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                    <Place name="1">
+                        <Thing>
+                            -1
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                    <Place name="2">
+                        <Thing>
+                            2.0
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                    <Place name="3">
+                        <Thing>
+                            7.2
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                    <Place name="4">
+                        <Thing>
+                            9.1
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                    <Place name="size">
+                        <Thing>
+                            5
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                </Thing>
+                <Action>SET</Action>
+            </Place>
+            <Place name="size">
+                <Thing>
+                    1
+                </Thing>
+                <Action>SET</Action>
+            </Place>
+        </Thing>
+        <Action> input </Action>
+    </Place>
+
+    <Place name="Equal"> 
+        <Thing>null</Thing>
+        <Action>Equal</Action>
+    </Place>
+    <Place name="Output"> 
+        <Thing name="a">
+            <Place name="size">
+                <Thing>1,5</Thing>
+                <Action>SET</Action>
+            </Place>
+            <Place name="type">
+                <Thing>double</Thing>
+                <Action>SET</Action>
+            </Place>
+        </Thing>
+        <Action> output </Action>
+    </Place>
+    <Place name="Input"> 
+        <Thing>
+            <Place name="0">
+                <Thing>
+                    <Place name="0">
+                        <Thing>
+                            -0.2
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                    <Place name="1">
+                        <Thing>
+                            4.0
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                    <Place name="2">
+                        <Thing>
+                            6.0
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                    <Place name="3">
+                        <Thing>
+                            2.8
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                    <Place name="4">
+                        <Thing>
+                            10.0
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                    <Place name="size">
+                        <Thing>
+                            5
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                </Thing>
+                <Action>SET</Action>
+            </Place>
+            <Place name="size">
+                <Thing>
+                    1
+                </Thing>
+                <Action>SET</Action>
+            </Place>
+        </Thing>
+        <Action> input </Action>
+    </Place>
+
+    <Place name="Equal"> 
+        <Thing>null</Thing>
+        <Action>Equal</Action>
+    </Place>
+    <Place name="Output"> 
+        <Thing name="b">
+            <Place name="size">
+                <Thing>1,5</Thing>
+                <Action>SET</Action>
+            </Place>
+            <Place name="type">
+                <Thing>double</Thing>
+                <Action>SET</Action>
+            </Place>
+        </Thing>
+        <Action> output </Action>
+    </Place>
+    <Place name="Input"> 
+        <Thing>
+            <Place name="0">
+                <Thing>
+                    <Place name="0">
+                        <Thing>
+                            0.0
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                    <Place name="1">
+                        <Thing>
+                            0.0
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                    <Place name="2">
+                        <Thing>
+                            0.0
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                    <Place name="3">
+                        <Thing>
+                            0.0
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                    <Place name="4">
+                        <Thing>
+                            0.0
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                    <Place name="size">
+                        <Thing>
+                            5
+                        </Thing>
+                        <Action>SET</Action>
+                    </Place>
+                </Thing>
+                <Action>SET</Action>
+            </Place>
+            <Place name="size">
+                <Thing>
+                    1
+                </Thing>
+                <Action>SET</Action>
+            </Place>
+        </Thing>
+        <Action> input </Action>
+    </Place>
+
+    <Place name="Equal"> 
+        <Thing>null</Thing>
+        <Action>Equal</Action>
+    </Place>
+    <Place name="Output"> 
+        <Thing name="c">
+            <Place name="size">
+                <Thing>1,5</Thing>
+                <Action>SET</Action>
+            </Place>
+            <Place name="type">
+                <Thing>double</Thing>
+                <Action>SET</Action>
+            </Place>
+        </Thing>
+        <Action> output </Action>
+    </Place>
+    <Place name="Input"> 
+        <Thing name="1">
+            <Place name="type">
+                <Thing>int</Thing>
+                <Action>SET</Action>
+            </Place>
+        </Thing>
+        <Action> input </Action>
+    </Place>
+
+    <Place name="Equal"> 
+        <Thing>null</Thing>
+        <Action>Equal</Action>
+    </Place>
+    <Place name="Output"> 
+        <Thing name="k">
+            <Place name="type">
+                <Thing>int</Thing>
+                <Action>SET</Action>
+            </Place>
+        </Thing>
+        <Action> output </Action>
+    </Place>
+    <Cause name="k&lt; N+1" type="loop">
+        <Path name=" f_kSN+1" >
+            <Place name="Input"> 
+                <Place name="Input"> 
+                    <Thing>a[k]</Thing>
+                    <Action> input </Action>
+                </Place>
+                <Place name="Input"> 
+                    <Thing>b[k]</Thing>
+                    <Action> input </Action>
+                </Place>
+            </Place>
+
+            <Place name="+"> 
+                <Thing>null</Thing>
+                <Action>+</Action>
+            </Place>
+            <Place name="Output"> 
+                <Thing>c[k]</Thing>
+                <Action> output </Action>
+            </Place>
+            <Place name="Input"> 
+                <Place name="Input"> 
+                    <Thing name="k">
+                        <Place name="type">
+                            <Thing>int</Thing>
+                            <Action>SET</Action>
+                        </Place>
+                    </Thing>
+                    <Action> input </Action>
+                </Place>
+                <Place name="Input"> 
+                    <Thing name="1">
+                        <Place name="type">
+                            <Thing>int</Thing>
+                            <Action>SET</Action>
+                        </Place>
+                    </Thing>
+                    <Action> input </Action>
+                </Place>
+            </Place>
+
+            <Place name="+"> 
+                <Thing>null</Thing>
+                <Action>+</Action>
+            </Place>
+            <Place name="Output"> 
+                <Thing name="k">
+                    <Place name="type">
+                        <Thing>int</Thing>
+                        <Action>SET</Action>
+                    </Place>
+                </Thing>
+                <Action> output </Action>
+            </Place>
+        </Path>
+    </Cause>
+</Path>

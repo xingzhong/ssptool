@@ -1,0 +1,66 @@
+<Path name = "main">
+    <Place name = "Input">
+        <Thing> 0 </Thing>
+        <Action> input </Action>
+     </Place>
+    <Place name = "Equal">
+        <Thing> 0 </Thing>
+        <Action> Equal </Action>
+     </Place>
+    <Place name = "Output">
+        <Thing> Sum </Thing>
+        <Action> output </Action>
+     </Place>
+    <Place name = "Input">
+        <Thing> 1 </Thing>
+        <Action> input </Action>
+     </Place>
+    <Place name = "Equal">
+        <Thing> 1 </Thing>
+        <Action> Equal </Action>
+     </Place>
+    <Place name = "Output">
+        <Thing> i </Thing>
+        <Action> output </Action>
+     </Place>
+    <Cause name = "i&lt; 100" type = "loop">
+        <Path name = "Loop_Demo">
+            <Place name = "Input">
+                <Place name = "Input">
+                    <Thing> Sum </Thing>
+                    <Action> input </Action>
+                 </Place>
+                <Place name = "Input">
+                    <Thing> i </Thing>
+                    <Action> input </Action>
+                 </Place>
+             </Place>
+            <Place name = "+">
+                <Thing> Sum </Thing>
+                <Action> + </Action>
+             </Place>
+            <Place name = "Output">
+                <Thing> Sum </Thing>
+                <Action> output </Action>
+             </Place>
+            <Place name = "Input">
+                <Place name = "Input">
+                    <Thing> i </Thing>
+                    <Action> input </Action>
+                 </Place>
+                <Place name = "Input">
+                    <Thing> 1 </Thing>
+                    <Action> input </Action>
+                 </Place>
+             </Place>
+            <Place name = "+">
+                <Thing> i </Thing>
+                <Action> + </Action>
+             </Place>
+            <Place name = "Output">
+                <Thing> i </Thing>
+                <Action> output </Action>
+             </Place>
+         </Path>
+     </Cause>
+ </Path>

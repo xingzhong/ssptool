@@ -1,0 +1,9 @@
+Path,Bits Generator,184,150,100,60,20,false,true,-1,8,1,1,1000
+Path,CRC Encoder,344,249,100,60,20,false,true,8,7,2,1,1
+Path,Convolutional Encoder,516,251,98,60,20,false,true,7,6,2,1,1
+Path,Modulator,703,144,100,60,20,false,true,6,5,2,1,1
+Path,AWGN Channel,899,248,100,60,20,false,true,5,-1,1,1,1
+Link,772,146,772,165,772,244,849,244,false,false,3,4,1,1,1
+Link,585,248,585,141,617,141,653,141,false,false,2,3,1,1,1
+Link,413,248,426,248,438,248,467,248,false,false,1,2,1,1,1
+Link,253,151,253,248,264,248,294,248,false,false,0,1,1,1,1
