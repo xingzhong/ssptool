@@ -1713,7 +1713,39 @@ public class RehostingUserInterface extends JDialog implements ActionListener {
 	    			catch (MalformedURLException me) { }  
 	    		Temp = "";
 	    	}
-	    }        
+	    }  
+	    int fixedPointSelectionTemp = 0;
+	    if (FloatingFixedPointGroup.getSelectedCheckbox() == Fixed_Point)
+	    	fixedPointSelectionTemp = 1; 
+	    else
+	    	fixedPointSelectionTemp = 0; 
+	    try {
+			p.getAppletContext().showDocument
+			(new URL("javascript:getFloatingFixedSelection(\"" + fixedPointSelectionTemp +"\")"));
+			}
+		catch (MalformedURLException me) { }
+			
+		int wordLengthTemp = 0;
+		if (wordLength.getText().isEmpty())
+			wordLengthTemp = 16;
+		else
+        	wordLengthTemp = Integer.parseInt(wordLength.getText().toString());
+	    try {
+			p.getAppletContext().showDocument
+			(new URL("javascript:getFixedWordLength(\"" + wordLengthTemp +"\")"));
+			}
+			catch (MalformedURLException me) { }
+			
+	    int fractionLengthTemp = 0;
+	    if (fractionLength.getText().isEmpty())
+	    	fractionLengthTemp = 8;
+	    else
+	    	fractionLengthTemp = Integer.parseInt(fractionLength.getText().toString());
+	    try {
+			p.getAppletContext().showDocument
+			(new URL("javascript:getFixedFractionLength(\"" + fractionLengthTemp +"\")"));
+			}
+			catch (MalformedURLException me) { }       
 	    String Type = "C++";
 	    try {
 			p.getAppletContext().showDocument
