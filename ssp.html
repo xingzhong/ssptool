@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- This version is coming from the Jia's usb disk
  - Xingzhong Jun.1
 
@@ -220,4 +221,228 @@ Jun.9 Start to separate file
 
 	</body>
 
+=======
+<!-- This version is coming from the Jia's usb disk
+ - Xingzhong Jun.1
+
+Jun.8 Start to merge
+Jun.9 Start to separate file
+
+-->
+
+<html>
+	<head>
+		<title>SSP Project</title>
+		<script type="text/javascript" language="Javascript" SRC="clbm.js">
+		</script>
+	</head>
+
+	<body>
+<p align="left">
+	<span lang="en-us"><b><font color="#000099" face="Arial" size="5">CLBM Based SSP Rehosting and Design Tool</font></b><i><font color="#000099" face="Arial">(v.2.3) Oct. 15</font></i></span>
+</p>
+<p align="right">
+	<b><font color="#000099" face="Arial" size="3"> <a href="test_framework/test.html"> test suite </a></font></b>
+</p>
+
+<applet code="SSP_Main.class" archive="SignedCLBMTool.jar" name="SSP" mayscript="" height="600" width="1280"> </applet>
+
+<hr>
+<p align="left">
+	<span lang="en-us"><b><font color="#000099" face="Arial" size="5">Demonstration: Semantic Rehosting based on CLBM</font></b> <i><font color="#000099" face="Arial">Alpha 0.4.0</font></i></span>
+</p>
+<table width="100%" bgcolor="#FFFFFF" border="3" bordercolor="#C0C0C0" cellpadding="0">
+	<!-- MSTableType="layout" -->
+	<tbody>
+		<tr>
+			<td valign="top" width="25%" bgcolor="#C0C0C0">
+				&nbsp;
+			</td>
+			<td valign="top" width="103" bgcolor="#C0C0C0">
+				&nbsp;
+			</td>
+			<td valign="top" width="25%" bgcolor="#C0C0C0">
+				&nbsp;
+			</td>
+			<td valign="top" width="93" bgcolor="#C0C0C0">
+				&nbsp;
+			</td>
+			<td valign="top" bgcolor="#C0C0C0">
+				&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td valign="top" width="25%" bgcolor="#336699">
+				<p align="center">
+					<font color="#FFFFFF"><span lang="en-us"><b><font face="Arial" size="5">Source Code Input</font></b></span></font>
+				</p>
+				<p align="left">
+					<b><font color="#FFFFFF"><span lang="en-us">&nbsp;</span>Source Language:&nbsp;</font></b> <font color="#FFFFFF">&nbsp;</font><font color="#FFFFFF"><select id="language" onchange="openSourceExample();return false;" size="1" name="Language">
+						<option selected="selected">
+							Matlab
+						</option>
+						<option>
+							C
+						</option>
+						<option>
+							C++
+						</option>
+						<option>
+							VHDL
+						</option>
+					</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+					&nbsp;</font><b><font color="#FFFFFF">Examples:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></b> <font color="#FFFFFF">&nbsp;<select id="source" onchange="openSourceExample();return false;" size="1" name="Source">
+						<option selected="selected">
+							blank
+						</option>
+						<option>
+							Simple Transmitter
+						</option>
+						<option>
+							Adatpive Modulator
+						</option>
+						<option>
+							FIR filter 1
+						</option>
+						<option>
+							FIR filter 2
+						</option>
+						<option>
+							Waveform OFDM
+						</option>
+					</select></font>
+				</p>
+			</td>
+			<td valign="top" width="103" bgcolor="#0099CC">
+				<p align="center">
+					<font color="#FFFFFF" size="4"><b><span lang="en-us">Abstraction &amp; Representation</span></b></font>
+				</p>
+			</td>
+			<td valign="top" width="25%" bgcolor="#336699">
+				<p align="center">
+					<font color="#FFFFFF"><b><span lang="en-us"><font face="Arial" size="5">Semantic Representation</font></span></b><span lang="en-us"><font size="4"><br></font>(XML Representation<b>)</b></span></font>
+				</p>
+			</td>
+			<td valign="top" width="93" bgcolor="#0099CC">
+				<p align="center">
+					<font color="#FFFFFF" size="4"><b>Inference&nbsp; &amp; <span lang="en-us">Code Generation</span></b></font>
+				</p>
+			</td>
+			<td valign="top" bgcolor="#336699">
+				<p align="center">
+					<span lang="en-us"><b><font color="#FFFFFF" face="Arial" size="5">Target Code Output</font><font color="#333399"><br>
+					&nbsp;</font></b></span>
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td style="border: 2px solid;" bordercolor="#800080" valign="top" width="25%" bgcolor="#FFFFFF">
+				<p>
+					<textarea id="Source_input" style="font-size: 12pt; width: 100%; font-family: Times New Roman; height: 100%;" name="Source_input" rows="37">
+</textarea>
+				</p>
+				<p>
+					&nbsp;
+				</p>
+				<p>
+					&nbsp;
+				</p>
+			</td>
+			<td valign="top" width="8%" bgcolor="#0099CC">
+				<p align="center">
+					&nbsp;
+				</p>
+				<p align="center">
+					&nbsp;
+				</p>
+				<p align="center">
+					&nbsp;
+				</p>
+				<p align="center">
+					&nbsp;
+				</p>
+				<p align="center">
+					&nbsp;
+				</p>
+				<p align="center">
+					<input onclick="ToXML();" value="To XML" name="B6" style="font-weight: bold; color: rgb(0, 0, 128); width: 90px; height: 40px; border: 2px outset rgb(204, 204, 204); padding: 1px 4px; background-color: rgb(255, 204, 153);" type="button">
+				</p>
+				<p align="center">
+					&nbsp;
+				</p>
+			</td>
+			<td style="border: 2px solid;" bordercolor="#800080" valign="top" width="25%" height="100%">
+				<div id="xml_display" width="100%&quot;" style="display: none;">
+					&nbsp;
+				</div>
+				<p>
+					<textarea id="xml_input" font-size:="" width:="" font-family:="" times="" new="" height:="" name="xml_input" rows="45" cols="46">
+</textarea>
+				</p>
+			</td>
+			<td valign="top" width="8%" bgcolor="#0099CC">
+				<p align="center">
+					&nbsp;
+				</p>
+				<p align="center">
+					&nbsp;
+				</p>
+				<p align="center">
+					<input onclick="translation(document.getElementById('xml_input').value,'inference_result','Matlab');return false;" value="To MATLAB" name="B5" style="width: 95px; font-weight: bold; height: 40px; color: rgb(0, 0, 102); border: 2px outset rgb(204, 204, 204); padding: 1px 4px; background-color: rgb(255, 204, 153);" type="button">
+				</p>
+				<p align="center">
+					&nbsp;
+				</p>
+				<p align="center">
+					<input onclick="translation(document.getElementById('xml_input').value,'inference_result','C'); return false;" value="To C" name="B1" style="width: 95px; color: rgb(0, 0, 102); font-weight: bold; height: 40px; border: 2px outset rgb(204, 204, 204); padding: 1px 4px; background-color: rgb(255, 204, 153);" type="button">
+				</p>
+				<p align="center">
+					&nbsp;
+				</p>
+				<p align="center">
+					<input onclick="translation(document.getElementById('xml_input').value,'inference_result','C++'); return false;" value="To C++" name="B9" style="color: rgb(0, 0, 102); width: 95px; height: 40px; font-weight: bold; border: 2px outset rgb(204, 204, 204); padding: 1px 4px; background-color: rgb(255, 204, 153);" type="button">
+				</p>
+				<p align="center">
+					&nbsp;
+				</p>
+				<p align="center">
+					<input onclick="translation(document.getElementById('xml_input').value,'inference_result','VHDL');return false;" value="To VHDL" name="B10" style="font-weight: bold; color: rgb(0, 0, 102); width: 95px; height: 40px; border: 2px outset rgb(204, 204, 204); padding: 1px 4px; background-color: rgb(255, 204, 153);" type="button">
+				</p>
+				<p align="center">
+					&nbsp;
+				</p>
+				<p align="center">
+					<input onclick="xml_analyze(document.getElementById('xml_input').value,'inference_result');return false;" value="Analyze" name="B11" style="font-weight: bold; color: rgb(0, 0, 128); width: 95px; height: 40px; border: 2px outset rgb(204, 204, 204); padding: 1px 4px; background-color: rgb(255, 204, 153);" type="button">
+				</p>
+			</td>
+			<td style="border: 2px solid;" bordercolor="#800080" valign="top" width="25%">
+				<div id="inference_result">
+					&nbsp;
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top" width="281">
+				<input style="display: none;" size="8" name="file_browser0" type="file"><input style="display: none;" onclick="openFile();" value="Open" name="Open_file0" type="button">
+			</td>
+			<td valign="top" width="103">
+				&nbsp;
+			</td>
+			<td valign="top" width="275">
+				<input style="display: none;" size="8" name="file_browser" type="file"><input style="display: none;" onclick="openFile();" value="Open" name="Open_file" type="button">
+			</td>
+			<td valign="top" width="93">
+				&nbsp;
+			</td>
+			<td valign="top">
+				&nbsp;
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+	</body>
+
+>>>>>>> master
 </html>

@@ -5105,6 +5105,20 @@ language: the target language
 
     if (language == 'C' || language == 'C++')
     {
+    	if(isFixedPointGlobal=1)
+    		{
+    			if( type == 'float')
+    				type = 'int';
+    			else if ( type == 'double')
+    				type = 'long int';
+    		}
+			else
+				{
+    			if (type == 'int')
+    				type = 'float';
+    			else if (type == 'long int')
+    				type = 'double';
+    		}
         var str = type + '&nbsp;' + variable_name;
 
         if (variable.dimension > 1 || variable.size[0] != 1)
