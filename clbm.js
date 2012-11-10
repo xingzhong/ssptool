@@ -674,7 +674,7 @@ language: the target code language
     if (language == 'CUDA') {
         path_input_variable[0] = '';
         path_output_variable[0] = '';
-        // str = creat_func(path_input_variable, path_output_variable, 'main', '', language); //delet by Lei Zhou2
+        //str = creat_func(path_input_variable, path_output_variable, 'main', '', language); //delet by Lei Zhou2
         output = insertString(output, str);
         ind_level = ind_level + 1;
     }
@@ -749,6 +749,7 @@ language: the target code language
     // add by liu Apr.04.2011 4PM
     for (var i = 0; i < path1.length; i++)
     {
+        console.log(i);
         console.log(output);
         if ((path1[i].parentNode.nodeName == 'Cause') && ((((language_constant == 'CUDA') || (language_constant == 'OpenCL')) && (path1[i].parentNode.attributes.getNamedItem("type") == null)) || ((language_constant != 'CUDA') && (language_constant != 'OpenCL'))))
         {
@@ -818,8 +819,8 @@ language: the target code language
             path1_input_variable = get_pathinput(path1[i]);
             path1_output_variable = get_pathoutput(path1[i]);
 			
-			console.log(path1_input_variable);
-			console.log(path1_output_variable);
+			//console.log(path1_input_variable);
+			//console.log(path1_output_variable);
 			
 			if (language == 'C' ) //xingzhong added for pointer return
 	        {
@@ -853,13 +854,14 @@ language: the target code language
                 }
                 else
                 {
-                    if (classFuncFlag == 0 && func_name != 'main'){
+                    //if (classFuncFlag == 0 && func_name != 'main'){
+                    if (classFuncFlag == 0){
                     // add by liu Apr16.2011 1AM
-                    output = insertString(output, creat_func(path1_input_variable, path1_output_variable, func_name, class_name, language));
+                        output = insertString(output, creat_func(path1_input_variable, path1_output_variable, func_name, class_name, language));
 					
 					}
 				}
-				console.log(output);
+				//console.log(output);
             }
             ind_level = ind_level + 1;
             //Search all the variables to be declared
@@ -1771,7 +1773,9 @@ language: the target code language*/
 
             if (place_cause_type == 'loop')
             {
-                str_places += indent(ind_level) + creat_cause_cuda(place_name, language, place_cause_type, loop_variable, cuda_kernel_name, xmlHardwareDoc);
+                if (! typeof xmlHardwareDoc === 'undefined' ){
+                    str_places += indent(ind_level) + creat_cause_cuda(place_name, language, place_cause_type, loop_variable, cuda_kernel_name, xmlHardwareDoc);
+                }
             }
             else
             {
@@ -4594,9 +4598,9 @@ function creat_func(input, output, func_name, class_name, language)
 	console.log("create func header");
 	console.log(input);
 	console.log(output);
+	console.log(func_name);
     var inputn = input.length;
     var outputn = output.length;
-
     var i = 0;
     var str = '';
     var varialbe = '';
@@ -4610,9 +4614,13 @@ function creat_func(input, output, func_name, class_name, language)
 
         if (outputn == 1)
         {
-
             variable = get_variableName(output[0], language);
-            str = str + variable + '=' + func_name + '(';
+            if (variable) {
+                str = str + variable + '=' + func_name + '(';
+            }
+            else{
+                str = str + func_name + '(';
+            }
         }
         else
         {
@@ -4715,11 +4723,13 @@ function creat_func(input, output, func_name, class_name, language)
     {
 
         //=================Matlab================================//
-        if (language == 'Matlab')
+        if (language == 'Matlab' && input[i])
         {
             variable = get_variableName(input[i], language);
+            console.log(input[i]);
+            variable = variable.slice(0, variable.indexOf('('));
             if (i < inputn - 1)
-            variable = variable + ',';
+                variable = variable + ',';
             str = str + variable;
         }
 
@@ -4733,7 +4743,7 @@ function creat_func(input, output, func_name, class_name, language)
             variable = variable.replace('&nbsp;', ' ');
             variable = variable.slice(0, variable.indexOf(';'));
             if (i < inputn - 1)
-            variable = variable + ',';
+                variable = variable + ',';
             str = str + variable;
 
         }
@@ -5844,7 +5854,7 @@ place: the place node in xml
 */
  {
 	
-	 console.log(place);
+	console.log(place);
     var variables = new Array();
     var p = 0;
     //alert(place.attributes.getNamedItem('name').value)
@@ -5875,7 +5885,7 @@ place: the place node in xml
         }
     }
 
-	
+	console.log(variables);
     return variables;
 }
 
@@ -6061,20 +6071,22 @@ function get_variableName(thingClass, language)
         	variable = Vector_code(thingClass, language);
     	else if (thingClass.isElement == 1)
         	variable = Element_code(thingClass, language);
-    	/*else if(thingClass.isPointer==1 && language=='Matlab')
-		{
-		variable=thingClass.value[0]+'.'+thingClass.value[1];
-		if(variable.indexOf('*')==0 || variable.indexOf('&')==0)
-			variable=variable.slice(1);
-		
-	}*/
-    	else if (thingClass.value)
-    	{
+    	else if(thingClass.isPointer==1 && language=='Matlab'){
+    	    if (thingClass.value[1]){
+		        variable=thingClass.value[0]+'.'+thingClass.value[1];
+	        }
+	        else{
+	            variable=thingClass.value[0]
+            }
+		    if(variable.indexOf('*')==0 || variable.indexOf('&')==0)
+			    variable=variable.slice(1);
+	    }
+    	else if (thingClass.value){
         variable = thingClass.value[0];
-    }
+        }
     	else {
         variable = "None";
-    }
+        }
     	return variable;
 	}
 }
