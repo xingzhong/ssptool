@@ -1,0 +1,31 @@
+Semantic Signal Processing Main Platform
+
+Current Maintainer: Xingzhong Xu 2012-2013 xxu7@stevens.edu
+Previous: Jia Zhu, Hongbin Chen
+
+Project of ECE Dept. @ Stevens Institute of Technology, NJ
+Copyright is reserved for Stevens and Project Sponsor. 
+
+The main platform is a software prototype aims to demostrate the 
+capaiblity and availablity of the cognitive lingustic behavior modelling
+(CLBM) in signal processing application. 
+The system implement rule based abstraction and inference engine through 
+javascript. Plus Java Applet is used to interface the functionlity. 
+The system also have a Q/A unit to guarantee the quality.
+
+Requirements:
+The system is design for online usage. Any OS have latest Internet Browser
+and Java Virtual Machine is capable to running the software. However, if 
+you need explore the internal system, the following steps are required to deploy 
+the system on to your local station. 
+ 
+Usage:
+  1. Clone this repo
+     git clone git@github.com/xingzhong/ssptool.git
+  2. For kernel functionlity, the routines are written in clbm.js
+  3. For interface, the functionlity is written through a Java Applet project, 
+     Eclipse is required to generated vaild jar file.
+  4. Point to index.html through browser. The webpage will automatically load jar 
+     package generated from step 3. 
+  5. Examples folder contains the test for code for abstraction and inference.
+  6. test_framework/test.html is the Q/A compoenent for this project.
